@@ -13,6 +13,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:homio_essentials/core/router/app_routes.dart';
 import 'package:homio_essentials/core/router/app_shell.dart';
+import 'package:homio_essentials/core/router/page_transitions.dart';
 import 'package:homio_essentials/features/condition/presentation/condition_routes.dart';
 import 'package:homio_essentials/features/explore/presentation/explore_routes.dart';
 import 'package:homio_essentials/features/home/presentation/home_routes.dart';
@@ -36,8 +37,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       ...onboardingRoutes,
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, shell) => AppShell(shell: shell),
+      StatefulShellRoute(
+        builder: (context, state, shell) => shell,
+        // Tabs cross-fade and keep their state alive; the shell owns the bar + ad around them.
+        navigatorContainerBuilder: (context, shell, children) =>
+            AppShell(shell: shell, body: HmAnimatedBranchContainer(currentIndex: shell.currentIndex, children: children)),
         branches: [
           StatefulShellBranch(routes: homeTabRoutes),
           StatefulShellBranch(routes: exploreTabRoutes),

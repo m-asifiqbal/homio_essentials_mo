@@ -25,12 +25,18 @@ class SavedScreen extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         bottom: false,
-        child: ListView(padding: const EdgeInsets.only(bottom: 32), children: [
-          Gutter(top: 20, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(l.savedTitle, style: Theme.of(context).textTheme.headlineMedium),
-            Text(l.savedSub, style: TextStyle(color: c.ink2, fontSize: 13)),
-          ])),
-          const SizedBox(height: 16),
+        child: HmTabPage(
+          header: Gutter(
+            top: 14,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(l.savedTitle, style: Theme.of(context).textTheme.headlineMedium),
+                Text(l.savedSub, style: TextStyle(color: c.ink2, fontSize: 12.5)),
+              ]),
+            ),
+          ),
+          body: ListView(padding: EdgeInsets.only(top: 14, bottom: context.barClearance), children: [
           ...switch (ref.watch(savedListsProvider)) {
             AsyncValue(:final value?) => [
                 if (value.saved.isEmpty)
@@ -74,7 +80,8 @@ class SavedScreen extends ConsumerWidget {
             AsyncError() => [EmptyState(icon: Icons.cloud_off_rounded, title: l.loadFailedTitle, body: l.loadFailedBody)],
             _ => const [SkeletonList(count: 4)],
           },
-        ]),
+          ]),
+        ),
       ),
     );
   }

@@ -1,11 +1,16 @@
 /// ============================================================
 /// HM CARD — bordered surface card and the teal gradient hero box
 /// ============================================================
+///
+/// Tap feedback is the design system's press-scale ([HmPressable]), not a
+/// Material ripple. Cards are one painted DecoratedBox — cheap to scroll.
+/// ============================================================
 library;
 
 import 'package:material_ui/material_ui.dart';
 
 import 'package:homio_essentials/core/theme/tokens.dart';
+import 'package:homio_essentials/core/widgets/hm_pressable.dart';
 
 class HmCard extends StatelessWidget {
   const HmCard({super.key, required this.child, this.padding = const EdgeInsets.all(16), this.onTap, this.color, this.border, this.radius = Hm.rCard, this.semanticLabel});
@@ -20,15 +25,18 @@ class HmCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.hm;
+    final card = DecoratedBox(
+      decoration: BoxDecoration(
+        color: color ?? c.sf,
+        borderRadius: BorderRadius.circular(radius),
+        border: Border.all(color: border ?? c.ln, width: border == null ? 1 : 2),
+      ),
+      child: Padding(padding: padding, child: child),
+    );
     return Semantics(
       button: onTap != null,
       label: semanticLabel,
-      child: Material(
-        color: color ?? c.sf,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius), side: BorderSide(color: border ?? c.ln, width: border == null ? 1 : 2)),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(onTap: onTap, child: Padding(padding: padding, child: child)),
-      ),
+      child: onTap == null ? card : HmPressable(onTap: onTap, child: card),
     );
   }
 }
@@ -44,24 +52,19 @@ class HeroBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.hm;
-    return ClipRRect(
+    final box = ClipRRect(
       borderRadius: BorderRadius.circular(radius),
-      child: Material(
-        color: Colors.transparent,
-        child: Ink(
-          decoration: BoxDecoration(gradient: c.heroGradient),
-          child: InkWell(
-            onTap: onTap,
-            child: Stack(children: [
-              PositionedDirectional(end: -50, top: -60, child: heroCircle(200)),
-              Padding(padding: padding, child: DefaultTextStyle.merge(style: const TextStyle(color: Colors.white), child: child)),
-            ]),
-          ),
-        ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(gradient: c.heroGradient),
+        child: Stack(children: [
+          PositionedDirectional(end: -50, top: -60, child: heroCircle(200)),
+          Padding(padding: padding, child: DefaultTextStyle.merge(style: const TextStyle(color: Colors.white), child: child)),
+        ]),
       ),
     );
+    return Semantics(button: onTap != null, child: onTap == null ? box : HmPressable(onTap: onTap, scale: 0.985, child: box));
   }
 }
 
 Widget heroCircle(double d, {double alpha = .08}) =>
-    Container(width: d, height: d, decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: alpha)));
+    RepaintBoundary(child: Container(width: d, height: d, decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: alpha))));

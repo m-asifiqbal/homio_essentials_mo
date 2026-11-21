@@ -23,9 +23,9 @@ class WelcomePage extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const HmLogo(size: 64),
           const SizedBox(height: 18),
-          Text(AppInfo.localizedName(context.bn), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, letterSpacing: context.bn ? 0 : .5, color: Colors.white.withValues(alpha: .96))),
+          Text(AppInfo.localizedName(context.bn), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, letterSpacing: context.bn ? 0 : .5, color: Colors.white.withValues(alpha: .96))),
           const SizedBox(height: 4),
-          Text(l.welcomeTitle, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w800, height: 1.2, color: Colors.white)),
+          Text(l.welcomeTitle, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700, height: 1.2, color: Colors.white)),
           const SizedBox(height: 10),
           Text(l.welcomeBody, style: TextStyle(fontSize: 15, height: 1.55, color: Colors.white.withValues(alpha: .96))),
         ]),
@@ -77,13 +77,13 @@ class ChoicePage extends StatelessWidget {
                   width: 52, height: 52, alignment: Alignment.center,
                   decoration: BoxDecoration(color: v == value ? c.p : c.sf2, borderRadius: BorderRadius.circular(16)),
                   child: glyph != null
-                      ? Text(glyph, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: v == value ? c.onp : c.pd))
+                      ? Text(glyph, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: v == value ? c.onp : c.pd))
                       : Icon(icons?[i] ?? Icons.circle_outlined, color: v == value ? c.onp : c.pd),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(t, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                    Text(t, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 2),
                     Text(sub, style: TextStyle(color: c.ink2, fontSize: 14)),
                   ]),

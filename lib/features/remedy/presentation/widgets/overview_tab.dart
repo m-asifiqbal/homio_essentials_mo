@@ -65,7 +65,7 @@ class OverviewTab extends StatelessWidget {
                         width: 64, height: 64,
                         decoration: BoxDecoration(color: c.sf2, borderRadius: BorderRadius.circular(18)),
                         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          Text(numL(context, typical.amount), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: c.pd, height: 1)),
+                          Text(numL(context, typical.amount), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: c.pd, height: 1)),
                           Text(typical.isTablet ? l.tablets : l.pellets, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: c.pd)),
                         ]),
                       ),

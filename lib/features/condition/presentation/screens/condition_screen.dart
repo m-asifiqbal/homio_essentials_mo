@@ -38,7 +38,7 @@ class ConditionScreen extends ConsumerWidget {
               Gutter(
                 top: 16,
                 child: Callout(CalloutKind.danger, icon: Icons.local_hospital_outlined,
-                    child: Text.rich(TextSpan(children: [TextSpan(text: '${l.seeDoctorIf}: ', style: const TextStyle(fontWeight: FontWeight.w800)), TextSpan(text: value.condition.redFlags(bangla))]))),
+                    child: Text.rich(TextSpan(children: [TextSpan(text: '${l.seeDoctorIf}: ', style: const TextStyle(fontWeight: FontWeight.w700)), TextSpan(text: value.condition.redFlags(bangla))]))),
               ),
             SectionHeader(l.remediesForThis, top: 24, trailing: HmBadge(numL(context, value.entries.length))),
             if (value.entries.isEmpty) EmptyState(icon: Icons.medication_outlined, title: l.conditionEmpty),

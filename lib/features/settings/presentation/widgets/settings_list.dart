@@ -17,11 +17,12 @@ class SettingsItem {
 }
 
 class SettingsGroupLabel extends StatelessWidget {
-  const SettingsGroupLabel(this.title, {super.key});
+  const SettingsGroupLabel(this.title, {super.key, this.first = false});
   final String title;
+  final bool first;
 
   @override
-  Widget build(BuildContext context) => Padding(padding: const EdgeInsets.fromLTRB(20, 28, 20, 10), child: Semantics(header: true, child: Cap(title)));
+  Widget build(BuildContext context) => Padding(padding: EdgeInsets.fromLTRB(20, first ? 6 : 24, 20, 10), child: Semantics(header: true, child: Cap(title)));
 }
 
 class SettingsList extends StatelessWidget {
@@ -39,15 +40,15 @@ class SettingsList extends StatelessWidget {
           InkWell(
             onTap: it.onTap,
             child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 60),
+              constraints: const BoxConstraints(minHeight: 58),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
                 child: Row(children: [
                   if (it.logo) const SizedBox(width: 40, height: 40, child: Center(child: HmLogo(size: 32))) else IconTile(it.icon ?? Icons.circle_outlined, it.tone),
                   const SizedBox(width: 14),
                   Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(it.title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
-                    if (it.sub != null) Text(it.sub!, style: TextStyle(fontSize: 12.5, color: c.ink2)),
+                    Text(it.title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5)),
+                    if (it.sub != null) Text(it.sub!, style: TextStyle(fontSize: 12, color: c.ink2)),
                   ])),
                   if (it.onTap != null) Icon(Icons.chevron_right_rounded, color: c.ink3),
                 ]),

@@ -38,7 +38,7 @@ class HighlightedText extends StatelessWidget {
       if (i == text.length || marks[i] != marks[start]) {
         spans.add(TextSpan(
           text: text.substring(start, i),
-          style: marks[start] ? TextStyle(color: context.hm.p, fontWeight: FontWeight.w800) : null,
+          style: marks[start] ? TextStyle(color: context.hm.p, fontWeight: FontWeight.w700) : null,
         ));
         start = i;
       }

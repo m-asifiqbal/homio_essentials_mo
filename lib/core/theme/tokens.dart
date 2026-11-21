@@ -111,4 +111,33 @@ abstract final class Hm {
   static const rCard = 20.0;
   static const rTile = 14.0;
   static const rButton = 18.0;
+
+  /// Height of the tab bar's content (the safe-area inset comes on top).
+  static const navBarHeight = 60.0;
+
+  /// Gap kept under the last item of a tab list, on top of the bar's own height.
+  static const barGap = 16.0;
+}
+
+/// One motion language for the whole app (same values as FocusFlow's `AppMotion`).
+abstract final class HmMotion {
+  static const fast = Duration(milliseconds: 180);
+  static const normal = Duration(milliseconds: 220);
+  static const slow = Duration(milliseconds: 260);
+  static const curve = Curves.easeOutCubic;
+
+  /// Card press scale.
+  static const pressScale = 0.98;
+}
+
+extension HmMotionContext on BuildContext {
+  /// True when the OS (or the app) asks for reduced motion.
+  bool get reduceMotion => MediaQuery.maybeDisableAnimationsOf(this) ?? false;
+
+  /// [d], or zero under reduce motion.
+  Duration motion(Duration d) => reduceMotion ? Duration.zero : d;
+
+  /// Bottom padding for a tab's scroll view: clears the floating bar + ad (the shell
+  /// reserves their height in the MediaQuery) plus a small gap.
+  double get barClearance => MediaQuery.paddingOf(this).bottom + Hm.barGap;
 }

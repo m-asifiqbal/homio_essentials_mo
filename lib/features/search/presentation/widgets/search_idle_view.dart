@@ -67,12 +67,12 @@ class SearchIdleView extends ConsumerWidget {
         Gutter(
           top: 24,
           child: Callout(CalloutKind.note, icon: Icons.translate_rounded,
-              child: Text.rich(TextSpan(children: [TextSpan(text: '${l.banglishTipTitle} ', style: const TextStyle(fontWeight: FontWeight.w800)), TextSpan(text: l.banglishTipBody)]))),
+              child: Text.rich(TextSpan(children: [TextSpan(text: '${l.banglishTipTitle} ', style: const TextStyle(fontWeight: FontWeight.w700)), TextSpan(text: l.banglishTipBody)]))),
         ),
         Gutter(
           top: 10,
           child: Callout(CalloutKind.note, icon: Icons.menu_book_outlined,
-              child: Text.rich(TextSpan(children: [TextSpan(text: '${l.booksTipTitle} ', style: const TextStyle(fontWeight: FontWeight.w800)), TextSpan(text: l.booksTipBody)]))),
+              child: Text.rich(TextSpan(children: [TextSpan(text: '${l.booksTipTitle} ', style: const TextStyle(fontWeight: FontWeight.w700)), TextSpan(text: l.booksTipBody)]))),
         ),
       ],
     );

@@ -6,5 +6,8 @@ export 'hm_chips.dart';
 export 'hm_feedback.dart';
 export 'hm_layout.dart';
 export 'hm_logo.dart';
+export 'hm_pressable.dart';
+export 'hm_scroll_top_pill.dart';
 export 'hm_search_field.dart';
+export 'hm_switch.dart';
 export 'hm_text.dart';

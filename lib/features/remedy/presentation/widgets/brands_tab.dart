@@ -44,7 +44,7 @@ class BrandsTab extends StatelessWidget {
                     ),
                   ]),
                 ),
-                if (p.price != null) Text('৳${numL(context, p.price!.toStringAsFixed(0))}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                if (p.price != null) Text('৳${numL(context, p.price!.toStringAsFixed(0))}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
               ]),
             ),
           ),

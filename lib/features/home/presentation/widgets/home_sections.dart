@@ -32,7 +32,7 @@ class RemedyOfDayCard extends StatelessWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(l.remedyOfDay, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: bangla ? 0 : 1, color: white)),
               const SizedBox(height: 6),
-              Text(r.latin, style: latinStyle(size: 28, color: Colors.white)),
+              Text(r.latin, style: latinStyle(size: 25, color: Colors.white)),
               const SizedBox(height: 4),
               Text([r.common(bangla), l.kingdom(r.kingdom)].whereType<String>().join(' · '), style: TextStyle(fontSize: 13, color: white)),
               if (bangla && r.bnName() != null) Text(r.bnName()!, style: const TextStyle(fontSize: 15, color: Colors.white)),
@@ -104,18 +104,21 @@ class BrowseGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l;
     final c = context.hm;
-    return GridView.count(
-      crossAxisCount: 3, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 12, crossAxisSpacing: 12, childAspectRatio: 1.05,
-      children: [
-        _Tile(Icons.eco_outlined, l.browseRemedies, (c.ptBg, c.ptInk), () => context.go(AppRoutes.explore)),
-        _Tile(Icons.monitor_heart_outlined, l.browseSymptoms, (c.dg, c.dgInk), () => context.go(AppRoutes.exploreTab('symptoms'))),
-        _Tile(Icons.factory_outlined, l.browseCompanies, (c.miBg, c.miInk), () => context.go(AppRoutes.exploreTab('companies'))),
-        _Tile(Icons.menu_book_outlined, l.browseMateria, (c.anBg, c.anInk), () => context.push(AppRoutes.searchFor()), locked: !canStudy),
-        _Tile(Icons.bookmark_border_rounded, l.browseSaved, (c.noBg, c.noInk), () => context.go(AppRoutes.saved)),
-        _Tile(Icons.science_outlined, l.browseGuide, (c.bcBg, c.bcInk), () => context.push(AppRoutes.guide)),
-      ],
-    );
+    // Two plain rows of three equal tiles — a shrink-wrapped GridView re-measures every child on each layout.
+    final tiles = [
+      _Tile(Icons.eco_outlined, l.browseRemedies, (c.ptBg, c.ptInk), () => context.go(AppRoutes.explore)),
+      _Tile(Icons.monitor_heart_outlined, l.browseSymptoms, (c.dg, c.dgInk), () => context.go(AppRoutes.exploreTab('symptoms'))),
+      _Tile(Icons.factory_outlined, l.browseCompanies, (c.miBg, c.miInk), () => context.go(AppRoutes.exploreTab('companies'))),
+      _Tile(Icons.menu_book_outlined, l.browseMateria, (c.anBg, c.anInk), () => context.push(AppRoutes.searchFor()), locked: !canStudy),
+      _Tile(Icons.bookmark_border_rounded, l.browseSaved, (c.noBg, c.noInk), () => context.go(AppRoutes.saved)),
+      _Tile(Icons.science_outlined, l.browseGuide, (c.bcBg, c.bcInk), () => context.push(AppRoutes.guide)),
+    ];
+    Widget row(List<Widget> r) => IntrinsicHeight(
+          child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            for (final (i, t) in r.indexed) ...[if (i > 0) const SizedBox(width: 10), Expanded(child: t)],
+          ]),
+        );
+    return Column(children: [row(tiles.sublist(0, 3)), const SizedBox(height: 10), row(tiles.sublist(3))]);
   }
 }
 
@@ -131,14 +134,14 @@ class _Tile extends StatelessWidget {
   Widget build(BuildContext context) => HmCard(
         onTap: onTap,
         semanticLabel: label,
-        padding: const EdgeInsets.fromLTRB(6, 14, 6, 10),
+        padding: const EdgeInsets.fromLTRB(6, 12, 6, 10),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Stack(clipBehavior: Clip.none, children: [
-            IconTile(icon, tone),
+            IconTile(icon, tone, size: 38),
             if (locked) PositionedDirectional(end: -6, top: -6, child: Icon(Icons.lock_rounded, size: 14, color: context.hm.ink3)),
           ]),
           const SizedBox(height: 8),
-          Text(label, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, height: 1.2)),
+          Text(label, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, height: 1.2)),
         ]),
       );
 }
@@ -166,9 +169,9 @@ class AgeRow extends StatelessWidget {
               semanticLabel: label,
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
               child: Column(children: [
-                IconTile(icon(g.code), tone(g.code), size: 36),
+                IconTile(icon(g.code), tone(g.code), size: 34),
                 const SizedBox(height: 6),
-                Text(m?.group(1) ?? label, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
+                Text(m?.group(1) ?? label, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
                 if (m != null) Text(m.group(2)!, maxLines: 1, style: TextStyle(fontSize: 11.5, color: c.ink2)),
               ]),
             );
@@ -194,7 +197,7 @@ class LearnCard extends StatelessWidget {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             HmBadge(l.guideBadge, bg: Colors.white.withValues(alpha: .6), ink: c.peInk),
             const SizedBox(height: 10),
-            Text(l.potencyGuideTitle, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, height: 1.25, color: c.peInk)),
+            Text(l.potencyGuideTitle, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, height: 1.25, color: c.peInk)),
             const SizedBox(height: 6),
             Text(l.potencyGuideBody, style: TextStyle(fontSize: 13, color: c.peInk)),
           ]),

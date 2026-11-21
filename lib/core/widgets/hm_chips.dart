@@ -44,7 +44,7 @@ class HmChip extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                   decoration: BoxDecoration(color: selected ? c.onp.withValues(alpha: .22) : c.sf2, borderRadius: BorderRadius.circular(99)),
-                  child: Text(numL(context, count!), style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, color: selected ? c.onp : c.pd)),
+                  child: Text(numL(context, count!), style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, color: selected ? c.onp : c.pd)),
                 ),
               ],
               if (onDelete != null)
@@ -174,7 +174,7 @@ class LetterTile extends StatelessWidget {
       width: size, height: size,
       decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(size * 0.29)),
       alignment: Alignment.center,
-      child: icon != null ? Icon(icon, color: ink, size: size * 0.5) : Text(letter, style: TextStyle(color: ink, fontWeight: FontWeight.w800, fontSize: size * 0.4)),
+      child: icon != null ? Icon(icon, color: ink, size: size * 0.5) : Text(letter, style: TextStyle(color: ink, fontWeight: FontWeight.w700, fontSize: size * 0.4)),
     );
   }
 }

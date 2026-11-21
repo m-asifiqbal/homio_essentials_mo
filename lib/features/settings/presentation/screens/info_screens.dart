@@ -54,7 +54,7 @@ class OfflineScreen extends ConsumerWidget {
             children: [
               for (final (label, n) in [(l.statRemedies, a.remedies.length), (l.statSymptoms, a.conditions.length), (l.statRelations, rels), (l.statCompanies, a.manufacturers.length)])
                 HmCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Text(numL(context, n), style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: c.pd)),
+                  Text(numL(context, n), style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: c.pd)),
                   Text(label, style: TextStyle(fontSize: 13, color: c.ink2)),
                 ])),
             ],
@@ -138,7 +138,7 @@ class PotencyGuideScreen extends StatelessWidget {
         HeroBox(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           HmBadge(l.guideBadge, glass: true),
           const SizedBox(height: 10),
-          Text(l.potencyGuideTitle, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: Colors.white, height: 1.25)),
+          Text(l.potencyGuideTitle, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white, height: 1.25)),
         ])),
         const SizedBox(height: 20),
         for (final (t, b) in [(l.guideP1T, l.guideP1), (l.guideP2T, l.guideP2), (l.guideP3T, l.guideP3), (l.guideP4T, l.guideP4)]) ...[

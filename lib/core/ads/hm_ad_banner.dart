@@ -2,8 +2,14 @@
 /// HM AD BANNER — anchored (above the tab bar) and inline (detail pages)
 /// ============================================================
 ///
+/// Sizes: the anchored slot uses the *standard* anchored adaptive banner
+/// (≈ 50–60 dp on phones — not the "large" ≈ 100 dp one), and inline slots are
+/// capped at 60 dp so an ad never takes over a page.
+///
 /// The slot keeps its height while loading so content never jumps; a failed
 /// load collapses it. Anchored banners hide while the keyboard is open.
+/// An inline banner that has loaded is kept alive inside scrolling lists
+/// (AutomaticKeepAlive), so scrolling away and back never re-requests an ad.
 /// On web (preview builds) a labelled placeholder shows where the ad goes.
 /// ============================================================
 library;
@@ -20,6 +26,9 @@ import 'package:homio_essentials/core/theme/tokens.dart';
 
 enum AdPlacement { anchored, inline }
 
+/// Tallest inline ad we ask for.
+const double _inlineMaxHeight = 60;
+
 class HmAdBanner extends ConsumerStatefulWidget {
   const HmAdBanner({super.key, this.placement = AdPlacement.inline});
   final AdPlacement placement;
@@ -28,13 +37,16 @@ class HmAdBanner extends ConsumerStatefulWidget {
   ConsumerState<HmAdBanner> createState() => _HmAdBannerState();
 }
 
-class _HmAdBannerState extends ConsumerState<HmAdBanner> {
+class _HmAdBannerState extends ConsumerState<HmAdBanner> with AutomaticKeepAliveClientMixin {
   BannerAd? _ad;
   AdSize? _size;
   bool _failed = false;
   double? _forWidth;
 
   bool get _anchored => widget.placement == AdPlacement.anchored;
+
+  @override
+  bool get wantKeepAlive => _ad != null;
 
   Future<void> _load(double width) async {
     if (_forWidth == width) return;
@@ -43,8 +55,8 @@ class _HmAdBannerState extends ConsumerState<HmAdBanner> {
     _ad = null;
     final w = width.truncate();
     final size = _anchored
-        ? await AdSize.getLargeAnchoredAdaptiveBannerAdSize(w)
-        : AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(w);
+        ? await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(w)
+        : AdSize.getInlineAdaptiveBannerAdSize(w, _inlineMaxHeight.truncate());
     if (!mounted || size == null) return;
     setState(() => _size = size);
     final ad = BannerAd(
@@ -55,7 +67,9 @@ class _HmAdBannerState extends ConsumerState<HmAdBanner> {
         onAdLoaded: (ad) async {
           if (!mounted) return ad.dispose();
           final real = await (ad as BannerAd).getPlatformAdSize();
+          if (!mounted) return ad.dispose();
           setState(() { _ad = ad; if (real != null) _size = real; });
+          updateKeepAlive();
         },
         onAdFailedToLoad: (ad, _) {
           ad.dispose();
@@ -74,6 +88,7 @@ class _HmAdBannerState extends ConsumerState<HmAdBanner> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // AutomaticKeepAliveClientMixin
     final cfg = ref.watch(adsConfigProvider);
     final allowed = cfg.enabled && (_anchored ? cfg.anchored : cfg.inline);
     if (!allowed || _failed) return const SizedBox.shrink();
@@ -86,8 +101,8 @@ class _HmAdBannerState extends ConsumerState<HmAdBanner> {
         if (!ready) return const SizedBox.shrink();
         return LayoutBuilder(builder: (context, box) {
           final width = _anchored ? box.maxWidth : box.maxWidth - Hm.gutter * 2;
-          WidgetsBinding.instance.addPostFrameCallback((_) => _load(width));
-          final h = (_size?.height ?? 50).toDouble();
+          if (_forWidth != width) WidgetsBinding.instance.addPostFrameCallback((_) => mounted ? _load(width) : null);
+          final h = (_size?.height ?? (_anchored ? 50 : 50)).toDouble();
           return _frame(
             context,
             SizedBox(height: h, width: _ad == null ? width : _size!.width.toDouble(), child: _ad == null ? null : AdWidget(ad: _ad!)),
@@ -110,8 +125,8 @@ class _HmAdBannerState extends ConsumerState<HmAdBanner> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Hm.gutter),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(context.l.advertisement, style: TextStyle(fontSize: 11, color: c.ink3, fontWeight: FontWeight.w600)),
-        const SizedBox(height: 4),
+        Text(context.l.advertisement, style: TextStyle(fontSize: 10.5, color: c.ink3, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 3),
         Center(child: child),
       ]),
     );
@@ -122,11 +137,11 @@ class _HmAdBannerState extends ConsumerState<HmAdBanner> {
     return _frame(
       context,
       Container(
-        height: _anchored ? 50 : 100,
+        height: _anchored ? 50 : 56,
         width: double.infinity,
         alignment: Alignment.center,
-        decoration: BoxDecoration(color: c.sf2, border: Border.all(color: c.ln), borderRadius: BorderRadius.circular(_anchored ? 0 : 12)),
-        child: Text('${context.l.testAd} · ${_anchored ? 'anchored adaptive' : 'inline adaptive'}', style: TextStyle(fontSize: 12, color: c.ink3, fontWeight: FontWeight.w700)),
+        decoration: BoxDecoration(color: c.sf2, border: _anchored ? null : Border.all(color: c.ln), borderRadius: BorderRadius.circular(_anchored ? 0 : 12)),
+        child: Text('${context.l.testAd} · ${_anchored ? 'anchored adaptive' : 'inline adaptive'}', style: TextStyle(fontSize: 11.5, color: c.ink3, fontWeight: FontWeight.w700)),
       ),
     );
   }

@@ -115,7 +115,7 @@ class _StudyTabState extends ConsumerState<StudyTab> {
         child: HmCard(
           color: c.miBg, border: c.miBg,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [Icon(Icons.lock_outline_rounded, color: c.miInk), const SizedBox(width: 10), Expanded(child: Text(l.studyLockedTitle, style: TextStyle(fontWeight: FontWeight.w800, color: c.miInk)))]),
+            Row(children: [Icon(Icons.lock_outline_rounded, color: c.miInk), const SizedBox(width: 10), Expanded(child: Text(l.studyLockedTitle, style: TextStyle(fontWeight: FontWeight.w700, color: c.miInk)))]),
             const SizedBox(height: 8),
             Text(l.studyLockedBody, style: TextStyle(color: c.miInk, height: 1.5)),
             const SizedBox(height: 14),
@@ -163,7 +163,7 @@ class _Modality extends StatelessWidget {
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(14)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(title, style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: ink)),
+          Text(title, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: ink)),
           const SizedBox(height: 4),
           Text(body, style: TextStyle(fontSize: 13.5, color: ink, height: 1.5)),
         ]),

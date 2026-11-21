@@ -8,6 +8,55 @@ import 'package:material_ui/material_ui.dart';
 import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 
+/// A tab page with a PINNED header: [header] stays put, [body] (a scroll view) scrolls
+/// beneath it. A hairline appears under the header only once the content has scrolled,
+/// so the header reads as part of the page at rest and as a bar while scrolling.
+///
+/// Only a ValueNotifier flips on scroll — nothing rebuilds per frame.
+class HmTabPage extends StatefulWidget {
+  const HmTabPage({super.key, required this.header, required this.body});
+  final Widget header;
+  final Widget body;
+
+  @override
+  State<HmTabPage> createState() => _HmTabPageState();
+}
+
+class _HmTabPageState extends State<HmTabPage> {
+  final _scrolled = ValueNotifier<bool>(false);
+
+  @override
+  void dispose() {
+    _scrolled.dispose();
+    super.dispose();
+  }
+
+  bool _onScroll(ScrollNotification n) {
+    if (n.depth == 0 && n.metrics.axis == Axis.vertical) _scrolled.value = n.metrics.pixels > 2;
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.hm;
+    return Column(children: [
+      ValueListenableBuilder<bool>(
+        valueListenable: _scrolled,
+        child: widget.header,
+        builder: (context, scrolled, header) => AnimatedContainer(
+          duration: context.motion(HmMotion.fast),
+          decoration: BoxDecoration(
+            color: c.bg,
+            border: Border(bottom: BorderSide(color: scrolled ? c.ln : Colors.transparent)),
+          ),
+          child: header,
+        ),
+      ),
+      Expanded(child: NotificationListener<ScrollNotification>(onNotification: _onScroll, child: widget.body)),
+    ]);
+  }
+}
+
 /// Content inset by the page gutter (20 pt), as on every design artboard.
 class Gutter extends StatelessWidget {
   const Gutter({super.key, required this.child, this.top = 0});

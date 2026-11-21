@@ -20,7 +20,7 @@ class SymptomList extends StatelessWidget {
     final c = context.hm;
     final bangla = context.bn;
     return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(Hm.gutter, 4, Hm.gutter, 24),
+      padding: EdgeInsets.fromLTRB(Hm.gutter, 4, Hm.gutter, context.barClearance),
       itemCount: archive.conditions.length,
       separatorBuilder: (_, _) => const SizedBox(height: 8),
       itemBuilder: (context, i) {
@@ -34,8 +34,8 @@ class SymptomList extends StatelessWidget {
             const SizedBox(width: 14),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(cd.name(bangla), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
-                Text(context.l.remedyCount(numL(context, n)), style: TextStyle(fontSize: 13, color: c.ink2)),
+                Text(cd.name(bangla), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5)),
+                Text(context.l.remedyCount(numL(context, n)), style: TextStyle(fontSize: 12.5, color: c.ink2)),
               ]),
             ),
             Icon(Icons.chevron_right_rounded, color: c.ink3),
@@ -55,7 +55,7 @@ class CompanyList extends StatelessWidget {
     final c = context.hm;
     final l = context.l;
     return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(Hm.gutter, 4, Hm.gutter, 24),
+      padding: EdgeInsets.fromLTRB(Hm.gutter, 4, Hm.gutter, context.barClearance),
       itemCount: archive.manufacturers.length,
       separatorBuilder: (_, _) => const SizedBox(height: 8),
       itemBuilder: (context, i) {
@@ -68,13 +68,13 @@ class CompanyList extends StatelessWidget {
             Container(
               width: 44, height: 44, alignment: Alignment.center,
               decoration: BoxDecoration(color: c.miBg, borderRadius: BorderRadius.circular(12)),
-              child: Text(mono.length >= 2 ? mono.substring(0, 2).toUpperCase() : mono.toUpperCase(), style: TextStyle(color: c.miInk, fontWeight: FontWeight.w800, fontSize: 14)),
+              child: Text(mono.length >= 2 ? mono.substring(0, 2).toUpperCase() : mono.toUpperCase(), style: TextStyle(color: c.miInk, fontWeight: FontWeight.w700, fontSize: 14)),
             ),
             const SizedBox(width: 14),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(m.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
-                Text([m.city, m.country].whereType<String>().join(', '), style: TextStyle(fontSize: 13, color: c.ink2)),
+                Text(m.name, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5)),
+                Text([m.city, m.country].whereType<String>().join(', '), style: TextStyle(fontSize: 12.5, color: c.ink2)),
                 if (m.soldInBd == true) Padding(padding: const EdgeInsets.only(top: 4), child: HmBadge(l.soldInBd, bg: c.ok, ink: c.okInk, icon: Icons.check_rounded)),
               ]),
             ),

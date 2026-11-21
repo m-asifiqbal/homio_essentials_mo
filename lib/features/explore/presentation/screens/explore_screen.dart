@@ -1,6 +1,10 @@
 /// ============================================================
 /// EXPLORE SCREEN — A–Z remedies (kingdom filter + side index), symptoms, companies
 /// ============================================================
+///
+/// Title, search and the segmented control are pinned; each segment's list scrolls
+/// beneath them. The segment content cross-fades (160 ms).
+/// ============================================================
 library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,19 +53,19 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     return Scaffold(
       body: SafeArea(
         bottom: false,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Gutter(
-            top: 20,
+        child: HmTabPage(
+          header: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(Hm.gutter, 14, Hm.gutter, 12),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(l.exploreTitle, style: Theme.of(context).textTheme.headlineMedium),
-              Text(l.exploreSub, style: TextStyle(color: context.hm.ink2, fontSize: 13)),
-              const SizedBox(height: 14),
+              Text(l.exploreSub, style: TextStyle(color: context.hm.ink2, fontSize: 12.5)),
+              const SizedBox(height: 12),
               SearchLauncher(
-                hint: l.searchArchive, height: 52,
+                hint: l.searchArchive, height: 48,
                 onTap: () => context.push(AppRoutes.search),
                 onVoice: () => context.push(AppRoutes.searchFor(voice: true)),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               Segmented<ExploreSegment>(
                 options: [(ExploreSegment.remedies, l.segRemedies), (ExploreSegment.symptoms, l.segSymptoms), (ExploreSegment.companies, l.segCompanies)],
                 value: s.segment,
@@ -69,18 +73,24 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
               ),
             ]),
           ),
-          const SizedBox(height: 12),
-          Expanded(
+          body: Padding(
+            padding: const EdgeInsets.only(top: 8),
             child: ArchiveGate(
               skeleton: const SkeletonList(),
-              builder: (context, archive) => switch (s.segment) {
-                ExploreSegment.symptoms => SymptomList(archive: archive),
-                ExploreSegment.companies => CompanyList(archive: archive),
-                ExploreSegment.remedies => const AzRemedyList(),
-              },
+              builder: (context, archive) => AnimatedSwitcher(
+                duration: context.motion(const Duration(milliseconds: 160)),
+                child: KeyedSubtree(
+                  key: ValueKey(s.segment),
+                  child: switch (s.segment) {
+                    ExploreSegment.symptoms => SymptomList(archive: archive),
+                    ExploreSegment.companies => CompanyList(archive: archive),
+                    ExploreSegment.remedies => const AzRemedyList(),
+                  },
+                ),
+              ),
             ),
           ),
-        ]),
+        ),
       ),
     );
   }

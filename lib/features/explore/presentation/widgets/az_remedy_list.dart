@@ -73,7 +73,7 @@ class _AzRemedyListState extends ConsumerState<AzRemedyList> {
                 : Stack(children: [
                     ListView.builder(
                       controller: _scroll,
-                      padding: const EdgeInsetsDirectional.fromSTEB(Hm.gutter, 0, 40, 24),
+                      padding: EdgeInsetsDirectional.fromSTEB(Hm.gutter, 0, 40, context.barClearance),
                       itemCount: value.items.length,
                       itemExtentBuilder: (i, _) => i >= value.items.length ? null : (value.items[i] is AzHeader ? _headerExtent : rowExtent),
                       itemBuilder: (context, i) => switch (value.items[i]) {
@@ -81,7 +81,7 @@ class _AzRemedyListState extends ConsumerState<AzRemedyList> {
                             alignment: AlignmentDirectional.bottomStart,
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 6),
-                              child: Semantics(header: true, child: Text(letter, style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14, color: c.p))),
+                              child: Semantics(header: true, child: Text(letter, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: c.p))),
                             ),
                           ),
                         AzRemedy(:final remedy) => Padding(
@@ -90,8 +90,9 @@ class _AzRemedyListState extends ConsumerState<AzRemedyList> {
                           ),
                       },
                     ),
+                    HmScrollTopPill(controller: _scroll, threshold: 700),
                     PositionedDirectional(
-                      end: 2, top: 0, bottom: 24,
+                      end: 2, top: 0, bottom: context.barClearance,
                       child: _AzIndex(
                         letters: value.letterIndex.keys.toList(),
                         onLetter: (x) => _jump(value, x, rowExtent),
@@ -103,7 +104,7 @@ class _AzRemedyListState extends ConsumerState<AzRemedyList> {
                         child: Container(
                           width: 72, height: 72, alignment: Alignment.center,
                           decoration: BoxDecoration(color: c.p, borderRadius: BorderRadius.circular(22)),
-                          child: Text(_dragLetter!, style: TextStyle(color: c.onp, fontSize: 32, fontWeight: FontWeight.w800)),
+                          child: Text(_dragLetter!, style: TextStyle(color: c.onp, fontSize: 28, fontWeight: FontWeight.w700)),
                         ),
                       ),
                   ]),

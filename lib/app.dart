@@ -12,6 +12,7 @@ import 'package:homio_essentials/core/ads/ad_service.dart';
 import 'package:homio_essentials/core/constants/app_info.dart';
 import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/router/app_router.dart';
+import 'package:homio_essentials/core/theme/app_text_scaler.dart';
 import 'package:homio_essentials/core/theme/app_theme.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/shared/providers/settings_provider.dart';
@@ -49,9 +50,11 @@ class _HomioAppState extends ConsumerState<HomioApp> {
       theme: buildTheme(HomaColors.of(dark: false, accent: s.accent)),
       darkTheme: buildTheme(HomaColors.of(dark: true, accent: s.accent)),
       builder: (context, child) {
-        // Bangla script reads better a touch larger (design: 16 pt vs 15 pt body).
-        final scale = s.textScale * (s.bn ? 1.05 : 1.0);
-        return MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(scale)), child: child!);
+        // Text size composes with the OS scaler (FocusFlow's approach) so Android's non-linear scaling
+        // survives. Bangla script reads better a touch larger.
+        final mq = MediaQuery.of(context);
+        final scale = s.textScale * (s.bn ? 1.04 : 1.0);
+        return MediaQuery(data: mq.copyWith(textScaler: AppTextScaler.compose(mq.textScaler, scale)), child: child!);
       },
     );
   }

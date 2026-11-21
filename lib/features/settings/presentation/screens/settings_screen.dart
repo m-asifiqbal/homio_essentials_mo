@@ -39,33 +39,41 @@ class SettingsScreen extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         bottom: false,
-        child: ListView(padding: const EdgeInsets.only(bottom: 32), children: [
-          Gutter(top: 20, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(l.settingsTitle, style: Theme.of(context).textTheme.headlineMedium),
-            Text(l.settingsSub, style: TextStyle(color: c.ink2, fontSize: 13)),
-          ])),
-          SettingsGroupLabel(l.appearance),
-          const Gutter(child: AppearanceCard()),
+        child: HmTabPage(
+          header: Gutter(
+            top: 14,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(l.settingsTitle, style: Theme.of(context).textTheme.headlineMedium),
+                Text(l.settingsSub, style: TextStyle(color: c.ink2, fontSize: 12.5)),
+              ]),
+            ),
+          ),
+          body: ListView(padding: EdgeInsets.only(bottom: context.barClearance), children: [
+          SettingsGroupLabel(l.appearance, first: true),
+          const Gutter(child: ThemePicker()),
+          SettingsGroupLabel(l.themeColour),
+          const Gutter(child: AccentPicker()),
+          SettingsGroupLabel(l.textSize),
+          const Gutter(child: TextSizeCard()),
+          SettingsGroupLabel(l.behaviour),
+          Gutter(
+            child: SwitchRow(
+              icon: Icons.vertical_align_bottom_rounded, tone: (c.sf2, c.pd),
+              title: l.hideBarTitle, sub: l.hideBarSub,
+              value: s.hideBarOnScroll, onChanged: ctl.setHideBarOnScroll,
+            ),
+          ),
           SettingsGroupLabel(l.reading),
           Gutter(
             child: HmCard(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(children: [
-                  Text(l.textSize, style: const TextStyle(fontWeight: FontWeight.w700)),
-                  const Spacer(),
-                  Text(s.textScale < .97 ? l.textSmall : s.textScale > 1.12 ? l.textLarge : l.textMedium, style: TextStyle(fontSize: 13, color: c.ink2)),
-                ]),
-                Row(children: [
-                  const ExcludeSemantics(child: Text('A', style: TextStyle(fontSize: 13))),
-                  Expanded(child: Slider(value: s.textScale, min: .9, max: 1.3, divisions: 4, label: l.textSize, onChanged: ctl.setTextScale)),
-                  const ExcludeSemantics(child: Text('A', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700))),
-                ]),
-                const SizedBox(height: 8),
-                Text(l.language, style: const TextStyle(fontWeight: FontWeight.w700)),
+                Text(l.language, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5)),
                 const SizedBox(height: 8),
                 Segmented<String>(options: const [('en', 'English'), ('bn', 'বাংলা')], value: s.locale, onChanged: ctl.setLocale),
                 const SizedBox(height: 14),
-                Text(l.detailLevel, style: const TextStyle(fontWeight: FontWeight.w700)),
+                Text(l.detailLevel, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5)),
                 const SizedBox(height: 8),
                 Segmented<Role>(
                   options: [(Role.general, l.roleGeneral), (Role.student, l.roleStudent), (Role.practitioner, l.rolePractitioner)],
@@ -104,7 +112,8 @@ class SettingsScreen extends ConsumerWidget {
             SettingsItem(null, (c.sf2, c.pd), AppInfo.localizedName(context.bn),
                 l.versionLine(AppInfo.version, a == null ? '—' : '${a.syncedAt.year}.${a.syncedAt.month.toString().padLeft(2, '0')}'), null, logo: true),
           ])),
-        ]),
+          ]),
+        ),
       ),
     );
   }

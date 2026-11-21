@@ -66,7 +66,7 @@ class DosageTab extends ConsumerWidget {
                   child: Text.rich(
                     key: ValueKey('${rule.potency}${rule.ageGroup}'),
                     TextSpan(children: [
-                      TextSpan(text: numL(context, rule.amount), style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w800, letterSpacing: -0.8)),
+                      TextSpan(text: numL(context, rule.amount), style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w700, letterSpacing: -0.8)),
                       TextSpan(text: '  ${rule.isTablet ? l.tablets : l.pellets}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                     ]),
                     style: const TextStyle(color: Colors.white),
@@ -106,7 +106,7 @@ class DosageTab extends ConsumerWidget {
             padding: const EdgeInsets.only(bottom: 16),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(width: 32, height: 32, alignment: Alignment.center, decoration: BoxDecoration(color: c.p, shape: BoxShape.circle),
-                  child: Text(numL(context, i + 1), style: TextStyle(color: c.onp, fontWeight: FontWeight.w800, fontSize: 14))),
+                  child: Text(numL(context, i + 1), style: TextStyle(color: c.onp, fontWeight: FontWeight.w700, fontSize: 14))),
               const SizedBox(width: 14),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(t, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
