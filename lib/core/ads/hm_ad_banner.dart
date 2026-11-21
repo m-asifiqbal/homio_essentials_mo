@@ -29,6 +29,18 @@ enum AdPlacement { anchored, inline }
 /// Tallest inline ad we ask for.
 const double _inlineMaxHeight = 60;
 
+/// Tallest anchored ad we accept.
+const double _anchoredMaxHeight = 64;
+
+/// The *standard* anchored adaptive banner (≈ 50–60 dp). The plugin's replacement, the "large"
+/// anchored adaptive banner, is up to 15 % of the screen height (≈ 100 dp+) — that was the "too tall"
+/// ad. If the SDK ever answers taller than [_anchoredMaxHeight] we fall back to the plain 320×50 banner.
+Future<AdSize?> _anchoredSize(int width) async {
+  // ignore: deprecated_member_use
+  final s = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(width);
+  return s == null || s.height > _anchoredMaxHeight ? AdSize.banner : s;
+}
+
 class HmAdBanner extends ConsumerStatefulWidget {
   const HmAdBanner({super.key, this.placement = AdPlacement.inline});
   final AdPlacement placement;
@@ -54,9 +66,7 @@ class _HmAdBannerState extends ConsumerState<HmAdBanner> with AutomaticKeepAlive
     _ad?.dispose();
     _ad = null;
     final w = width.truncate();
-    final size = _anchored
-        ? await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(w)
-        : AdSize.getInlineAdaptiveBannerAdSize(w, _inlineMaxHeight.truncate());
+    final size = _anchored ? await _anchoredSize(w) : AdSize.getInlineAdaptiveBannerAdSize(w, _inlineMaxHeight.truncate());
     if (!mounted || size == null) return;
     setState(() => _size = size);
     final ad = BannerAd(

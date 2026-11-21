@@ -1,4 +1,8 @@
 /// Results: grouped (All) or one category, book hits, did-you-mean, empty state.
+///
+/// The screen is ONE lazy `ListView.builder` over a flat list of rows (headers, hits,
+/// book snippets, notices). The old version put every hit of a category (up to ~700 remedies)
+/// into a non-lazy Column; building only what is on screen keeps typing and scrolling smooth.
 library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,32 +27,44 @@ class SearchResultsView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l;
     final c = context.hm;
-    final s = ref.watch(searchControllerProvider);
+    final category = ref.watch(searchControllerProvider.select((s) => s.category));
+    final q = ref.watch(searchControllerProvider.select((s) => s.query.trim()));
     final ctl = ref.read(searchControllerProvider.notifier);
     final results = ref.watch(searchResultsProvider);
-    final q = s.query.trim();
     final books = ref.watch(bookResultsProvider(q));
     void opened() => ctl.remember();
 
-    Widget hitList(Iterable<SearchHit> hits) => Column(children: [for (final h in hits) SearchHitTile(hit: h, archive: archive, query: q, onOpen: opened)]);
+    Widget hit(SearchHit h) => SearchHitTile(hit: h, archive: archive, query: q, onOpen: opened);
 
-    final bookSection = switch (books) {
-      AsyncValue(:final value?) => [for (final b in s.category == SearchCategory.books ? value : value.take(3)) BookHitTile(hit: b, archive: archive, query: q, onOpen: opened)],
-      AsyncError(:final error) => [
-          Gutter(child: Callout(CalloutKind.warn, icon: Icons.cloud_off_rounded, child: Text(ApiException.from(error).isOffline ? l.booksOffline : l.booksFailed))),
-        ],
-      _ => [for (var i = 0; i < 2; i++) const Gutter(child: Padding(padding: EdgeInsets.only(bottom: 10), child: HmSkeleton(height: 92, radius: 20)))],
-    };
-    final bookCount = books.value?.length;
+    // ── flat row list ──
+    final rows = <Widget Function(BuildContext)>[];
+    void add(Widget w) => rows.add((_) => w);
+    void addHeader(String title, {String? action, VoidCallback? onAction}) => add(SectionHeader(title, top: rows.isEmpty ? 4 : 18, action: action, onAction: onAction));
 
-    final children = <Widget>[];
-    if (s.category == SearchCategory.books) {
-      children
-        ..add(Gutter(child: Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(l.booksExplain, style: TextStyle(fontSize: 13, color: c.ink2)))))
-        ..addAll(bookSection);
-      if (bookCount == 0) children.add(EmptyState(icon: Icons.menu_book_outlined, title: l.noBookMatches(q)));
+    List<Widget> bookTiles(Iterable<BookHit> hits) => [for (final b in hits) BookHitTile(hit: b, archive: archive, query: q, onOpen: opened)];
+    final bookList = books.value;
+
+    void addBooks({required bool all}) {
+      switch (books) {
+        case AsyncValue(:final value?):
+          for (final w in bookTiles(all ? value : value.take(3))) {
+            add(w);
+          }
+        case AsyncError(:final error):
+          add(Gutter(child: Callout(CalloutKind.warn, icon: Icons.cloud_off_rounded, child: Text(ApiException.from(error).isOffline ? l.booksOffline : l.booksFailed))));
+        default:
+          for (var i = 0; i < 2; i++) {
+            add(const Gutter(child: Padding(padding: EdgeInsets.only(bottom: 10), child: HmSkeleton(height: 88, radius: 20))));
+          }
+      }
+    }
+
+    if (category == SearchCategory.books) {
+      add(Gutter(child: Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(l.booksExplain, style: TextStyle(fontSize: 12.5, color: c.ink2, height: 1.45)))));
+      addBooks(all: true);
+      if (bookList != null && bookList.isEmpty) add(EmptyState(icon: Icons.menu_book_outlined, title: l.noBookMatches(q)));
     } else if (results.hits.isEmpty) {
-      children.add(EmptyState(
+      add(EmptyState(
         icon: Icons.search_off_rounded,
         title: l.noResultsTitle(q),
         body: l.noResultsBody,
@@ -58,48 +74,41 @@ class SearchResultsView extends ConsumerWidget {
             ? null
             : Padding(
                 padding: const EdgeInsets.only(top: 12),
-                child: TextButton.icon(
-                  onPressed: () => ctl.searchNow(results.didYouMean!),
-                  icon: const Icon(Icons.spellcheck_rounded),
-                  label: Text(l.didYouMean(results.didYouMean!)),
-                ),
+                child: TextButton.icon(onPressed: () => ctl.searchNow(results.didYouMean!), icon: const Icon(Icons.spellcheck_rounded), label: Text(l.didYouMean(results.didYouMean!))),
               ),
       ));
-      if ((bookCount ?? 0) > 0) children..add(SectionHeader(l.inTheBooks, top: 8))..addAll(bookSection);
-    } else if (s.category == SearchCategory.all) {
-      Iterable<SearchHit> of(HitKind k) => results.hits.where((h) => h.kind == k);
-      void group(HitKind k, String title, SearchCategory cat) {
-        final all = of(k).toList();
-        if (all.isEmpty) return;
-        children.add(SectionHeader(title, top: children.isEmpty ? 4 : 20,
-            action: all.length > 5 ? l.seeAllN(numL(context, results.counts[k] ?? all.length)) : null, onAction: () => ctl.setCategory(cat)));
-        children.add(hitList(all.take(5)));
+      if ((bookList?.length ?? 0) > 0) {
+        addHeader(l.inTheBooks);
+        addBooks(all: false);
       }
+    } else if (category == SearchCategory.all) {
+      void group(HitKind k, String title, SearchCategory cat) {
+        final all = results.hits.where((h) => h.kind == k).toList();
+        if (all.isEmpty) return;
+        addHeader(title, action: all.length > 5 ? l.seeAllN(numL(context, results.counts[k] ?? all.length)) : null, onAction: () => ctl.setCategory(cat));
+        for (final h in all.take(5)) {
+          add(hit(h));
+        }
+      }
+
       group(HitKind.remedy, l.segRemedies, SearchCategory.remedies);
       group(HitKind.condition, l.segSymptoms, SearchCategory.symptoms);
-      if (bookCount != 0) {
-        children.add(SectionHeader(l.inTheBooks, top: 20,
-            action: (bookCount ?? 0) > 3 ? l.seeAllN(numL(context, bookCount!)) : null, onAction: () => ctl.setCategory(SearchCategory.books)));
-        children.addAll(bookSection);
+      if (bookList == null || bookList.isNotEmpty) {
+        addHeader(l.inTheBooks, action: (bookList?.length ?? 0) > 3 ? l.seeAllN(numL(context, bookList!.length)) : null, onAction: () => ctl.setCategory(SearchCategory.books));
+        addBooks(all: false);
       }
       group(HitKind.manufacturer, l.segCompanies, SearchCategory.companies);
     } else {
-      children.add(hitList(results.hits));
+      for (final h in results.hits) {
+        add(hit(h));
+      }
     }
 
-    return ListView(
+    return ListView.builder(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      padding: const EdgeInsets.only(top: 6, bottom: 32),
-      children: [
-        if (results.total > 0 && s.category != SearchCategory.books)
-          Gutter(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Text(l.resultsFor(numL(context, results.total), q), style: TextStyle(fontSize: 12.5, color: c.ink3, fontWeight: FontWeight.w600)),
-            ),
-          ),
-        ...children,
-      ],
+      padding: EdgeInsets.only(top: 2, bottom: MediaQuery.viewPaddingOf(context).bottom + 32),
+      itemCount: rows.length,
+      itemBuilder: (context, i) => rows[i](context),
     );
   }
 }

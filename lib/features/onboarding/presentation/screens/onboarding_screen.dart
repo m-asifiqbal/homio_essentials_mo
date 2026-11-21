@@ -79,7 +79,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         body: SafeArea(
           child: Column(children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Row(children: [
                 if (_i > 0) IconButton.outlined(onPressed: () => _go(_i - 1), icon: const Icon(Icons.arrow_back_rounded), tooltip: l.back) else const SizedBox(height: 48),
                 const Spacer(),
@@ -98,7 +98,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             Expanded(child: PageView(controller: _page, physics: const NeverScrollableScrollPhysics(), children: pages)),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
               child: FilledButton(
                 style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(54)),
                 onPressed: () {

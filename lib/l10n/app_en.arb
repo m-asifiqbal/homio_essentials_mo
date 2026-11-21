@@ -425,5 +425,95 @@
         "type": "String"
       }
     }
-  }
+  },
+  "backToTop": "Back to top",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeSystem": "System",
+  "themeOptionLabel": "{label} theme",
+  "@themeOptionLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "textDefault": "Default",
+  "textSmaller": "Smaller",
+  "textLarger": "Larger",
+  "textLargest": "Largest",
+  "textPreview": "Preview: Arnica 30C, three pellets under the tongue, twice a day.",
+  "behaviour": "Behaviour",
+  "hideBarTitle": "Hide tab bar while scrolling",
+  "hideBarSub": "Slides away as you scroll down and returns when you scroll up.",
+  "secOverview": "Overview",
+  "secUses": "Indications",
+  "secDosage": "Dosage & administration",
+  "secSafety": "Safety & precautions",
+  "secSafetySummary": "Pregnancy · children · storage · when to see a doctor",
+  "secRelations": "Relationships",
+  "secBrands": "Available brands",
+  "secMateriaSummary": "Boericke & Allen, section by section",
+  "secSources": "Sources & review",
+  "secSourcesSummary": "Where this text comes from",
+  "quickFacts": "Quick facts",
+  "factCommon": "Common name",
+  "factBangla": "Bangla name",
+  "factAbbr": "Abbreviation",
+  "factKingdom": "Source",
+  "factFamily": "Family",
+  "factGroups": "Groups",
+  "expandAll": "Expand all sections",
+  "collapseAll": "Collapse all sections",
+  "doseTable": "All age groups · {potency}",
+  "@doseTable": {
+    "placeholders": {
+      "potency": {
+        "type": "String"
+      }
+    }
+  },
+  "colAge": "Age",
+  "colDose": "Dose",
+  "colFrequency": "How often",
+  "precPregnancyT": "Pregnancy & breastfeeding",
+  "precPregnancyB": "Ask a registered homeopath or doctor before using any remedy.",
+  "precChildrenT": "Children & infants",
+  "precChildrenB": "Doses differ by age — follow the age-wise table and ask a practitioner for babies.",
+  "precOngoingT": "Existing treatment",
+  "precOngoingB": "Do not stop prescribed medicines because of a homeopathic remedy.",
+  "precStorageT": "Storage",
+  "precStorageB": "Keep in a cool, dry place away from sunlight, heat and strong smells such as camphor, menthol or perfume.",
+  "precDoctorT": "When to see a doctor",
+  "precDoctorB": "Get medical care for severe, sudden or lasting symptoms. Remedies do not replace emergency care.",
+  "relationAvoidNote": "Remedies that cancel or clash with this one — usually not taken together.",
+  "brandsCount": "{count} brands",
+  "@brandsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "sortByPrice": "Price",
+  "brandsNote": "Prices are indicative pack prices and can differ by shop.",
+  "priceFrom": "from ৳{price}",
+  "@priceFrom": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "dataUpdated": "Archive updated {date}",
+  "@dataUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "trySearching": "Try searching",
+  "booksNeedNet": "Searching inside the books needs an internet connection.",
+  "useThisSearch": "Edit this search"
 }

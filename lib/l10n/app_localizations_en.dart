@@ -1024,4 +1024,190 @@ class LEn extends L {
 
   @override
   String get adPrivacySub => 'Change how ads use your data';
+
+  @override
+  String get backToTop => 'Back to top';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String themeOptionLabel(String label) {
+    return '$label theme';
+  }
+
+  @override
+  String get textDefault => 'Default';
+
+  @override
+  String get textSmaller => 'Smaller';
+
+  @override
+  String get textLarger => 'Larger';
+
+  @override
+  String get textLargest => 'Largest';
+
+  @override
+  String get textPreview =>
+      'Preview: Arnica 30C, three pellets under the tongue, twice a day.';
+
+  @override
+  String get behaviour => 'Behaviour';
+
+  @override
+  String get hideBarTitle => 'Hide tab bar while scrolling';
+
+  @override
+  String get hideBarSub =>
+      'Slides away as you scroll down and returns when you scroll up.';
+
+  @override
+  String get secOverview => 'Overview';
+
+  @override
+  String get secUses => 'Indications';
+
+  @override
+  String get secDosage => 'Dosage & administration';
+
+  @override
+  String get secSafety => 'Safety & precautions';
+
+  @override
+  String get secSafetySummary =>
+      'Pregnancy · children · storage · when to see a doctor';
+
+  @override
+  String get secRelations => 'Relationships';
+
+  @override
+  String get secBrands => 'Available brands';
+
+  @override
+  String get secMateriaSummary => 'Boericke & Allen, section by section';
+
+  @override
+  String get secSources => 'Sources & review';
+
+  @override
+  String get secSourcesSummary => 'Where this text comes from';
+
+  @override
+  String get quickFacts => 'Quick facts';
+
+  @override
+  String get factCommon => 'Common name';
+
+  @override
+  String get factBangla => 'Bangla name';
+
+  @override
+  String get factAbbr => 'Abbreviation';
+
+  @override
+  String get factKingdom => 'Source';
+
+  @override
+  String get factFamily => 'Family';
+
+  @override
+  String get factGroups => 'Groups';
+
+  @override
+  String get expandAll => 'Expand all sections';
+
+  @override
+  String get collapseAll => 'Collapse all sections';
+
+  @override
+  String doseTable(String potency) {
+    return 'All age groups · $potency';
+  }
+
+  @override
+  String get colAge => 'Age';
+
+  @override
+  String get colDose => 'Dose';
+
+  @override
+  String get colFrequency => 'How often';
+
+  @override
+  String get precPregnancyT => 'Pregnancy & breastfeeding';
+
+  @override
+  String get precPregnancyB =>
+      'Ask a registered homeopath or doctor before using any remedy.';
+
+  @override
+  String get precChildrenT => 'Children & infants';
+
+  @override
+  String get precChildrenB =>
+      'Doses differ by age — follow the age-wise table and ask a practitioner for babies.';
+
+  @override
+  String get precOngoingT => 'Existing treatment';
+
+  @override
+  String get precOngoingB =>
+      'Do not stop prescribed medicines because of a homeopathic remedy.';
+
+  @override
+  String get precStorageT => 'Storage';
+
+  @override
+  String get precStorageB =>
+      'Keep in a cool, dry place away from sunlight, heat and strong smells such as camphor, menthol or perfume.';
+
+  @override
+  String get precDoctorT => 'When to see a doctor';
+
+  @override
+  String get precDoctorB =>
+      'Get medical care for severe, sudden or lasting symptoms. Remedies do not replace emergency care.';
+
+  @override
+  String get relationAvoidNote =>
+      'Remedies that cancel or clash with this one — usually not taken together.';
+
+  @override
+  String brandsCount(String count) {
+    return '$count brands';
+  }
+
+  @override
+  String get sortByPrice => 'Price';
+
+  @override
+  String get brandsNote =>
+      'Prices are indicative pack prices and can differ by shop.';
+
+  @override
+  String priceFrom(String price) {
+    return 'from ৳$price';
+  }
+
+  @override
+  String dataUpdated(String date) {
+    return 'Archive updated $date';
+  }
+
+  @override
+  String get trySearching => 'Try searching';
+
+  @override
+  String get booksNeedNet =>
+      'Searching inside the books needs an internet connection.';
+
+  @override
+  String get useThisSearch => 'Edit this search';
 }

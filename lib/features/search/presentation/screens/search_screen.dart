@@ -2,9 +2,10 @@
 /// SEARCH SCREEN — instant offline search, filters, voice, book text
 /// ============================================================
 ///
-/// Before typing: recent searches, recently viewed, popular remedies,
-/// symptoms. While typing: grouped results with category counts, matched
-/// aliases, "did you mean", plus full-text hits inside the books (online).
+/// Before typing: recent searches, tap-to-run examples, recently viewed, popular
+/// remedies, symptoms. While typing: category chips with counts, a result toolbar
+/// (sort · filters), grouped results with matched aliases and "did you mean", plus
+/// full-text hits inside the books (online). Idle ⇄ results cross-fades.
 /// `?q=` searches immediately, `?voice=1` opens straight into listening.
 /// ============================================================
 library;
@@ -12,10 +13,12 @@ library;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/features/search/presentation/providers/search_providers.dart';
 import 'package:homio_essentials/features/search/presentation/widgets/search_category_bar.dart';
 import 'package:homio_essentials/features/search/presentation/widgets/search_idle_view.dart';
 import 'package:homio_essentials/features/search/presentation/widgets/search_results_view.dart';
+import 'package:homio_essentials/features/search/presentation/widgets/search_toolbar.dart';
 import 'package:homio_essentials/features/search/presentation/widgets/search_top_bar.dart';
 import 'package:homio_essentials/features/search/presentation/widgets/voice_search_sheet.dart';
 import 'package:homio_essentials/shared/widgets/archive_gate.dart';
@@ -70,9 +73,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           builder: (context, archive) => Column(children: [
             SearchTopBar(controller: _field, focusNode: _focus),
             const SearchCategoryBar(),
+            // Sort / filters only make sense once there are results to act on.
+            AnimatedSize(
+              duration: context.motion(HmMotion.fast),
+              curve: HmMotion.curve,
+              alignment: Alignment.topCenter,
+              child: hasQuery ? const SearchToolbar() : const SizedBox(width: double.infinity),
+            ),
             Expanded(
               child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 160),
+                duration: context.motion(const Duration(milliseconds: 180)),
                 child: hasQuery ? SearchResultsView(key: const ValueKey('results'), archive: archive) : SearchIdleView(key: const ValueKey('idle'), archive: archive),
               ),
             ),

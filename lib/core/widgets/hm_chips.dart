@@ -8,6 +8,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
+import 'package:homio_essentials/core/widgets/hm_pressable.dart';
 
 class HmChip extends StatelessWidget {
   const HmChip(this.label, {super.key, this.selected = false, this.onTap, this.dot, this.small = false, this.icon, this.onDelete, this.count});
@@ -26,19 +27,19 @@ class HmChip extends StatelessWidget {
     return Semantics(
       button: true,
       selected: selected,
-      child: Material(
-        color: selected ? c.p : c.sf,
-        shape: StadiumBorder(side: BorderSide(color: selected ? c.p : c.ln)),
-        child: InkWell(
-          customBorder: const StadiumBorder(),
-          onTap: onTap == null ? null : () { HapticFeedback.selectionClick(); onTap!(); },
-          child: Container(
-            height: small ? 36 : 40,
-            padding: EdgeInsetsDirectional.only(start: small ? 13 : 16, end: onDelete != null ? 4 : (small ? 13 : 16)),
+      child: HmPressable(
+        onTap: onTap == null ? null : () { HapticFeedback.selectionClick(); onTap!(); },
+        scale: 0.96,
+        child: AnimatedContainer(
+            duration: context.motion(HmMotion.fast),
+            curve: HmMotion.curve,
+            height: small ? 34 : 40,
+            padding: EdgeInsetsDirectional.only(start: small ? 12 : 16, end: onDelete != null ? 4 : (small ? 12 : 16)),
+            decoration: ShapeDecoration(color: selected ? c.p : c.sf, shape: StadiumBorder(side: BorderSide(color: selected ? c.p : c.ln))),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               if (dot != null) ...[Container(width: 8, height: 8, decoration: BoxDecoration(color: selected ? c.onp : dot, shape: BoxShape.circle)), const SizedBox(width: 6)],
               if (icon != null) ...[Icon(icon, size: 16, color: selected ? c.onp : c.ink2), const SizedBox(width: 6)],
-              Text(label, style: TextStyle(fontSize: small ? 13 : 14, fontWeight: FontWeight.w600, color: fg)),
+              Text(label, style: TextStyle(fontSize: small ? 12.5 : 13.5, fontWeight: FontWeight.w600, color: fg)),
               if (count != null) ...[
                 const SizedBox(width: 6),
                 Container(
@@ -53,7 +54,6 @@ class HmChip extends StatelessWidget {
                   icon: Icon(Icons.close_rounded, size: 16, color: selected ? c.onp : c.ink3),
                 ),
             ]),
-          ),
         ),
       ),
     );
@@ -79,36 +79,54 @@ class Segmented<T> extends StatelessWidget {
   final T value;
   final ValueChanged<T> onChanged;
 
+  /// A white thumb SLIDES to the chosen option (FocusFlow-style) instead of each option blinking.
   @override
   Widget build(BuildContext context) {
     final c = context.hm;
+    final n = options.length;
+    final index = options.indexWhere((o) => o.$1 == value).clamp(0, n - 1);
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(color: c.sf2, borderRadius: BorderRadius.circular(16)),
-      child: Row(children: [
-        for (final (v, label) in options)
-          Expanded(
-            child: Semantics(
-              button: true, selected: v == value, label: label,
-              child: GestureDetector(
-                onTap: () { HapticFeedback.selectionClick(); onChanged(v); },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 180),
-                  height: 40,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: v == value ? c.sf : Colors.transparent,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: v == value ? [BoxShadow(color: Colors.black.withValues(alpha: .12), blurRadius: 4, offset: const Offset(0, 1))] : null,
-                  ),
-                  child: ExcludeSemantics(
-                    child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: v == value ? c.pd : c.ink2)),
-                  ),
-                ),
+      child: SizedBox(
+        height: 38,
+        child: Stack(children: [
+          AnimatedAlign(
+            duration: context.motion(HmMotion.normal),
+            curve: HmMotion.curve,
+            alignment: Alignment(n == 1 ? 0 : -1 + 2 * index / (n - 1), 0),
+            child: FractionallySizedBox(
+              widthFactor: 1 / n,
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: c.sf, borderRadius: BorderRadius.circular(12), boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: .10), blurRadius: 4, offset: const Offset(0, 1))]),
+                child: const SizedBox.expand(),
               ),
             ),
           ),
-      ]),
+          Row(children: [
+            for (final (v, label) in options)
+              Expanded(
+                child: Semantics(
+                  button: true, selected: v == value, label: label,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () { if (v != value) HapticFeedback.selectionClick(); onChanged(v); },
+                    child: Center(
+                      child: ExcludeSemantics(
+                        child: AnimatedDefaultTextStyle(
+                          duration: context.motion(HmMotion.fast),
+                          style: TextStyle(fontSize: 13.5, fontWeight: v == value ? FontWeight.w700 : FontWeight.w600, color: v == value ? c.pd : c.ink2),
+                          maxLines: 1, overflow: TextOverflow.ellipsis,
+                          child: Text(label),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ]),
+        ]),
+      ),
     );
   }
 }

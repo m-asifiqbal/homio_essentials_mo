@@ -17,7 +17,7 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.hm;
     final l = context.l;
-    return ListView(padding: const EdgeInsets.fromLTRB(20, 24, 20, 20), children: [
+    return ListView(padding: const EdgeInsets.fromLTRB(16, 24, 16, 20), children: [
       HeroBox(
         padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -25,7 +25,7 @@ class WelcomePage extends StatelessWidget {
           const SizedBox(height: 18),
           Text(AppInfo.localizedName(context.bn), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, letterSpacing: context.bn ? 0 : .5, color: Colors.white.withValues(alpha: .96))),
           const SizedBox(height: 4),
-          Text(l.welcomeTitle, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700, height: 1.2, color: Colors.white)),
+          Text(l.welcomeTitle, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700, height: 1.2, color: Colors.white)),
           const SizedBox(height: 10),
           Text(l.welcomeBody, style: TextStyle(fontSize: 15, height: 1.55, color: Colors.white.withValues(alpha: .96))),
         ]),
@@ -58,7 +58,7 @@ class ChoicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.hm;
-    return ListView(padding: const EdgeInsets.fromLTRB(20, 32, 20, 20), children: [
+    return ListView(padding: const EdgeInsets.fromLTRB(16, 32, 16, 20), children: [
       Semantics(header: true, child: Text(title, style: Theme.of(context).textTheme.headlineMedium)),
       if (note != null) Padding(padding: const EdgeInsets.only(top: 6), child: Text(note!, style: TextStyle(color: c.ink2))),
       const SizedBox(height: 24),
@@ -77,13 +77,13 @@ class ChoicePage extends StatelessWidget {
                   width: 52, height: 52, alignment: Alignment.center,
                   decoration: BoxDecoration(color: v == value ? c.p : c.sf2, borderRadius: BorderRadius.circular(16)),
                   child: glyph != null
-                      ? Text(glyph, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: v == value ? c.onp : c.pd))
+                      ? Text(glyph, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: v == value ? c.onp : c.pd))
                       : Icon(icons?[i] ?? Icons.circle_outlined, color: v == value ? c.onp : c.pd),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(t, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                    Text(t, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 2),
                     Text(sub, style: TextStyle(color: c.ink2, fontSize: 14)),
                   ]),
@@ -105,7 +105,7 @@ class DisclaimerPage extends ConsumerWidget {
     final c = context.hm;
     final a = ref.watch(archiveProvider).value;
     final text = a?.configText('disclaimer', context.bn) ?? context.l.disclaimerFallback;
-    return ListView(padding: const EdgeInsets.fromLTRB(20, 32, 20, 20), children: [
+    return ListView(padding: const EdgeInsets.fromLTRB(16, 32, 16, 20), children: [
       IconTile(Icons.health_and_safety_outlined, (c.am, c.amInk), size: 64),
       const SizedBox(height: 20),
       Text(context.l.beforeYouStart, style: Theme.of(context).textTheme.headlineMedium),

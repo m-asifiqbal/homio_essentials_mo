@@ -22,7 +22,7 @@ class SettingsGroupLabel extends StatelessWidget {
   final bool first;
 
   @override
-  Widget build(BuildContext context) => Padding(padding: EdgeInsets.fromLTRB(20, first ? 6 : 24, 20, 10), child: Semantics(header: true, child: Cap(title)));
+  Widget build(BuildContext context) => Padding(padding: EdgeInsets.fromLTRB(16, first ? 6 : 24, 16, 10), child: Semantics(header: true, child: Cap(title)));
 }
 
 class SettingsList extends StatelessWidget {

@@ -21,6 +21,11 @@ class HomaColors extends ThemeExtension<HomaColors> {
   final Color hero1, hero2;
   final bool dark;
 
+  /// The very soft lift every card sits on (light: a hint of teal-ink at 8 %; dark: a deeper, tighter one).
+  List<BoxShadow> get cardShadow => dark
+      ? const [BoxShadow(color: Color(0x40000000), blurRadius: 8, offset: Offset(0, 2))]
+      : const [BoxShadow(color: Color(0x140F2B2C), blurRadius: 10, offset: Offset(0, 2))];
+
   LinearGradient get heroGradient => LinearGradient(
         begin: const Alignment(-0.6, -1), end: const Alignment(0.6, 1), colors: [hero1, hero2]);
 
@@ -107,7 +112,7 @@ extension HomaContext on BuildContext {
 
 /// Spacing / radius scale used across screens.
 abstract final class Hm {
-  static const gutter = 20.0;
+  static const gutter = 16.0;
   static const rCard = 20.0;
   static const rTile = 14.0;
   static const rButton = 18.0;

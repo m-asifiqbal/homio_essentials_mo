@@ -3,7 +3,7 @@
 /// ============================================================
 ///
 /// From mgi_recruitment's `ScrollToTopPill`: a small floating pill that fades in
-/// once the list is ≥ [threshold] dp down and the user is heading back UP.
+/// once the list is ≥ [threshold] dp down and the user starts heading back UP.
 /// Tapping animates to the top and dispatches [RevealBottomNavNotification] so
 /// the auto-hiding bar returns (a programmatic scroll never reveals it by itself).
 ///
@@ -20,9 +20,10 @@ import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/reveal_bottom_nav_notification.dart';
 
 class HmScrollTopPill extends StatefulWidget {
-  const HmScrollTopPill({super.key, required this.controller, this.threshold = 600});
+  const HmScrollTopPill({super.key, required this.controller, this.threshold = 600, this.top = 10});
   final ScrollController controller;
   final double threshold;
+  final double top;
 
   @override
   State<HmScrollTopPill> createState() => _HmScrollTopPillState();
@@ -56,10 +57,19 @@ class _HmScrollTopPillState extends State<HmScrollTopPill> {
     final c = widget.controller;
     if (!c.hasClients) return;
     final p = c.position;
-    final down = p.pixels > widget.threshold;
-    // Visible while far down and the user is scrolling back up (or stopped); hidden while heading down.
-    final goingDown = p.userScrollDirection == ScrollDirection.reverse;
-    final next = down && !goingDown;
+    // Shown once the user heads back UP from far down; hidden when they head down again or reach the top.
+    // A jump / animateTo reports "idle", which keeps the current state — so an index jump or a letter jump
+    // never makes the pill pop up on top of the content it just landed on.
+    final bool next;
+    if (p.pixels <= widget.threshold) {
+      next = false;
+    } else {
+      next = switch (p.userScrollDirection) {
+        ScrollDirection.forward => true,
+        ScrollDirection.reverse => false,
+        ScrollDirection.idle => _show,
+      };
+    }
     if (next != _show) setState(() => _show = next);
   }
 
@@ -73,7 +83,7 @@ class _HmScrollTopPillState extends State<HmScrollTopPill> {
   Widget build(BuildContext context) {
     final c = context.hm;
     return Positioned(
-      top: 10,
+      top: widget.top,
       left: 0,
       right: 0,
       child: IgnorePointer(

@@ -1012,4 +1012,189 @@ class LBn extends L {
 
   @override
   String get adPrivacySub => 'বিজ্ঞাপন আপনার তথ্য কীভাবে ব্যবহার করে তা বদলান';
+
+  @override
+  String get backToTop => 'উপরে যান';
+
+  @override
+  String get themeLight => 'দিন';
+
+  @override
+  String get themeDark => 'রাত';
+
+  @override
+  String get themeSystem => 'সিস্টেম';
+
+  @override
+  String themeOptionLabel(String label) {
+    return '$label থিম';
+  }
+
+  @override
+  String get textDefault => 'ডিফল্ট';
+
+  @override
+  String get textSmaller => 'আরও ছোট';
+
+  @override
+  String get textLarger => 'আরও বড়';
+
+  @override
+  String get textLargest => 'সবচেয়ে বড়';
+
+  @override
+  String get textPreview =>
+      'প্রিভিউ: আর্নিকা ৩০সি, জিভের নিচে তিনটি বড়ি, দিনে দুবার।';
+
+  @override
+  String get behaviour => 'আচরণ';
+
+  @override
+  String get hideBarTitle => 'স্ক্রলের সময় ট্যাব বার লুকান';
+
+  @override
+  String get hideBarSub =>
+      'নিচে স্ক্রল করলে সরে যায়, উপরে স্ক্রল করলে ফিরে আসে।';
+
+  @override
+  String get secOverview => 'সারসংক্ষেপ';
+
+  @override
+  String get secUses => 'যেসব সমস্যায় ব্যবহৃত';
+
+  @override
+  String get secDosage => 'মাত্রা ও সেবনবিধি';
+
+  @override
+  String get secSafety => 'নিরাপত্তা ও সতর্কতা';
+
+  @override
+  String get secSafetySummary =>
+      'গর্ভাবস্থা · শিশু · সংরক্ষণ · কখন ডাক্তার দেখাবেন';
+
+  @override
+  String get secRelations => 'সম্পর্কিত ওষুধ';
+
+  @override
+  String get secBrands => 'পাওয়া যায় যেসব ব্র্যান্ডে';
+
+  @override
+  String get secMateriaSummary => 'বোয়েরিক ও অ্যালেন, অংশ ধরে ধরে';
+
+  @override
+  String get secSources => 'সূত্র ও পর্যালোচনা';
+
+  @override
+  String get secSourcesSummary => 'এই লেখা কোথা থেকে নেওয়া';
+
+  @override
+  String get quickFacts => 'এক নজরে';
+
+  @override
+  String get factCommon => 'প্রচলিত নাম';
+
+  @override
+  String get factBangla => 'বাংলা নাম';
+
+  @override
+  String get factAbbr => 'সংক্ষেপ';
+
+  @override
+  String get factKingdom => 'উৎস';
+
+  @override
+  String get factFamily => 'গোত্র';
+
+  @override
+  String get factGroups => 'শ্রেণি';
+
+  @override
+  String get expandAll => 'সব অংশ খুলুন';
+
+  @override
+  String get collapseAll => 'সব অংশ বন্ধ করুন';
+
+  @override
+  String doseTable(String potency) {
+    return 'সব বয়সের মাত্রা · $potency';
+  }
+
+  @override
+  String get colAge => 'বয়স';
+
+  @override
+  String get colDose => 'মাত্রা';
+
+  @override
+  String get colFrequency => 'কতবার';
+
+  @override
+  String get precPregnancyT => 'গর্ভাবস্থা ও বুকের দুধ';
+
+  @override
+  String get precPregnancyB =>
+      'যেকোনো ওষুধ ব্যবহারের আগে নিবন্ধিত হোমিওপ্যাথ বা ডাক্তারের পরামর্শ নিন।';
+
+  @override
+  String get precChildrenT => 'শিশু ও নবজাতক';
+
+  @override
+  String get precChildrenB =>
+      'বয়স অনুযায়ী মাত্রা আলাদা — বয়সভিত্তিক তালিকা দেখুন, শিশুর ক্ষেত্রে চিকিৎসকের পরামর্শ নিন।';
+
+  @override
+  String get precOngoingT => 'চলমান চিকিৎসা';
+
+  @override
+  String get precOngoingB =>
+      'হোমিওপ্যাথিক ওষুধের জন্য চিকিৎসকের দেওয়া ওষুধ বন্ধ করবেন না।';
+
+  @override
+  String get precStorageT => 'সংরক্ষণ';
+
+  @override
+  String get precStorageB =>
+      'রোদ, তাপ ও কর্পূর, মেন্থল বা সুগন্ধির মতো তীব্র গন্ধ থেকে দূরে ঠান্ডা ও শুকনো জায়গায় রাখুন।';
+
+  @override
+  String get precDoctorT => 'কখন ডাক্তার দেখাবেন';
+
+  @override
+  String get precDoctorB =>
+      'তীব্র, হঠাৎ বা দীর্ঘস্থায়ী উপসর্গে চিকিৎসা নিন। ওষুধ জরুরি চিকিৎসার বিকল্প নয়।';
+
+  @override
+  String get relationAvoidNote =>
+      'যে ওষুধ এটির কাজ কাটে বা এর সঙ্গে মেলে না — সাধারণত একসঙ্গে খাওয়া হয় না।';
+
+  @override
+  String brandsCount(String count) {
+    return '$countটি ব্র্যান্ড';
+  }
+
+  @override
+  String get sortByPrice => 'দাম';
+
+  @override
+  String get brandsNote =>
+      'দাম আনুমানিক প্যাকের দাম, দোকানভেদে আলাদা হতে পারে।';
+
+  @override
+  String priceFrom(String price) {
+    return '৳$price থেকে';
+  }
+
+  @override
+  String dataUpdated(String date) {
+    return 'আর্কাইভ হালনাগাদ $date';
+  }
+
+  @override
+  String get trySearching => 'এভাবে খুঁজে দেখুন';
+
+  @override
+  String get booksNeedNet => 'বইয়ের ভেতরে খুঁজতে ইন্টারনেট লাগে।';
+
+  @override
+  String get useThisSearch => 'এই সার্চ বদলান';
 }

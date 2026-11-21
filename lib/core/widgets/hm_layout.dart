@@ -39,7 +39,7 @@ class _HmTabPageState extends State<HmTabPage> {
   @override
   Widget build(BuildContext context) {
     final c = context.hm;
-    return Column(children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       ValueListenableBuilder<bool>(
         valueListenable: _scrolled,
         child: widget.header,

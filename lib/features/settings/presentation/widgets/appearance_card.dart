@@ -16,7 +16,6 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/app_text_scaler.dart';
-import 'package:homio_essentials/core/theme/app_theme.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/widgets.dart';
 import 'package:homio_essentials/shared/providers/settings_provider.dart';

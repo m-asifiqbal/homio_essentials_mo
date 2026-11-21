@@ -40,6 +40,21 @@ Features: onboarding, home, explore, search, remedy, condition, saved, settings,
 - Material comes from the `material_ui` package (Flutter 3.47 moved it out of the SDK) — import `package:material_ui/material_ui.dart`.
 - Strings: ARB files in `lib/l10n` (`flutter gen-l10n` → class `L`), English + বাংলা.
 
+## UI notes (design system `Hm*`, motion and layout rules)
+- **Type scale** follows FocusFlow: semibold titles, 14–15 body, 12 captions, no extra-bold. The app runs at a **0.95 default text scale**
+  composed on top of the OS scaler (`AppTextScaler`, Settings › Text size, 6 stops 85–130 %).
+- **Pinned headers**: tab screens use `HmTabPage` — the header (title, search, segmented control) stays put and a hairline appears under it
+  only once the content scrolls. Tab lists pad their bottom with `context.barClearance` (the bar is drawn over the body).
+- **Bottom bar** (`core/widgets/hm_bottom_nav.dart`, behaviour in `core/router/app_shell.dart`) follows the mgi_recruitment shell: flat bar, one sliding
+  top indicator, outline → solid icon swap, hides on scroll down / returns on scroll up (switchable in Settings), the anchored ad rides down with it.
+  Scrolling is detected on the page's own vertical scrollable only (`depth == 0`) and only while a finger is dragging.
+- **Ads**: anchored banner = standard adaptive (≈ 50–60 dp, capped at 64), inline banners ≤ 60 dp and kept alive inside lists (no reload while scrolling).
+- **Remedy details** are one page of collapsible sections (Overview · Indications · Dosage & administration · Keynotes · Safety & precautions ·
+  Relationships · Available brands · Materia Medica · Sources & review) with a sticky scroll-spy index — modelled on MedEx's brand pages, plus
+  what MedEx lacks (jump index, sources, "archive updated", report-an-error). `?tab=study` etc. still deep-link to a section.
+- **Motion**: slide + parallax page transitions (`core/router/page_transitions.dart`, iOS keeps Cupertino for swipe-back), cross-fading tabs that keep
+  their state, press-scale on cards/chips (`HmPressable`), sliding segmented thumb, once-only reveal (`HmReveal(once:)`). Everything respects reduce motion.
+
 ## Search
 Instant offline index (`features/search/domain/services/search_index.dart`): exact › prefix › phonetic (Banglish) › word › substring ›
 typo. Category chips with counts, filters (kingdom, reviewed only, has Bangla), sort, recent searches with undo, popular remedies,

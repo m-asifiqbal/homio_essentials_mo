@@ -81,7 +81,7 @@ class _RequestScreenState extends ConsumerState<RequestScreen> {
       appBar: AppBar(title: Text(l.requestTitle)),
       body: Form(
         key: _form,
-        child: ListView(padding: const EdgeInsets.fromLTRB(20, 8, 20, 32), children: [
+        child: ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 32), children: [
           Text(l.requestIntro, style: TextStyle(color: c.ink2, height: 1.5)),
           const SizedBox(height: 16),
           Segmented<String>(options: [('remedy', l.kindRemedyLabel), ('product', l.kindProductLabel)], value: _kind, onChanged: (v) => setState(() => _kind = v)),

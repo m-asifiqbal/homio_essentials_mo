@@ -67,11 +67,12 @@ class FirstAidRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.hm;
     final bangla = context.bn;
+    // 6 dp of air above and below so the cards' soft shadow isn't clipped by the horizontal list.
     return SizedBox(
-      height: 132,
+      height: 144,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: Hm.gutter),
+        padding: const EdgeInsets.symmetric(horizontal: Hm.gutter, vertical: 6),
         itemCount: remedies.length,
         separatorBuilder: (_, _) => const SizedBox(width: 10),
         itemBuilder: (context, i) {

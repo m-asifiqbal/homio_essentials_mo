@@ -13,7 +13,7 @@ import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/hm_pressable.dart';
 
 class HmCard extends StatelessWidget {
-  const HmCard({super.key, required this.child, this.padding = const EdgeInsets.all(16), this.onTap, this.color, this.border, this.radius = Hm.rCard, this.semanticLabel});
+  const HmCard({super.key, required this.child, this.padding = const EdgeInsets.all(16), this.onTap, this.color, this.border, this.radius = Hm.rCard, this.semanticLabel, this.elevated = true});
   final Widget child;
   final EdgeInsetsGeometry padding;
   final VoidCallback? onTap;
@@ -21,6 +21,9 @@ class HmCard extends StatelessWidget {
   final Color? border;
   final double radius;
   final String? semanticLabel;
+
+  /// A very soft lift (see [HomaColors.cardShadow]). Turn off for a card nested inside another card.
+  final bool elevated;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class HmCard extends StatelessWidget {
         color: color ?? c.sf,
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(color: border ?? c.ln, width: border == null ? 1 : 2),
+        boxShadow: elevated ? c.cardShadow : null,
       ),
       child: Padding(padding: padding, child: child),
     );

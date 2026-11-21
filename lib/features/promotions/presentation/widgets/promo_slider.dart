@@ -133,7 +133,7 @@ class _FallbackCard extends ConsumerWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               HmBadge(l.sponsored, bg: c.sf, ink: c.ink2),
               const SizedBox(height: 8),
-              Text(title, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: c.pd)),
+              Text(title, style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700, color: c.pd)),
               const SizedBox(height: 4),
               Text(body, style: TextStyle(fontSize: 13, color: c.ink2, height: 1.45)),
               if (whatsapp != null || email != null) ...[

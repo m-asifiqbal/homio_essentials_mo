@@ -1968,6 +1968,336 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Change how ads use your data'**
   String get adPrivacySub;
+
+  /// No description provided for @backToTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to top'**
+  String get backToTop;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystem;
+
+  /// No description provided for @themeOptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} theme'**
+  String themeOptionLabel(String label);
+
+  /// No description provided for @textDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get textDefault;
+
+  /// No description provided for @textSmaller.
+  ///
+  /// In en, this message translates to:
+  /// **'Smaller'**
+  String get textSmaller;
+
+  /// No description provided for @textLarger.
+  ///
+  /// In en, this message translates to:
+  /// **'Larger'**
+  String get textLarger;
+
+  /// No description provided for @textLargest.
+  ///
+  /// In en, this message translates to:
+  /// **'Largest'**
+  String get textLargest;
+
+  /// No description provided for @textPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview: Arnica 30C, three pellets under the tongue, twice a day.'**
+  String get textPreview;
+
+  /// No description provided for @behaviour.
+  ///
+  /// In en, this message translates to:
+  /// **'Behaviour'**
+  String get behaviour;
+
+  /// No description provided for @hideBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide tab bar while scrolling'**
+  String get hideBarTitle;
+
+  /// No description provided for @hideBarSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Slides away as you scroll down and returns when you scroll up.'**
+  String get hideBarSub;
+
+  /// No description provided for @secOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get secOverview;
+
+  /// No description provided for @secUses.
+  ///
+  /// In en, this message translates to:
+  /// **'Indications'**
+  String get secUses;
+
+  /// No description provided for @secDosage.
+  ///
+  /// In en, this message translates to:
+  /// **'Dosage & administration'**
+  String get secDosage;
+
+  /// No description provided for @secSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety & precautions'**
+  String get secSafety;
+
+  /// No description provided for @secSafetySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnancy · children · storage · when to see a doctor'**
+  String get secSafetySummary;
+
+  /// No description provided for @secRelations.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationships'**
+  String get secRelations;
+
+  /// No description provided for @secBrands.
+  ///
+  /// In en, this message translates to:
+  /// **'Available brands'**
+  String get secBrands;
+
+  /// No description provided for @secMateriaSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Boericke & Allen, section by section'**
+  String get secMateriaSummary;
+
+  /// No description provided for @secSources.
+  ///
+  /// In en, this message translates to:
+  /// **'Sources & review'**
+  String get secSources;
+
+  /// No description provided for @secSourcesSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Where this text comes from'**
+  String get secSourcesSummary;
+
+  /// No description provided for @quickFacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick facts'**
+  String get quickFacts;
+
+  /// No description provided for @factCommon.
+  ///
+  /// In en, this message translates to:
+  /// **'Common name'**
+  String get factCommon;
+
+  /// No description provided for @factBangla.
+  ///
+  /// In en, this message translates to:
+  /// **'Bangla name'**
+  String get factBangla;
+
+  /// No description provided for @factAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Abbreviation'**
+  String get factAbbr;
+
+  /// No description provided for @factKingdom.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get factKingdom;
+
+  /// No description provided for @factFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get factFamily;
+
+  /// No description provided for @factGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get factGroups;
+
+  /// No description provided for @expandAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand all sections'**
+  String get expandAll;
+
+  /// No description provided for @collapseAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse all sections'**
+  String get collapseAll;
+
+  /// No description provided for @doseTable.
+  ///
+  /// In en, this message translates to:
+  /// **'All age groups · {potency}'**
+  String doseTable(String potency);
+
+  /// No description provided for @colAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get colAge;
+
+  /// No description provided for @colDose.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose'**
+  String get colDose;
+
+  /// No description provided for @colFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'How often'**
+  String get colFrequency;
+
+  /// No description provided for @precPregnancyT.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnancy & breastfeeding'**
+  String get precPregnancyT;
+
+  /// No description provided for @precPregnancyB.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a registered homeopath or doctor before using any remedy.'**
+  String get precPregnancyB;
+
+  /// No description provided for @precChildrenT.
+  ///
+  /// In en, this message translates to:
+  /// **'Children & infants'**
+  String get precChildrenT;
+
+  /// No description provided for @precChildrenB.
+  ///
+  /// In en, this message translates to:
+  /// **'Doses differ by age — follow the age-wise table and ask a practitioner for babies.'**
+  String get precChildrenB;
+
+  /// No description provided for @precOngoingT.
+  ///
+  /// In en, this message translates to:
+  /// **'Existing treatment'**
+  String get precOngoingT;
+
+  /// No description provided for @precOngoingB.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not stop prescribed medicines because of a homeopathic remedy.'**
+  String get precOngoingB;
+
+  /// No description provided for @precStorageT.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get precStorageT;
+
+  /// No description provided for @precStorageB.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep in a cool, dry place away from sunlight, heat and strong smells such as camphor, menthol or perfume.'**
+  String get precStorageB;
+
+  /// No description provided for @precDoctorT.
+  ///
+  /// In en, this message translates to:
+  /// **'When to see a doctor'**
+  String get precDoctorT;
+
+  /// No description provided for @precDoctorB.
+  ///
+  /// In en, this message translates to:
+  /// **'Get medical care for severe, sudden or lasting symptoms. Remedies do not replace emergency care.'**
+  String get precDoctorB;
+
+  /// No description provided for @relationAvoidNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Remedies that cancel or clash with this one — usually not taken together.'**
+  String get relationAvoidNote;
+
+  /// No description provided for @brandsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} brands'**
+  String brandsCount(String count);
+
+  /// No description provided for @sortByPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get sortByPrice;
+
+  /// No description provided for @brandsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices are indicative pack prices and can differ by shop.'**
+  String get brandsNote;
+
+  /// No description provided for @priceFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'from ৳{price}'**
+  String priceFrom(String price);
+
+  /// No description provided for @dataUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive updated {date}'**
+  String dataUpdated(String date);
+
+  /// No description provided for @trySearching.
+  ///
+  /// In en, this message translates to:
+  /// **'Try searching'**
+  String get trySearching;
+
+  /// No description provided for @booksNeedNet.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching inside the books needs an internet connection.'**
+  String get booksNeedNet;
+
+  /// No description provided for @useThisSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit this search'**
+  String get useThisSearch;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {
