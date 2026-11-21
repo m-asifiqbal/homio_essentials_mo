@@ -1,0 +1,429 @@
+{
+  "@@locale": "en",
+  "appName": "Homio Essentials",
+  "tabHome": "Home",
+  "tabExplore": "Explore",
+  "tabSaved": "Saved",
+  "tabSettings": "Settings",
+  "retry": "Try again",
+  "seeAll": "See all",
+  "cancel": "Cancel",
+  "close": "Close",
+  "next": "Next",
+  "back": "Back",
+  "save": "Save",
+  "savedSnack": "Saved",
+  "removedSnack": "Removed from saved",
+  "share": "Share",
+  "all": "All",
+  "english": "English",
+  "bangla": "বাংলা",
+  "offlineBanner": "You're offline — showing the archive saved on this phone.",
+  "loadingArchive": "Downloading the archive… this happens only once.",
+  "loadFailedTitle": "Couldn't load the archive",
+  "loadFailedBody": "Check your internet connection. The app downloads the archive once; after that it works offline.",
+  "notFound": "This item isn't in the archive.",
+  "kingdom_plant": "Plant",
+  "kingdom_mineral": "Mineral",
+  "kingdom_animal": "Animal",
+  "kingdom_nosode": "Nosode",
+  "kingdom_sarcode": "Sarcode",
+  "kingdom_imponderabilia": "Imponderable",
+  "kingdom_other": "Chemical",
+  "welcomeTitle": "The homeopathic medicine archive",
+  "welcomeBody": "Remedies, what they are used for, doses by age and the classic Materia Medica — in English and বাংলা. Works offline once downloaded.",
+  "welcomePoint1": "700+ remedies from Boericke's Materia Medica",
+  "welcomePoint2": "Dose guide by age group and potency",
+  "welcomePoint3": "Search by voice or typing — English, বাংলা or Banglish",
+  "getStarted": "Get started",
+  "chooseLanguage": "Choose your language",
+  "languageNote": "You can change this any time in Settings.",
+  "chooseRole": "How will you use {app}?",
+  "roleGeneral": "General",
+  "roleGeneralDesc": "Plain language: uses and a dose guide",
+  "roleStudent": "Student",
+  "roleStudentDesc": "Adds Materia Medica, keynotes and related remedies",
+  "rolePractitioner": "Practitioner",
+  "rolePractitionerDesc": "Everything, with source books and full text",
+  "beforeYouStart": "Before you start",
+  "iUnderstand": "I understand",
+  "disclaimerFallback": "Reference information from homeopathic literature — not medical advice. Ask a registered practitioner before use, especially for infants, pregnancy or long-term conditions. In an emergency, get medical help.",
+  "welcomeBack": "Welcome",
+  "homeTitle": "Find a remedy, brand or symptom",
+  "searchHint": "Search “Arnica”, “fever”, “SBL”…",
+  "remedyOfDay": "REMEDY OF THE DAY",
+  "readMore": "Read more",
+  "browseArchive": "Browse the archive",
+  "browseRemedies": "Remedies",
+  "browseSymptoms": "Symptoms",
+  "browseCompanies": "Companies",
+  "browseMateria": "Materia Medica",
+  "browseSaved": "Saved",
+  "browseGuide": "Potency guide",
+  "studyModesNote": "Materia Medica opens fully in Student and Practitioner modes.",
+  "findBySymptom": "Find by symptom",
+  "doseByAge": "Dose by age group",
+  "recentlyViewed": "Recently viewed",
+  "history": "History",
+  "learnBasics": "Learn the basics",
+  "guideBadge": "Guide · 3 min read",
+  "potencyGuideTitle": "Potency, dilution and dose — a beginner's guide",
+  "potencyGuideBody": "What 6C, 30C and 200C mean, and how they are used.",
+  "archiveStats": "{remedies} remedies · {conditions} symptoms",
+  "@archiveStats": {
+    "placeholders": {
+      "remedies": {
+        "type": "String"
+      },
+      "conditions": {
+        "type": "String"
+      }
+    }
+  },
+  "exploreTitle": "Explore",
+  "exploreSub": "The A–Z archive of homeopathic remedies",
+  "searchArchive": "Search the archive",
+  "segRemedies": "Remedies",
+  "segSymptoms": "Symptoms",
+  "segCompanies": "Companies",
+  "remedyCount": "{count} remedies",
+  "@remedyCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "noMatches": "Nothing matches this filter.",
+  "soldInBd": "Sold in Bangladesh",
+  "website": "Website",
+  "searchFieldHint": "Remedies, symptoms, companies",
+  "results": "Results",
+  "recentSearches": "Recent searches",
+  "banglishTipTitle": "Type in Banglish, too.",
+  "banglishTipBody": "“arnika” or “nuks vomika” finds Arnica and Nux vomica — and আর্নিকা works as well.",
+  "noResultsTitle": "No match for “{q}”",
+  "@noResultsTitle": {
+    "placeholders": {
+      "q": {
+        "type": "String"
+      }
+    }
+  },
+  "noResultsBody": "Check the spelling, or ask us to add this medicine.",
+  "requestThis": "Request this medicine",
+  "kindRemedy": "Remedy",
+  "kindSymptom": "Symptom",
+  "kindCompany": "Company",
+  "tabOverview": "Overview",
+  "tabUses": "Uses",
+  "tabDosage": "Dosage",
+  "tabBrands": "Brands",
+  "tabStudy": "Study",
+  "forms": "Forms",
+  "potency": "Potency",
+  "route": "Route",
+  "routeOral": "By mouth",
+  "routeOralSkin": "Mouth + skin",
+  "mostlyUsedFor": "Mostly used for",
+  "typicalAdultDose": "Typical adult dose",
+  "pellets": "pellets",
+  "tablets": "tablets",
+  "dosesByAge": "Doses by age →",
+  "safety": "Safety",
+  "moreNotes": "+{count} more",
+  "@moreNotes": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "about": "About",
+  "inEnglishNote": "Shown in English — the Bangla text is being prepared.",
+  "keynotes": "Keynotes",
+  "keynotesSource": "From H. C. Allen, Keynotes and Characteristics (1898)",
+  "relatedRemedies": "Related remedies",
+  "rel_compare": "Compare",
+  "rel_complementary": "Complementary",
+  "rel_antidote": "Antidote",
+  "rel_inimical": "Inimical",
+  "rel_follows_well": "Follows well",
+  "sources": "Sources",
+  "sourceBoericke": "Boericke, Pocket Manual of Homoeopathic Materia Medica",
+  "sourceChecked": "Checked against the 1922 printed edition, page {page}",
+  "@sourceChecked": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      }
+    }
+  },
+  "sourceCurated": "Summary, uses and doses written for {app} and awaiting review by a registered homeopath.",
+  "referenceNote": "Reference information from homeopathic literature — not medical advice.",
+  "readFullNote": "Read the full note",
+  "doseGuide": "Dose guide",
+  "usesTitle": "What it is used for",
+  "usesEmptyTitle": "No reviewed uses yet",
+  "usesEmptyBody": "Uses by symptom haven't been reviewed for this remedy yet. Its full description from Boericke's Materia Medica is in the Study tab.",
+  "openStudy": "Open Study",
+  "externalUse": "Also used on the skin",
+  "doseGuideSub": "Pick a potency and an age group. Guidance is general — your practitioner's advice comes first.",
+  "stepPotency": "1 · Potency",
+  "stepWho": "2 · Who is it for?",
+  "dosePerTime": "DOSE PER TIME",
+  "dissolveUnderTongue": "Dissolve under the tongue",
+  "chewOrDissolve": "Chew, or dissolve on the tongue",
+  "highPotencyWarn": "High potency. Use only as advised by a registered practitioner.",
+  "notCuratedDose": "This remedy's dose hasn't been reviewed yet. Below is the general guide and Boericke's own dose note — ask a practitioner before use.",
+  "howToTake": "How to take pellets",
+  "step1T": "Clear the mouth.",
+  "step1B": "No food, drink, mint or toothpaste for 15–30 minutes before and after.",
+  "step2T": "Pour into the cap.",
+  "step2B": "Avoid touching pellets with your fingers.",
+  "step3T": "Let them dissolve under the tongue.",
+  "step3B": "For infants, dissolve in a little clean water first.",
+  "step4T": "Store away from heat and strong smells.",
+  "step4B": "Keep out of sunlight, away from camphor, perfume and mobile phones.",
+  "boerickeDose": "Boericke's dose note",
+  "doseDisclaimer": "Dosing here is general guidance from homeopathic literature. It is not a prescription.",
+  "brandsEmptyTitle": "No verified brands yet",
+  "brandsEmptyBody": "We list only brands and prices we have checked. Know a brand of this remedy sold in Bangladesh? Send it to us.",
+  "suggestBrand": "Suggest a brand",
+  "materiaMedica": "Materia Medica",
+  "sourceBook": "Source book",
+  "book_boericke": "Boericke",
+  "book_allen": "Allen's Keynotes",
+  "studyLockedTitle": "Full Materia Medica is for students and practitioners",
+  "studyLockedBody": "Switch your detail level to Student or Practitioner to read the complete text from Boericke and Allen.",
+  "switchToStudent": "Switch to Student",
+  "studyFooter": "Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898). For study — not medical advice.",
+  "materiaOffline": "This text hasn't been downloaded yet. Connect once to read it — after that it stays on your phone.",
+  "studyEmpty": "No book text for this remedy yet.",
+  "viewSource": "View source",
+  "seeDoctorIf": "See a doctor if",
+  "conditionEmpty": "No remedies are linked to this symptom yet.",
+  "remediesForThis": "Remedies to compare",
+  "savedTitle": "Saved",
+  "savedSub": "Kept on this phone — no account needed",
+  "savedEmptyTitle": "Nothing saved yet",
+  "savedEmptyBody": "Tap the bookmark on any remedy to keep it here.",
+  "clear": "Clear",
+  "settingsTitle": "Settings",
+  "settingsSub": "Make the app comfortable to read",
+  "appearance": "Appearance",
+  "dayMode": "Day mode",
+  "nightMode": "Night mode",
+  "daySub": "Bright and crisp for daytime",
+  "nightSub": "Easier on the eyes after dark",
+  "systemSub": "Following your phone's setting",
+  "matchPhone": "Match my phone",
+  "matchPhoneSub": "Switch with the system setting",
+  "themeColour": "Theme colour",
+  "accent_teal": "Teal",
+  "accent_ocean": "Ocean",
+  "accent_forest": "Forest",
+  "accent_plum": "Plum",
+  "preview": "Preview",
+  "reading": "Reading",
+  "textSize": "Text size",
+  "textSmall": "Small",
+  "textMedium": "Medium",
+  "textLarge": "Large",
+  "language": "Language",
+  "detailLevel": "Detail level",
+  "modeNote_general": "Plain language, dose guide and brands.",
+  "modeNote_student": "Adds Materia Medica, keynotes and related remedies.",
+  "modeNote_practitioner": "Everything, with source books and full text.",
+  "contribute": "Contribute",
+  "requestMedicine": "Request a new medicine",
+  "requestMedicineSub": "Can't find a remedy or brand? Send it for review",
+  "myRequests": "My requests",
+  "myRequestsSub": "See what happened to what you sent",
+  "reportError": "Report an error",
+  "reportErrorSub": "Wrong dose, name or price",
+  "contactUs": "Contact us",
+  "contactEmpty": "Contact details will appear here.",
+  "dataAbout": "Data & about",
+  "offlineData": "Offline & data",
+  "upToDate": "Up to date · {size}",
+  "@upToDate": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "updating": "Checking for updates…",
+  "offlineSaved": "Offline · {size} saved",
+  "@offlineSaved": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "medicalDisclaimer": "Medical disclaimer",
+  "sourcesCredits": "Sources & credits",
+  "versionLine": "Version {v} · data {d}",
+  "@versionLine": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      },
+      "d": {
+        "type": "String"
+      }
+    }
+  },
+  "lastUpdated": "Last updated {when}",
+  "@lastUpdated": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "checkUpdates": "Check for updates",
+  "onThisPhone": "On this phone",
+  "storageUsed": "Storage used",
+  "bookTextNote": "Book text for a remedy downloads the first time you open its Study tab, then stays available offline.",
+  "statRemedies": "Remedies",
+  "statSymptoms": "Symptoms",
+  "statRelations": "Remedy links",
+  "statCompanies": "Companies",
+  "requestTitle": "Request a medicine",
+  "requestIntro": "Tell us what's missing. An editor checks every request before anything is added.",
+  "kindRemedyLabel": "A remedy",
+  "kindProductLabel": "A brand / product",
+  "fieldLatin": "Remedy name (Latin)",
+  "fieldLatinHint": "e.g. Arnica montana",
+  "fieldCommon": "Common or Bangla name",
+  "fieldBrand": "Brand and company",
+  "fieldBrandHint": "e.g. Arnica 30 — SBL",
+  "fieldPotency": "Potency, form or pack",
+  "fieldNotes": "Anything else",
+  "fieldRequired": "Required",
+  "iAmA": "I am a",
+  "sendRequest": "Send request",
+  "requestSent": "Request sent. Follow it in My requests.",
+  "sendFailed": "Couldn't send. Check your connection and try again.",
+  "myRequestsEmpty": "You haven't sent any requests yet.",
+  "status_new": "In review",
+  "status_needs_info": "Needs info",
+  "status_approved": "Approved",
+  "status_merged": "Added",
+  "status_rejected": "Not added",
+  "reportTitle": "Report an error",
+  "reportHint": "What's wrong? e.g. a dose, a name or a price",
+  "reportSent": "Thanks — an editor will check it.",
+  "send": "Send",
+  "sponsored": "Sponsored",
+  "promoNote": "Sponsored content is kept apart from remedy information and never changes it.",
+  "advertiseWithUs": "Advertise with us",
+  "promoFallbackTitle": "Your promotion here",
+  "promoFallbackBody": "Reach patients, students and practitioners across Bangladesh.",
+  "disclaimerTitle": "Medical disclaimer",
+  "guideTitle": "Potency guide",
+  "guideP1T": "What a potency is",
+  "guideP1": "A homeopathic medicine is made by diluting a starting substance step by step and shaking it at each step. The number tells you how many steps: 6C means six steps of 1 part in 100; 6X means six steps of 1 part in 10. Q (mother tincture) is the undiluted starting tincture.",
+  "guideP2T": "Low, middle and high",
+  "guideP2": "Low potencies (3X–12X, 6C) are often repeated a few times a day. 30C is the most common strength for first aid and short-term complaints. 200C and 1M are high potencies, given less often and normally on a practitioner's advice.",
+  "guideP3T": "How much and how often",
+  "guideP3": "The amount per dose changes little with potency; the age group and how often it is repeated matter more. Stop when you feel better, and see a doctor if a complaint is severe, lasts, or keeps coming back.",
+  "guideP4T": "Tissue salts",
+  "guideP4": "The twelve Schüssler tissue salts are usually taken as 6X or 12X tablets, chewed or dissolved on the tongue.",
+  "guideNote": "General information from homeopathic literature — not a prescription.",
+  "remove": "Remove",
+  "voiceSearch": "Voice search",
+  "reviewed": "Reviewed",
+  "advertisement": "Advertisement",
+  "testAd": "Test ad",
+  "clearAll": "Clear all",
+  "historyCleared": "History cleared",
+  "undo": "Undo",
+  "popularRemedies": "Popular remedies",
+  "booksTipTitle": "Search inside the books.",
+  "booksTipBody": "Type a symptom like “worse at night” or “fear of death” to find it in Boericke and Allen (needs internet).",
+  "inTheBooks": "In the books",
+  "booksOffline": "Searching inside the books needs an internet connection.",
+  "booksFailed": "Couldn't search the books right now.",
+  "booksExplain": "Matches in the full text of Boericke's Materia Medica and Allen's Keynotes (English).",
+  "noBookMatches": "No book text mentions “{q}”.",
+  "@noBookMatches": {
+    "placeholders": {
+      "q": {
+        "type": "String"
+      }
+    }
+  },
+  "didYouMean": "Did you mean “{term}”?",
+  "@didYouMean": {
+    "placeholders": {
+      "term": {
+        "type": "String"
+      }
+    }
+  },
+  "seeAllN": "See all {count}",
+  "@seeAllN": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "resultsFor": "{count} results for “{q}”",
+  "@resultsFor": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "q": {
+        "type": "String"
+      }
+    }
+  },
+  "filters": "Filters",
+  "sortRelevance": "Best match first",
+  "sortAZ": "A–Z",
+  "reset": "Reset",
+  "kingdomLabel": "Source",
+  "reviewedOnly": "Reviewed only",
+  "reviewedOnlySub": "Remedies with reviewed uses and doses",
+  "withBangla": "Has a Bangla page",
+  "withBanglaSub": "Name and summary in বাংলা",
+  "sortBy": "Sort by",
+  "apply": "Show results",
+  "voiceListening": "Listening…",
+  "voiceInBangla": "Speak in বাংলা — English works too",
+  "voiceInEnglish": "Speak in English — switch the app to বাংলা to speak Bangla",
+  "voiceTapToStop": "Tap the mic to stop",
+  "voiceTryAgain": "Tap the mic to try again",
+  "voiceDenied": "Microphone access is off. Allow it in your phone's settings to search by voice.",
+  "voiceUnavailable": "Voice search isn't available on this device.",
+  "voiceNothingHeard": "Didn't catch that. Try again a little closer to the phone.",
+  "voiceSpeakNow": "Say a remedy or a symptom",
+  "goodMorning": "Good morning",
+  "goodAfternoon": "Good afternoon",
+  "goodEvening": "Good evening",
+  "firstAidKit": "First-aid kit",
+  "azIndex": "Jump to letter",
+  "swipeToRemove": "Swipe left to remove",
+  "adPrivacy": "Ad privacy choices",
+  "adPrivacySub": "Change how ads use your data",
+  "@chooseRole": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "@sourceCurated": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  }
+}
