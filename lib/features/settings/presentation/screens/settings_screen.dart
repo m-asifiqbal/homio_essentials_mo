@@ -57,14 +57,6 @@ class SettingsScreen extends ConsumerWidget {
           const Gutter(child: AccentPicker()),
           SettingsGroupLabel(l.textSize),
           const Gutter(child: TextSizeCard()),
-          SettingsGroupLabel(l.behaviour),
-          Gutter(
-            child: SwitchRow(
-              icon: Icons.vertical_align_bottom_rounded, tone: (c.sf2, c.pd),
-              title: l.hideBarTitle, sub: l.hideBarSub,
-              value: s.hideBarOnScroll, onChanged: ctl.setHideBarOnScroll,
-            ),
-          ),
           SettingsGroupLabel(l.reading),
           Gutter(
             child: HmCard(

@@ -1047,16 +1047,6 @@ class LBn extends L {
       'প্রিভিউ: আর্নিকা ৩০সি, জিভের নিচে তিনটি বড়ি, দিনে দুবার।';
 
   @override
-  String get behaviour => 'আচরণ';
-
-  @override
-  String get hideBarTitle => 'স্ক্রলের সময় ট্যাব বার লুকান';
-
-  @override
-  String get hideBarSub =>
-      'নিচে স্ক্রল করলে সরে যায়, উপরে স্ক্রল করলে ফিরে আসে।';
-
-  @override
   String get secOverview => 'সারসংক্ষেপ';
 
   @override

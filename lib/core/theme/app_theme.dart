@@ -1,12 +1,25 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:homio_essentials/core/router/page_transitions.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 
+/// Bundled font families (pubspec `fonts:`) — nothing is downloaded at runtime, so text never swaps font after
+/// the first frame (the old google_fonts setup fetched every weight over the network on first use).
+abstract final class HmFonts {
+  /// Headings, buttons, numbers (same as FocusFlow's headings).
+  static const heading = 'LexendDeca';
+
+  /// Body text and the italic Latin remedy names (same as FocusFlow's body).
+  static const body = 'NunitoSans';
+
+  /// Bangla glyphs (the two Latin families have none) — Hind Siliguri, bundled from mgi_recruitment.
+  static const bangla = 'HindSiliguri';
+  static const fallback = [bangla];
+}
+
 /// Builds Material ThemeData from the Homio Essentials tokens.
-/// Plus Jakarta Sans for Latin text, Hind Siliguri for Bangla (as fallback),
-/// Newsreader italic for Latin remedy names (see [latinStyle]).
+/// Nunito Sans body + Lexend Deca headings (as FocusFlow), Hind Siliguri as the Bangla fallback,
+/// Nunito Sans italic for Latin remedy names (see [latinStyle]).
 ///
 /// Type scale follows FocusFlow's calmer ramp (semibold titles, 14–15 body,
 /// 12 captions); the app also runs at a 0.95 default text scale (see app.dart).
@@ -22,27 +35,28 @@ ThemeData buildTheme(HomaColors c) {
     ),
     scaffoldBackgroundColor: c.bg,
     splashFactory: InkRipple.splashFactory,
+    fontFamily: HmFonts.body,
+    fontFamilyFallback: HmFonts.fallback,
     extensions: [c],
   );
-  final bangla = GoogleFonts.hindSiliguri().fontFamily;
-  final text = GoogleFonts.plusJakartaSansTextTheme(base.textTheme).apply(
-    bodyColor: c.ink, displayColor: c.ink, fontFamilyFallback: [?bangla],
-  );
+  final text = base.textTheme.apply(bodyColor: c.ink, displayColor: c.ink);
+  // Headings / buttons in Lexend Deca; everything else inherits Nunito Sans from the theme.
+  TextStyle? head(TextStyle? t) => t?.copyWith(fontFamily: HmFonts.heading, fontFamilyFallback: HmFonts.fallback);
   return base.copyWith(
     textTheme: text.copyWith(
-      headlineMedium: text.headlineMedium?.copyWith(fontSize: 24, fontWeight: FontWeight.w700, letterSpacing: -0.4, height: 1.2),
-      headlineSmall: text.headlineSmall?.copyWith(fontSize: 19, fontWeight: FontWeight.w700, letterSpacing: -0.2, height: 1.25),
-      titleLarge: text.titleLarge?.copyWith(fontSize: 17, fontWeight: FontWeight.w700, height: 1.3),
-      titleMedium: text.titleMedium?.copyWith(fontSize: 15, fontWeight: FontWeight.w600, height: 1.3),
-      titleSmall: text.titleSmall?.copyWith(fontSize: 14, fontWeight: FontWeight.w600, height: 1.3),
-      bodyLarge: text.bodyLarge?.copyWith(fontSize: 14.5, height: 1.55),
-      bodyMedium: text.bodyMedium?.copyWith(fontSize: 13.5, height: 1.5),
-      bodySmall: text.bodySmall?.copyWith(fontSize: 12, height: 1.4, color: c.ink2),
-      labelLarge: text.labelLarge?.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+      headlineMedium: head(text.headlineMedium)?.copyWith(fontSize: 21, fontWeight: FontWeight.w600, letterSpacing: -0.3, height: 1.2),
+      headlineSmall: head(text.headlineSmall)?.copyWith(fontSize: 18.5, fontWeight: FontWeight.w600, letterSpacing: -0.1, height: 1.25),
+      titleLarge: head(text.titleLarge)?.copyWith(fontSize: 17, fontWeight: FontWeight.w600, height: 1.3),
+      titleMedium: head(text.titleMedium)?.copyWith(fontSize: 15, fontWeight: FontWeight.w600, height: 1.3),
+      titleSmall: head(text.titleSmall)?.copyWith(fontSize: 14, fontWeight: FontWeight.w600, height: 1.3),
+      bodyLarge: text.bodyLarge?.copyWith(fontSize: 15, height: 1.55),
+      bodyMedium: text.bodyMedium?.copyWith(fontSize: 14, height: 1.5),
+      bodySmall: text.bodySmall?.copyWith(fontSize: 12.5, height: 1.4, color: c.ink2),
+      labelLarge: head(text.labelLarge)?.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
       labelSmall: text.labelSmall?.copyWith(fontSize: 11.5, fontWeight: FontWeight.w700, letterSpacing: 0.8, color: c.ink3),
     ),
     appBarTheme: AppBarTheme(backgroundColor: c.bg, foregroundColor: c.ink, elevation: 0, scrolledUnderElevation: 0, centerTitle: true,
-        titleTextStyle: text.titleMedium?.copyWith(fontSize: 15, fontWeight: FontWeight.w600)),
+        titleTextStyle: head(text.titleMedium)?.copyWith(fontSize: 15, fontWeight: FontWeight.w600)),
     dividerTheme: DividerThemeData(color: c.ln, thickness: 1, space: 1),
     cardTheme: CardThemeData(color: c.sf, elevation: 0, margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Hm.rCard), side: BorderSide(color: c.ln))),
@@ -88,6 +102,8 @@ ThemeData buildTheme(HomaColors c) {
   );
 }
 
-/// Latin remedy names are set in Newsreader italic, as on the design canvas.
+/// Latin remedy names are set in italic (Nunito Sans Italic — bundled; the design canvas' serif italic
+/// was a runtime download). Only the regular-weight italic ships, so [weight] is accepted for call-site
+/// compatibility but the face stays regular; size and ink carry the emphasis.
 TextStyle latinStyle({double size = 17, Color? color, FontWeight weight = FontWeight.w500}) =>
-    GoogleFonts.newsreader(fontSize: size, fontStyle: FontStyle.italic, fontWeight: weight, color: color, height: 1.15);
+    TextStyle(fontFamily: HmFonts.body, fontFamilyFallback: HmFonts.fallback, fontSize: size + 0.5, fontStyle: FontStyle.italic, fontWeight: FontWeight.w400, color: color, height: 1.2);

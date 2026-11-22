@@ -286,7 +286,11 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
           if (n.dragDetails != null) _manual = null;
           return false;
         },
-        child: CustomScrollView(
+        // No stretch / glow overscroll on this page: Android 12+'s stretch moves the pinned app bar and index
+        // together with the content when you reach the top, which looks like a glitch.
+        child: ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(overscroll: false),
+          child: CustomScrollView(
           controller: _scroll,
           slivers: [
             SliverAppBar(
@@ -335,6 +339,7 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
               ),
             ),
           ],
+        ),
         ),
       ),
       HmScrollTopPill(controller: _scroll, threshold: 900, top: _pinned + 8),

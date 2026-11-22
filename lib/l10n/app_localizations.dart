@@ -2029,24 +2029,6 @@ abstract class L {
   /// **'Preview: Arnica 30C, three pellets under the tongue, twice a day.'**
   String get textPreview;
 
-  /// No description provided for @behaviour.
-  ///
-  /// In en, this message translates to:
-  /// **'Behaviour'**
-  String get behaviour;
-
-  /// No description provided for @hideBarTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide tab bar while scrolling'**
-  String get hideBarTitle;
-
-  /// No description provided for @hideBarSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Slides away as you scroll down and returns when you scroll up.'**
-  String get hideBarSub;
-
   /// No description provided for @secOverview.
   ///
   /// In en, this message translates to:

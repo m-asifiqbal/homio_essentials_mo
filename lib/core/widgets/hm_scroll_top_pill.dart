@@ -4,8 +4,7 @@
 ///
 /// From mgi_recruitment's `ScrollToTopPill`: a small floating pill that fades in
 /// once the list is ≥ [threshold] dp down and the user starts heading back UP.
-/// Tapping animates to the top and dispatches [RevealBottomNavNotification] so
-/// the auto-hiding bar returns (a programmatic scroll never reveals it by itself).
+/// Tapping animates back to the top.
 ///
 /// Wrap the list in a Stack and put this on top; give it the list's controller.
 /// ============================================================
@@ -17,7 +16,6 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
-import 'package:homio_essentials/core/widgets/reveal_bottom_nav_notification.dart';
 
 class HmScrollTopPill extends StatefulWidget {
   const HmScrollTopPill({super.key, required this.controller, this.threshold = 600, this.top = 10});
@@ -75,7 +73,6 @@ class _HmScrollTopPillState extends State<HmScrollTopPill> {
 
   void _top() {
     HapticFeedback.selectionClick();
-    const RevealBottomNavNotification().dispatch(context);
     widget.controller.animateTo(0, duration: context.motion(const Duration(milliseconds: 420)), curve: Curves.easeOutCubic);
   }
 

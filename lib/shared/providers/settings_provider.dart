@@ -24,14 +24,17 @@ enum DayNight { day, night, system }
 class AppSettings {
   const AppSettings({
     required this.locale, required this.role, required this.dayNight, required this.accent,
-    required this.textScale, required this.onboarded, required this.deviceId, this.hideBarOnScroll = true,
+    required this.textScale, required this.onboarded, required this.deviceId,
   });
 
-  /// Text-size stops shown in Settings (multiplier on top of the OS scale). Same ramp as FocusFlow.
-  static const textScaleStops = <double>[0.85, 0.9, 0.95, 1.05, 1.15, 1.3];
+  /// Text-size stops shown in Settings (multiplier on top of the OS scale): smaller · small · DEFAULT · large · larger · largest.
+  static const textScaleStops = <double>[0.85, 0.92, 1.0, 1.1, 1.2, 1.3];
 
-  /// "Default" — a notch under 1.0 keeps the UI calm on small phones.
-  static const defaultTextScale = 0.95;
+  /// "Default" is 1.0: the bundled Nunito Sans already reads ~10 % smaller than the old font at the same size.
+  static const defaultTextScale = 1.0;
+
+  /// Index of [defaultTextScale] in [textScaleStops].
+  static const defaultTextScaleIndex = 2;
 
   final String locale; // 'en' | 'bn'
   final Role role;
@@ -40,9 +43,6 @@ class AppSettings {
   final double textScale; // 0.85 – 1.3
   final bool onboarded;
   final String deviceId; // random per install; keys "My requests"
-
-  /// Slide the tab bar away while scrolling down, bring it back on scroll up.
-  final bool hideBarOnScroll;
 
   bool get bn => locale == 'bn';
   bool get canStudy => role != Role.general;
@@ -57,10 +57,9 @@ class AppSettings {
     return best;
   }
 
-  AppSettings copyWith({String? locale, Role? role, DayNight? dayNight, String? accent, double? textScale, bool? onboarded, bool? hideBarOnScroll}) => AppSettings(
+  AppSettings copyWith({String? locale, Role? role, DayNight? dayNight, String? accent, double? textScale, bool? onboarded}) => AppSettings(
         locale: locale ?? this.locale, role: role ?? this.role, dayNight: dayNight ?? this.dayNight, accent: accent ?? this.accent,
         textScale: textScale ?? this.textScale, onboarded: onboarded ?? this.onboarded, deviceId: deviceId,
-        hideBarOnScroll: hideBarOnScroll ?? this.hideBarOnScroll,
       );
 }
 
@@ -84,7 +83,6 @@ class SettingsController extends Notifier<AppSettings> {
       textScale: p.getDouble('text_scale') ?? AppSettings.defaultTextScale,
       onboarded: p.getBool('onboarded') ?? false,
       deviceId: deviceId,
-      hideBarOnScroll: p.getBool('hide_bar_on_scroll') ?? true,
     );
   }
 
@@ -93,7 +91,6 @@ class SettingsController extends Notifier<AppSettings> {
   void setDayNight(DayNight v) { _p.setString('day_night', v.name); state = state.copyWith(dayNight: v); }
   void setAccent(String v) { _p.setString('accent', v); state = state.copyWith(accent: v); }
   void setTextScale(double v) { _p.setDouble('text_scale', v); state = state.copyWith(textScale: v); }
-  void setHideBarOnScroll(bool v) { _p.setBool('hide_bar_on_scroll', v); state = state.copyWith(hideBarOnScroll: v); }
   void completeOnboarding() { _p.setBool('onboarded', true); state = state.copyWith(onboarded: true); }
 }
 

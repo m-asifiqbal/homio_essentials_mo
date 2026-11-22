@@ -41,6 +41,8 @@ android {
         release {
             // TODO: release signing config before publishing.
             signingConfig = signingConfigs.getByName("debug")
+            // Keep rules for WorkManager's reflective Room database (see proguard-rules.pro).
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 }

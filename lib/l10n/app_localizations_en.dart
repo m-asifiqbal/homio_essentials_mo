@@ -1059,16 +1059,6 @@ class LEn extends L {
       'Preview: Arnica 30C, three pellets under the tongue, twice a day.';
 
   @override
-  String get behaviour => 'Behaviour';
-
-  @override
-  String get hideBarTitle => 'Hide tab bar while scrolling';
-
-  @override
-  String get hideBarSub =>
-      'Slides away as you scroll down and returns when you scroll up.';
-
-  @override
   String get secOverview => 'Overview';
 
   @override

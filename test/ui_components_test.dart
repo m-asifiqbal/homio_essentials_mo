@@ -35,14 +35,17 @@ void main() {
   group('AppSettings text size', () {
     AppSettings with_(double scale) => AppSettings(locale: 'en', role: Role.general, dayNight: DayNight.system, accent: 'teal', textScale: scale, onboarded: true, deviceId: 'x');
 
-    test('default is a notch under 1.0', () => expect(AppSettings.defaultTextScale, lessThan(1)));
+    test('default stop is 100 % and sits at the documented index', () {
+      expect(AppSettings.defaultTextScale, 1.0);
+      expect(AppSettings.textScaleStops[AppSettings.defaultTextScaleIndex], AppSettings.defaultTextScale);
+    });
     test('maps a saved value to the nearest stop', () {
       expect(with_(0.85).textScaleIndex, 0);
       expect(with_(AppSettings.defaultTextScale).textScaleIndex, 2);
       expect(with_(1.3).textScaleIndex, AppSettings.textScaleStops.length - 1);
-      expect(with_(1.12).textScaleIndex, 4); // 1.15 is the closest stop
+      expect(with_(1.17).textScaleIndex, 4); // 1.2 is the closest stop
+      expect(with_(0.95).textScaleIndex, 1); // 0.92 is closer than 1.0
     });
-    test('hide-bar-on-scroll defaults on', () => expect(with_(1).hideBarOnScroll, isTrue));
   });
 
   testWidgets('bottom bar reports the tapped tab and slides its indicator', (tester) async {

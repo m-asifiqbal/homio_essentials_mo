@@ -240,13 +240,11 @@ class _TextSizeCardState extends ConsumerState<TextSizeCard> {
   /// during the drag; the setting is saved once, when the gesture ends.
   int? _drag;
 
+  /// Name of a stop, by position so the labels never drift from [AppSettings.textScaleStops].
   String _name(BuildContext context, double scale) {
     final l = context.l;
-    const base = AppSettings.defaultTextScale;
-    if ((scale - base).abs() < 0.001) return l.textDefault;
-    if (scale < base) return scale < 0.875 ? l.textSmaller : l.textSmall;
-    if (scale < 1.1) return l.textLarge;
-    return scale < 1.2 ? l.textLarger : l.textLargest;
+    final i = AppSettings.textScaleStops.indexOf(scale);
+    return switch (i) { 0 => l.textSmaller, 1 => l.textSmall, 2 => l.textDefault, 3 => l.textLarge, 4 => l.textLarger, _ => l.textLargest };
   }
 
   @override
@@ -310,33 +308,3 @@ class _TextSizeCardState extends ConsumerState<TextSizeCard> {
   }
 }
 
-/// A settings row with a label, a sub-line and an iOS-style switch.
-class SwitchRow extends StatelessWidget {
-  const SwitchRow({super.key, required this.icon, required this.tone, required this.title, required this.sub, required this.value, required this.onChanged});
-  final IconData icon;
-  final (Color, Color) tone;
-  final String title, sub;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.hm;
-    return HmCard(
-      radius: 22,
-      padding: const EdgeInsets.fromLTRB(16, 12, 14, 12),
-      child: Row(children: [
-        IconTile(icon, tone),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5)),
-            Text(sub, style: TextStyle(fontSize: 12, color: c.ink2, height: 1.35)),
-          ]),
-        ),
-        const SizedBox(width: 8),
-        HmSwitch(value: value, onChanged: onChanged, semanticLabel: title),
-      ]),
-    );
-  }
-}

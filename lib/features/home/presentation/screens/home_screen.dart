@@ -87,24 +87,19 @@ class HomeScreen extends ConsumerWidget {
     final l = context.l;
     final c = context.hm;
     final greeting = switch (s.dayPart) { DayPart.morning => l.goodMorning, DayPart.afternoon => l.goodAfternoon, DayPart.evening => l.goodEvening };
-    var i = 0;
-    Widget reveal(String key, Widget child) => HmReveal(once: 'home:$key', index: i++, child: child);
     return [
       SliverList.list(children: [
-        reveal(
-          'title',
-          Gutter(
-            top: 6,
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(greeting, style: TextStyle(color: c.ink2, fontWeight: FontWeight.w600, fontSize: 12.5)),
-              const SizedBox(height: 2),
-              Text(l.homeTitle, style: Theme.of(context).textTheme.headlineMedium),
-              const SizedBox(height: 2),
-              Text(l.archiveStats(numL(context, s.remedyCount), numL(context, s.conditionCount)), style: TextStyle(color: c.ink3, fontSize: 12.5)),
-            ]),
-          ),
+        Gutter(
+          top: 6,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(greeting, style: TextStyle(color: c.ink2, fontWeight: FontWeight.w600, fontSize: 12.5)),
+            const SizedBox(height: 2),
+            Text(l.homeTitle, style: Theme.of(context).textTheme.headlineMedium),
+            const SizedBox(height: 2),
+            Text(l.archiveStats(numL(context, s.remedyCount), numL(context, s.conditionCount)), style: TextStyle(color: c.ink3, fontSize: 12.5)),
+          ]),
         ),
-        if (s.remedyOfDay != null) reveal('rod', Gutter(top: 18, child: RemedyOfDayCard(r: s.remedyOfDay!))),
+        if (s.remedyOfDay != null) Gutter(top: 18, child: RemedyOfDayCard(r: s.remedyOfDay!)),
         if (s.firstAid.isNotEmpty) ...[
           SectionHeader(l.firstAidKit, top: 26),
           FirstAidRow(remedies: s.firstAid),

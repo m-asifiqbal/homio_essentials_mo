@@ -41,13 +41,14 @@ Features: onboarding, home, explore, search, remedy, condition, saved, settings,
 - Strings: ARB files in `lib/l10n` (`flutter gen-l10n` → class `L`), English + বাংলা.
 
 ## UI notes (design system `Hm*`, motion and layout rules)
-- **Type scale** follows FocusFlow: semibold titles, 14–15 body, 12 captions, no extra-bold. The app runs at a **0.95 default text scale**
-  composed on top of the OS scaler (`AppTextScaler`, Settings › Text size, 6 stops 85–130 %).
+- **Fonts are bundled** (`assets/fonts`, no runtime download): Lexend Deca headings + Nunito Sans body/italic Latin names (as FocusFlow), Hind Siliguri for Bangla
+  (from mgi_recruitment). The earlier google_fonts setup fetched every weight over the network on first use, so text swapped font after the first frame.
+- **Type scale** follows FocusFlow: semibold titles, 14–15 body, 12 captions, no extra-bold. Text size composes on top of the OS scaler
+  (`AppTextScaler`, Settings › Text size, 6 stops 85–130 %, default 100 %).
 - **Pinned headers**: tab screens use `HmTabPage` — the header (title, search, segmented control) stays put and a hairline appears under it
-  only once the content scrolls. Tab lists pad their bottom with `context.barClearance` (the bar is drawn over the body).
-- **Bottom bar** (`core/widgets/hm_bottom_nav.dart`, behaviour in `core/router/app_shell.dart`) follows the mgi_recruitment shell: flat bar, one sliding
-  top indicator, outline → solid icon swap, hides on scroll down / returns on scroll up (switchable in Settings), the anchored ad rides down with it.
-  Scrolling is detected on the page's own vertical scrollable only (`depth == 0`) and only while a finger is dragging.
+  only once the content scrolls. Tab lists end with a small `context.barClearance` gap (the body stops above the bar).
+- **Bottom bar** (`core/widgets/hm_bottom_nav.dart`, `core/router/app_shell.dart`) is ALWAYS visible: flat bar with one sliding top indicator and an
+  outline → solid icon swap (the look of the mgi_recruitment bar), the anchored ad directly above it. A hide-on-scroll mode and its Settings switch were removed.
 - **Ads**: anchored banner = standard adaptive (≈ 50–60 dp, capped at 64), inline banners ≤ 60 dp and kept alive inside lists (no reload while scrolling).
 - **Remedy details** are one page of collapsible sections (Overview · Indications · Dosage & administration · Keynotes · Safety & precautions ·
   Relationships · Available brands · Materia Medica · Sources & review) with a sticky scroll-spy index — modelled on MedEx's brand pages, plus
@@ -73,3 +74,8 @@ then `dart run flutter_launcher_icons` and `dart run flutter_native_splash:creat
 ## Build notes
 - Android: `kotlin.incremental=false` in `android/gradle.properties` (project and Pub cache on different drives).
 - Application id: `com.homio.essentials`.
+- Release builds are minified by R8. `android/app/proguard-rules.pro` (wired in `app/build.gradle.kts`) keeps WorkManager's reflective Room
+  database, which the AdMob plugin pulls in. Without it the release APK dies at launch, before Flutter starts, with
+  "Failed to create an instance of androidx.work.impl.WorkDatabase". Debug the phone with `adb logcat -d | findstr "FATAL Caused"`.
+- Build the installable APK: `flutter build apk --release --dart-define-from-file=env.json` → `build/app/outputs/flutter-apk/app-release.apk`
+  (signed with the debug key until a release keystore exists).

@@ -40,11 +40,13 @@ class RemedyIndexBar extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     final c = colors;
+    // Docked (content scrolls under it) the bar is a plain flat strip; at rest it is the hero's rounded "lip".
+    // This switch is deliberately INSTANT: animating the corner radius made the hero colour flash in the
+    // corners every time the page reached the top — the glitch seen when scrolling back up.
     final flat = shrinkOffset > 0 || overlapsContent;
-    return Container(
-      color: heroColor,
-      child: AnimatedContainer(
-        duration: context.motion(HmMotion.fast),
+    return ColoredBox(
+      color: flat ? c.bg : heroColor,
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: c.bg,
           borderRadius: BorderRadius.vertical(top: Radius.circular(flat ? 0 : 22)),
