@@ -16,12 +16,13 @@ library;
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/widgets.dart';
 
 /// What the screen needs to know about a section to lay it out, index it and jump to it.
 class RemedySectionSpec {
-  const RemedySectionSpec({required this.id, required this.title, required this.icon, required this.tone, required this.builder, this.summary, this.count});
+  const RemedySectionSpec({required this.id, required this.title, required this.icon, required this.tone, required this.builder, this.summary, this.count, this.empty = false});
   final String id;
   final String title;
   final IconData icon;
@@ -33,9 +34,19 @@ class RemedySectionSpec {
 
   /// A small count badge (uses, relations, brands).
   final int? count;
+
+  /// No information for this remedy: the section stays listed (consistent page, like MedEx) but its tile is
+  /// muted and its body is an empty state with an icon and a message.
+  final bool empty;
 }
 
 class RemedySectionCard extends StatelessWidget {
+  /// Space between the screen edge and a section card: the page gutter (16) minus 3 dp.
+  static const sideInset = Hm.gutter - 3;
+
+  /// Space between a section card's edge and the cards / text nested inside it: 16 minus 2.5 dp.
+  static const bodyInset = 16 - 2.5;
+
   const RemedySectionCard({super.key, required this.spec, required this.open, required this.onToggle});
   final RemedySectionSpec spec;
   final bool open;
@@ -64,15 +75,15 @@ class RemedySectionCard extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(14, 12, 12, 12),
                 child: Row(children: [
-                  IconTile(spec.icon, spec.tone, size: 38),
+                  IconTile(spec.icon, spec.empty ? (c.sf2, c.ink3) : spec.tone, size: 38),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(spec.title, style: Theme.of(context).textTheme.titleMedium),
-                      if (spec.summary != null && !open)
+                      if ((spec.empty || spec.summary != null) && !open)
                         Padding(
                           padding: const EdgeInsets.only(top: 1),
-                          child: Text(spec.summary!, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: c.ink2)),
+                          child: Text(spec.empty ? context.l.noInfoYet : spec.summary!, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: spec.empty ? c.ink3 : c.ink2)),
                         ),
                     ]),
                   ),
@@ -98,7 +109,7 @@ class RemedySectionCard extends StatelessWidget {
             open: open,
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Divider(height: 1, color: c.ln),
-              Padding(padding: const EdgeInsets.fromLTRB(16, 14, 16, 16), child: Builder(builder: spec.builder)),
+              Padding(padding: const EdgeInsets.fromLTRB(bodyInset, 14, bodyInset, 16), child: Builder(builder: spec.builder)),
             ]),
           ),
         ]),

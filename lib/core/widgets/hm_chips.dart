@@ -24,6 +24,8 @@ class HmChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.hm;
     final fg = selected ? c.onp : c.ink;
+    // One line; a label longer than the available width ends in an ellipsis instead of overflowing.
+    final labelText = Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: small ? 12.5 : 13.5, fontWeight: FontWeight.w600, color: fg));
     return Semantics(
       button: true,
       selected: selected,
@@ -36,10 +38,11 @@ class HmChip extends StatelessWidget {
             height: small ? 34 : 40,
             padding: EdgeInsetsDirectional.only(start: small ? 12 : 16, end: onDelete != null ? 4 : (small ? 12 : 16)),
             decoration: ShapeDecoration(color: selected ? c.p : c.sf, shape: StadiumBorder(side: BorderSide(color: selected ? c.p : c.ln))),
-            child: Row(mainAxisSize: MainAxisSize.min, children: [
+            // Flexible only when the width is bounded (a Wrap): inside a horizontally scrolling ChipRow it is unbounded.
+            child: LayoutBuilder(builder: (context, box) => Row(mainAxisSize: MainAxisSize.min, children: [
               if (dot != null) ...[Container(width: 8, height: 8, decoration: BoxDecoration(color: selected ? c.onp : dot, shape: BoxShape.circle)), const SizedBox(width: 6)],
               if (icon != null) ...[Icon(icon, size: 16, color: selected ? c.onp : c.ink2), const SizedBox(width: 6)],
-              Text(label, style: TextStyle(fontSize: small ? 12.5 : 13.5, fontWeight: FontWeight.w600, color: fg)),
+              box.maxWidth.isFinite ? Flexible(child: labelText) : labelText,
               if (count != null) ...[
                 const SizedBox(width: 6),
                 Container(
@@ -53,7 +56,7 @@ class HmChip extends StatelessWidget {
                   onPressed: onDelete, tooltip: context.l.remove, visualDensity: VisualDensity.compact,
                   icon: Icon(Icons.close_rounded, size: 16, color: selected ? c.onp : c.ink3),
                 ),
-            ]),
+            ])),
         ),
       ),
     );

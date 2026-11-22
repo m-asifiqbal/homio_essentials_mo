@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:homio_essentials/core/ads/ad_service.dart';
@@ -32,9 +33,8 @@ class SettingsScreen extends ConsumerWidget {
     final ctl = ref.read(settingsProvider.notifier);
     final a = ref.watch(archiveProvider).value;
     final sync = ref.watch(syncStateProvider);
-    final size = ref.watch(cacheSizeProvider).value;
     final adPrivacy = ref.watch(adPrivacyRequiredProvider).value ?? false;
-    final sizeText = size == null ? '…' : sizeL(context, size);
+    final time = a == null ? '—' : DateFormat.jm(context.bn ? 'bn' : 'en').format(a.syncedAt);
 
     return Scaffold(
       body: SafeArea(
@@ -96,8 +96,8 @@ class SettingsScreen extends ConsumerWidget {
           ),
           SettingsGroupLabel(l.dataAbout),
           Gutter(child: SettingsList(items: [
-            SettingsItem(Icons.download_done_rounded, (c.ptBg, c.ptInk), l.offlineData,
-                sync == SyncState.syncing ? l.updating : sync == SyncState.offline ? l.offlineSaved(sizeText) : l.upToDate(sizeText), () => context.push(AppRoutes.offline)),
+            SettingsItem(sync == SyncState.offline ? Icons.wifi_off_rounded : Icons.cloud_done_outlined, (c.ptBg, c.ptInk), l.dataTitle,
+                sync == SyncState.syncing ? l.updating : sync == SyncState.offline ? l.dataUnreachable : l.dataUpToDate(time), () => context.push(AppRoutes.data)),
             SettingsItem(Icons.info_outline_rounded, (c.miBg, c.miInk), l.medicalDisclaimer, null, () => context.push(AppRoutes.disclaimer)),
             SettingsItem(Icons.menu_book_outlined, (c.anBg, c.anInk), l.sourcesCredits, null, () => context.push(AppRoutes.sources)),
             if (adPrivacy) SettingsItem(Icons.privacy_tip_outlined, (c.noBg, c.noInk), l.adPrivacy, l.adPrivacySub, () => ref.read(adServiceProvider).showPrivacyOptions()),

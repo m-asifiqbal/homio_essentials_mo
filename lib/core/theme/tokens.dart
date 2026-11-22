@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
-/// Colour tokens from the Homio Essentials design system (design canvas `hm.css`).
+/// Colour tokens from the app's design system (design canvas `hm.css`).
 /// One instance per (brightness × accent); read with `context.hm`.
 @immutable
 class HomaColors extends ThemeExtension<HomaColors> {

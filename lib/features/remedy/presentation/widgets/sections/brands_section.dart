@@ -29,11 +29,13 @@ class _BrandsSectionState extends State<BrandsSection> {
     final l = context.l;
     final d = widget.d;
     if (d.products.isEmpty) {
-      return Column(children: [
-        Text(l.brandsEmptyBody, style: TextStyle(fontSize: 13.5, color: c.ink2, height: 1.55)),
-        const SizedBox(height: 12),
-        OutlinedButton(onPressed: () => context.push(AppRoutes.requestFor(kind: 'product', name: d.remedy.latin)), child: Text(l.suggestBrand)),
-      ]);
+      return SectionEmpty(
+        icon: Icons.sell_outlined,
+        title: l.brandsEmptyTitle,
+        body: l.brandsEmptyBody,
+        action: l.suggestBrand,
+        onAction: () => context.push(AppRoutes.requestFor(kind: 'product', name: d.remedy.latin)),
+      );
     }
     final products = [...d.products];
     if (_byPrice) products.sort((a, b) => (a.price ?? double.infinity).compareTo(b.price ?? double.infinity));
@@ -77,7 +79,7 @@ class _BrandCard extends StatelessWidget {
             const SizedBox(height: 6),
             Wrap(spacing: 6, runSpacing: 6, children: [
               if (p.potency != null) HmBadge(p.potency!),
-              HmBadge(p.form.replaceAll('_', ' '), bg: c.sf2, ink: c.ink2),
+              HmBadge(formLabel(p.form, context.bn), bg: c.sf2, ink: c.ink2),
               if (p.packSize != null) HmBadge('${p.packSize!.toStringAsFixed(0)} ${p.packUnit ?? ''}'.trim(), bg: c.sf2, ink: c.ink2),
             ]),
           ]),

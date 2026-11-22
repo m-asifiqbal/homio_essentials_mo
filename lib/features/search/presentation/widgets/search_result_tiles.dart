@@ -120,7 +120,7 @@ class BookHitTile extends StatelessWidget {
               LetterTile(r.initial, kingdom: r.kingdom, size: 30),
               const SizedBox(width: 10),
               Expanded(child: latinText(r.latin, size: 16.5, color: c.ink, weight: FontWeight.w600, maxLines: 1)),
-              Flexible(child: HmBadge('${l.book(hit.book)} · ${hit.section}', bg: c.anBg, ink: c.anInk)),
+              Flexible(child: HmBadge('${l.book(hit.book)} · ${sectionLabel(hit.section, context.bn)}', bg: c.anBg, ink: c.anInk)),
             ]),
             const SizedBox(height: 8),
             HighlightedText(hit.snippet, query, maxLines: 3, style: TextStyle(fontSize: 13, height: 1.5, color: c.ink2)),

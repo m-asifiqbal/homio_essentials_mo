@@ -132,3 +132,47 @@ void showHmSnack(BuildContext context, String msg, {String? action, VoidCallback
     duration: const Duration(seconds: 3),
     action: action == null ? null : SnackBarAction(label: action, onPressed: onAction ?? () {}),
   ));
+
+/// The empty state INSIDE a card / section: a soft layered icon on top, a title, a short message and an
+/// optional action. (Full-page empties use [EmptyState]; this one is compact and sits in a section body.)
+class SectionEmpty extends StatelessWidget {
+  const SectionEmpty({super.key, required this.icon, required this.title, this.body, this.action, this.onAction});
+  final IconData icon;
+  final String title;
+  final String? body, action;
+  final VoidCallback? onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.hm;
+    return Semantics(
+      container: true,
+      label: [title, ?body].join('. '),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          // Two soft rings behind the icon give it depth without any image asset.
+          Container(
+            width: 84, height: 84, alignment: Alignment.center,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: c.sf2.withValues(alpha: .55)),
+            child: Container(
+              width: 62, height: 62, alignment: Alignment.center,
+              decoration: BoxDecoration(shape: BoxShape.circle, color: c.sf2, border: Border.all(color: c.ln)),
+              child: ExcludeSemantics(child: Icon(icon, size: 30, color: c.pd)),
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text(title, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+          if (body != null) ...[
+            const SizedBox(height: 6),
+            Text(body!, textAlign: TextAlign.center, style: TextStyle(fontSize: 13, color: c.ink2, height: 1.5)),
+          ],
+          if (action != null) ...[
+            const SizedBox(height: 14),
+            OutlinedButton(onPressed: onAction, child: Text(action!)),
+          ],
+        ]),
+      ),
+    );
+  }
+}

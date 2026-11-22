@@ -12,18 +12,22 @@ abstract final class HmFonts {
   /// Body text and the italic Latin remedy names (same as FocusFlow's body).
   static const body = 'NunitoSans';
 
-  /// Bangla glyphs (the two Latin families have none) — Hind Siliguri, bundled from mgi_recruitment.
-  static const bangla = 'HindSiliguri';
+  /// Bangla glyphs (the two Latin families have none) — Noto Sans Bengali: Google's industry-standard Bengali font,
+  /// full script coverage (conjuncts, Bangla digits), bundled so it renders the same on every phone.
+  static const bangla = 'NotoSansBengali';
   static const fallback = [bangla];
 }
 
-/// Builds Material ThemeData from the Homio Essentials tokens.
-/// Nunito Sans body + Lexend Deca headings (as FocusFlow), Hind Siliguri as the Bangla fallback,
+/// Builds Material ThemeData from the app's design tokens.
+/// Nunito Sans body + Lexend Deca headings (as FocusFlow), Noto Sans Bengali as the Bangla fallback,
 /// Nunito Sans italic for Latin remedy names (see [latinStyle]).
 ///
 /// Type scale follows FocusFlow's calmer ramp (semibold titles, 14–15 body,
 /// 12 captions); the app also runs at a 0.95 default text scale (see app.dart).
-ThemeData buildTheme(HomaColors c) {
+ThemeData buildTheme(HomaColors c, {bool bangla = false}) {
+  // Bengali is shaped in clusters (conjuncts, vowel signs): ANY letter-spacing — positive or negative — pulls the marks
+  // apart or onto their neighbours, so Bangla text runs with none.
+  double ls(double v) => bangla ? 0 : v;
   final base = ThemeData(
     useMaterial3: true,
     brightness: c.dark ? Brightness.dark : Brightness.light,
@@ -44,8 +48,8 @@ ThemeData buildTheme(HomaColors c) {
   TextStyle? head(TextStyle? t) => t?.copyWith(fontFamily: HmFonts.heading, fontFamilyFallback: HmFonts.fallback);
   return base.copyWith(
     textTheme: text.copyWith(
-      headlineMedium: head(text.headlineMedium)?.copyWith(fontSize: 21, fontWeight: FontWeight.w600, letterSpacing: -0.3, height: 1.2),
-      headlineSmall: head(text.headlineSmall)?.copyWith(fontSize: 18.5, fontWeight: FontWeight.w600, letterSpacing: -0.1, height: 1.25),
+      headlineMedium: head(text.headlineMedium)?.copyWith(fontSize: 21, fontWeight: FontWeight.w600, letterSpacing: ls(-0.3), height: 1.2),
+      headlineSmall: head(text.headlineSmall)?.copyWith(fontSize: 18.5, fontWeight: FontWeight.w600, letterSpacing: ls(-0.1), height: 1.25),
       titleLarge: head(text.titleLarge)?.copyWith(fontSize: 17, fontWeight: FontWeight.w600, height: 1.3),
       titleMedium: head(text.titleMedium)?.copyWith(fontSize: 15, fontWeight: FontWeight.w600, height: 1.3),
       titleSmall: head(text.titleSmall)?.copyWith(fontSize: 14, fontWeight: FontWeight.w600, height: 1.3),
@@ -53,7 +57,7 @@ ThemeData buildTheme(HomaColors c) {
       bodyMedium: text.bodyMedium?.copyWith(fontSize: 14, height: 1.5),
       bodySmall: text.bodySmall?.copyWith(fontSize: 12.5, height: 1.4, color: c.ink2),
       labelLarge: head(text.labelLarge)?.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
-      labelSmall: text.labelSmall?.copyWith(fontSize: 11.5, fontWeight: FontWeight.w700, letterSpacing: 0.8, color: c.ink3),
+      labelSmall: text.labelSmall?.copyWith(fontSize: 11.5, fontWeight: FontWeight.w700, letterSpacing: ls(0.8), color: c.ink3),
     ),
     appBarTheme: AppBarTheme(backgroundColor: c.bg, foregroundColor: c.ink, elevation: 0, scrolledUnderElevation: 0, centerTitle: true,
         titleTextStyle: head(text.titleMedium)?.copyWith(fontSize: 15, fontWeight: FontWeight.w600)),

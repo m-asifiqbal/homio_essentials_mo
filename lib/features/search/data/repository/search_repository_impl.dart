@@ -52,7 +52,7 @@ class SearchRepositoryImpl implements SearchRepository {
     // websearch-style full-text over the English book text: every word must appear.
     final rows = await api.select('materia_entries',
         columns: 'remedy_id,source_book,section,body',
-        filters: {'body': 'wfts(english).${words.join(' ')}'},
+        filters: {'body': 'wfts(english).${words.join(' ')}', 'locale': 'eq.en'},
         limit: limit);
     return [
       for (final r in rows)

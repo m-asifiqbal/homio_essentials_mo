@@ -1,4 +1,4 @@
-# R8 / release-build keep rules for Homio Essentials.
+# R8 / release-build keep rules for Homiopedia.
 #
 # google_mobile_ads pulls in androidx.work (WorkManager). WorkManager creates its Room database through
 # reflection (androidx.work.impl.WorkDatabase -> WorkDatabase_Impl). Without these rules R8 strips or alters

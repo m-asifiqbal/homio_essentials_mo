@@ -23,13 +23,18 @@ class I18n {
 }
 
 class RemedyText {
-  const RemedyText({this.displayName, this.common, this.summary, this.origin, this.preparation, this.keynotes = const []});
+  const RemedyText({this.displayName, this.common, this.summary, this.origin, this.preparation, this.keynotes = const [], this.machineFields = const {}});
   factory RemedyText.from(Json j) => RemedyText(
         displayName: j['display_name'], common: j['common_name'], summary: j['summary'],
         origin: j['origin'], preparation: j['preparation'], keynotes: strs(j['keynotes']),
+        machineFields: strs(j['machine_fields']).toSet(),
       );
   final String? displayName, common, summary, origin, preparation;
   final List<String> keynotes;
+
+  /// Fields translated automatically from the English and not yet checked by an editor
+  /// (display_name, common_name, summary, keynotes).
+  final Set<String> machineFields;
 }
 
 class Remedy {
@@ -46,14 +51,23 @@ class Remedy {
   final List<Json> sourceRefs;
   RemedyText? en, bn;
 
-  /// Curated remedies carry potencies/forms and a Bangla translation; book-only ones do not.
-  bool get curated => bn != null || potencies.isNotEmpty;
+  /// Curated remedies carry potencies/forms and an editor-written Bangla translation; book-only ones do not
+  /// (an automatic Bangla translation does not make a remedy curated).
+  bool get curated => potencies.isNotEmpty || (bn?.summary != null && !bn!.machineFields.contains('summary'));
   bool get tissueSalt => groups.contains('tissue_salt');
   String? common(bool bangla) => (bangla ? bn?.common : null) ?? en?.common;
   String? bnName() => bn?.displayName;
   String? summary(bool bangla) => (bangla ? bn?.summary : null) ?? en?.summary;
   bool summaryIsFallback(bool bangla) => bangla && bn?.summary == null && en?.summary != null;
-  List<String> get keynotes => en?.keynotes ?? const [];
+
+  /// Keynotes in the reading language (Bangla when translated, else Allen's English).
+  List<String> keynotes(bool bangla) {
+    final b = bn?.keynotes ?? const <String>[];
+    return bangla && b.isNotEmpty ? b : (en?.keynotes ?? const []);
+  }
+
+  /// This Bangla field was translated automatically (show a note so readers can check the English).
+  bool autoBangla(bool bangla, String field) => bangla && (bn?.machineFields.contains(field) ?? false);
   String get initial => latin.isEmpty ? '?' : latin[0].toUpperCase();
 }
 

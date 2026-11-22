@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appName": "Homio Essentials",
+  "appName": "Homiopedia",
   "tabHome": "Home",
   "tabExplore": "Explore",
   "tabSaved": "Saved",
@@ -18,10 +18,8 @@
   "all": "All",
   "english": "English",
   "bangla": "বাংলা",
-  "offlineBanner": "You're offline — showing the archive saved on this phone.",
-  "loadingArchive": "Downloading the archive… this happens only once.",
-  "loadFailedTitle": "Couldn't load the archive",
-  "loadFailedBody": "Check your internet connection. The app downloads the archive once; after that it works offline.",
+  "offlineBanner": "Can't reach the server — showing what's already loaded. Tap to retry.",
+  "loadingArchive": "Loading the latest remedies…",
   "notFound": "This item isn't in the archive.",
   "kingdom_plant": "Plant",
   "kingdom_mineral": "Mineral",
@@ -31,7 +29,7 @@
   "kingdom_imponderabilia": "Imponderable",
   "kingdom_other": "Chemical",
   "welcomeTitle": "The homeopathic medicine archive",
-  "welcomeBody": "Remedies, what they are used for, doses by age and the classic Materia Medica — in English and বাংলা. Works offline once downloaded.",
+  "welcomeBody": "Remedies, what they are used for, doses by age and the classic Materia Medica — in English and বাংলা. Always up to date.",
   "welcomePoint1": "700+ remedies from Boericke's Materia Medica",
   "welcomePoint2": "Dose guide by age group and potency",
   "welcomePoint3": "Search by voice or typing — English, বাংলা or Banglish",
@@ -42,7 +40,7 @@
   "roleGeneral": "General",
   "roleGeneralDesc": "Plain language: uses and a dose guide",
   "roleStudent": "Student",
-  "roleStudentDesc": "Adds Materia Medica, keynotes and related remedies",
+  "roleStudentDesc": "Education: adds Materia Medica, keynotes and related remedies",
   "rolePractitioner": "Practitioner",
   "rolePractitionerDesc": "Everything, with source books and full text",
   "beforeYouStart": "Before you start",
@@ -129,7 +127,7 @@
   "typicalAdultDose": "Typical adult dose",
   "pellets": "pellets",
   "tablets": "tablets",
-  "dosesByAge": "Doses by age →",
+  "dosesByAge": "Doses by age",
   "safety": "Safety",
   "moreNotes": "+{count} more",
   "@moreNotes": {
@@ -141,6 +139,7 @@
   },
   "about": "About",
   "inEnglishNote": "Shown in English — the Bangla text is being prepared.",
+  "autoTranslatedNote": "Bangla text translated automatically from the English book. Check the English (Study tab) if something is unclear.",
   "keynotes": "Keynotes",
   "keynotesSource": "From H. C. Allen, Keynotes and Characteristics (1898)",
   "relatedRemedies": "Related remedies",
@@ -198,7 +197,6 @@
   "studyLockedBody": "Switch your detail level to Student or Practitioner to read the complete text from Boericke and Allen.",
   "switchToStudent": "Switch to Student",
   "studyFooter": "Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898). For study — not medical advice.",
-  "materiaOffline": "This text hasn't been downloaded yet. Connect once to read it — after that it stays on your phone.",
   "studyEmpty": "No book text for this remedy yet.",
   "viewSource": "View source",
   "seeDoctorIf": "See a doctor if",
@@ -233,7 +231,7 @@
   "language": "Language",
   "detailLevel": "Detail level",
   "modeNote_general": "Plain language, dose guide and brands.",
-  "modeNote_student": "Adds Materia Medica, keynotes and related remedies.",
+  "modeNote_student": "Education: adds Materia Medica, keynotes and related remedies.",
   "modeNote_practitioner": "Everything, with source books and full text.",
   "contribute": "Contribute",
   "requestMedicine": "Request a new medicine",
@@ -245,24 +243,7 @@
   "contactUs": "Contact us",
   "contactEmpty": "Contact details will appear here.",
   "dataAbout": "Data & about",
-  "offlineData": "Offline & data",
-  "upToDate": "Up to date · {size}",
-  "@upToDate": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
-  },
   "updating": "Checking for updates…",
-  "offlineSaved": "Offline · {size} saved",
-  "@offlineSaved": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
-  },
   "medicalDisclaimer": "Medical disclaimer",
   "sourcesCredits": "Sources & credits",
   "versionLine": "Version {v} · data {d}",
@@ -276,18 +257,7 @@
       }
     }
   },
-  "lastUpdated": "Last updated {when}",
-  "@lastUpdated": {
-    "placeholders": {
-      "when": {
-        "type": "String"
-      }
-    }
-  },
-  "checkUpdates": "Check for updates",
-  "onThisPhone": "On this phone",
-  "storageUsed": "Storage used",
-  "bookTextNote": "Book text for a remedy downloads the first time you open its Study tab, then stays available offline.",
+  "checkUpdates": "Refresh now",
   "statRemedies": "Remedies",
   "statSymptoms": "Symptoms",
   "statRelations": "Remedy links",
@@ -346,8 +316,6 @@
   "booksTipTitle": "Search inside the books.",
   "booksTipBody": "Type a symptom like “worse at night” or “fear of death” to find it in Boericke and Allen (needs internet).",
   "inTheBooks": "In the books",
-  "booksOffline": "Searching inside the books needs an internet connection.",
-  "booksFailed": "Couldn't search the books right now.",
   "booksExplain": "Matches in the full text of Boericke's Materia Medica and Allen's Keynotes (English).",
   "noBookMatches": "No book text mentions “{q}”.",
   "@noBookMatches": {
@@ -512,5 +480,98 @@
   },
   "trySearching": "Try searching",
   "booksNeedNet": "Searching inside the books needs an internet connection.",
-  "useThisSearch": "Edit this search"
+  "useThisSearch": "Edit this search",
+  "noInfoYet": "No information yet",
+  "overviewEmptyTitle": "No overview yet",
+  "overviewEmptyBody": "A summary hasn't been written for this remedy yet. The Materia Medica section has the book text.",
+  "keynotesEmptyTitle": "No keynotes yet",
+  "keynotesEmptyBody": "Characteristic symptoms haven't been added for this remedy. The Materia Medica section has its full description.",
+  "relationsEmptyTitle": "No related remedies yet",
+  "relationsEmptyBody": "No compare, complementary or antidote remedies are recorded for this remedy.",
+  "doseEmptyTitle": "No dose guide yet",
+  "doseEmptyBody": "Doses haven't been set for this remedy. Please ask a registered homeopath.",
+  "sourcesEmptyTitle": "No source recorded",
+  "sourcesEmptyBody": "We haven't recorded where this entry's text comes from yet.",
+  "studyEmptyBody": "The source books have no entry for this remedy in the archive.",
+  "openMateria": "Open Materia Medica",
+  "learnPelletsBody": "Clear your mouth, pour a few into the cap and let them melt under the tongue.",
+  "learnBadgeSteps": "Guide · 4 steps",
+  "learnStorageTitle": "Storing your remedies",
+  "learnStorageBody": "Cool, dry, and away from sunlight and strong smells.",
+  "learnBadgeStorage": "Guide · 1 min read",
+  "storageTip1": "Keep the bottle tightly closed, in a cool, dry place.",
+  "storageTip2": "Keep it away from direct sunlight, heat and strong smells such as camphor, menthol or perfume.",
+  "storageTip3": "Don't put unused pellets back into the bottle.",
+  "storageTip4": "Keep all medicines out of the reach of children.",
+  "learnDoctorTitle": "When to see a doctor",
+  "learnDoctorBody": "Severe, sudden or lasting symptoms need medical care. Remedies don't replace emergency help.",
+  "learnBadgeSafety": "Safety",
+  "learnSearchTitle": "Search like a pro",
+  "learnSearchBody": "Type in English, Bangla or Banglish, or tap the mic. You can search inside the books too.",
+  "learnBadgeTip": "Tip",
+  "learnMateriaTitle": "Go deeper with Materia Medica",
+  "learnMateriaBody": "Switch to Student or Practitioner mode to read Boericke and Allen section by section.",
+  "learnBadgeStudy": "Study",
+  "learnTopicOf": "Topic {n} of {total}",
+  "@learnTopicOf": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "loadingSlow": "Still loading — your connection looks slow.",
+  "errOfflineTitle": "No internet connection",
+  "errOfflineBody": "Connect to Wi-Fi or mobile data, then try again.",
+  "errTimeoutTitle": "Connection is too slow",
+  "errTimeoutBody": "The server took too long to answer. Check your signal and try again.",
+  "errServerTitle": "Server problem",
+  "errServerBody": "Something went wrong on our side. Please try again in a moment.",
+  "errUnknownTitle": "Something went wrong",
+  "errUnknownBody": "We couldn't load this. Please try again.",
+  "errCode": "Error code: {code}",
+  "@errCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "dataTitle": "Data & updates",
+  "dataUpToDate": "Live from the server · loaded {time}",
+  "@dataUpToDate": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "dataUnreachable": "Can't reach the server right now",
+  "dataLoadedAt": "Loaded {when}",
+  "@dataLoadedAt": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "inThisArchive": "In this archive",
+  "dataNote": "Nothing is saved on your phone. The archive loads from our server each time you open the app, so you always see the latest. A remedy's book text loads when you open its Study tab.",
+  "dataLive": "Loaded live from the server each time you open the app",
+  "exitTitle": "Exit {name}?",
+  "exitBody": "Do you want to close the app?",
+  "exitConfirm": "Exit",
+  "checkingConnection": "Checking…",
+  "needsInternet": "Homiopedia works online only, so it needs a connection to show remedies. It continues by itself when you are back online.",
+  "@exitTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "exitStay": "Stay"
 }

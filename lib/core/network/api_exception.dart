@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-enum ApiErrorKind { offline, timeout, unauthorized, notFound, server, unknown }
+enum ApiErrorKind { offline, timeout, unauthorized, notFound, server, cancelled, unknown }
 
 /// One error type for the whole app, mapped from Dio failures.
 class ApiException implements Exception {
@@ -22,6 +22,7 @@ class ApiException implements Exception {
         DioExceptionType.badResponse when code == 401 || code == 403 => ApiException(ApiErrorKind.unauthorized, msg, code),
         DioExceptionType.badResponse when code == 404 => ApiException(ApiErrorKind.notFound, msg, code),
         DioExceptionType.badResponse => ApiException(ApiErrorKind.server, msg, code),
+        DioExceptionType.cancel => ApiException(ApiErrorKind.cancelled, msg),
         _ => ApiException(ApiErrorKind.unknown, msg, code),
       };
     }

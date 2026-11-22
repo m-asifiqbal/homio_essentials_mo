@@ -21,11 +21,7 @@ class UsesSection extends StatelessWidget {
     final l = context.l;
     final bangla = context.bn;
     if (d.uses.isEmpty) {
-      return Column(children: [
-        Text(l.usesEmptyBody, style: TextStyle(fontSize: 13.5, color: c.ink2, height: 1.55)),
-        const SizedBox(height: 12),
-        OutlinedButton(onPressed: () => goSection('materia'), child: Text(l.openStudy)),
-      ]);
+      return SectionEmpty(icon: Icons.fact_check_outlined, title: l.usesEmptyTitle, body: l.usesEmptyBody, action: l.openMateria, onAction: () => goSection('materia'));
     }
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       for (final (i, u) in d.uses.indexed)

@@ -11,7 +11,6 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:homio_essentials/core/archive/domain/entities/archive.dart';
 import 'package:homio_essentials/core/l10n/i18n.dart';
-import 'package:homio_essentials/core/network/api_exception.dart';
 import 'package:homio_essentials/core/router/app_routes.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/widgets.dart';
@@ -51,7 +50,7 @@ class SearchResultsView extends ConsumerWidget {
             add(w);
           }
         case AsyncError(:final error):
-          add(Gutter(child: Callout(CalloutKind.warn, icon: Icons.cloud_off_rounded, child: Text(ApiException.from(error).isOffline ? l.booksOffline : l.booksFailed))));
+          add(Gutter(child: Padding(padding: const EdgeInsets.only(bottom: 10), child: HmErrorState(error: error, compact: true, onRetry: () => ref.invalidate(bookResultsProvider(q))))));
         default:
           for (var i = 0; i < 2; i++) {
             add(const Gutter(child: Padding(padding: EdgeInsets.only(bottom: 10), child: HmSkeleton(height: 88, radius: 20))));
@@ -104,11 +103,15 @@ class SearchResultsView extends ConsumerWidget {
       }
     }
 
-    return ListView.builder(
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      padding: EdgeInsets.only(top: 2, bottom: MediaQuery.viewPaddingOf(context).bottom + 32),
-      itemCount: rows.length,
-      itemBuilder: (context, i) => rows[i](context),
+    return HmScrollTopHost(
+      itemExtent: 66,
+      builder: (context, scroll) => ListView.builder(
+        controller: scroll,
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        padding: EdgeInsets.only(top: 2, bottom: MediaQuery.viewPaddingOf(context).bottom + 32),
+        itemCount: rows.length,
+        itemBuilder: (context, i) => rows[i](context),
+      ),
     );
   }
 }

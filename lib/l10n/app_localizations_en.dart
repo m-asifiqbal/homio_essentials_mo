@@ -10,7 +10,7 @@ class LEn extends L {
   LEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'Homio Essentials';
+  String get appName => 'Homiopedia';
 
   @override
   String get tabHome => 'Home';
@@ -65,18 +65,10 @@ class LEn extends L {
 
   @override
   String get offlineBanner =>
-      'You\'re offline — showing the archive saved on this phone.';
+      'Can\'t reach the server — showing what\'s already loaded. Tap to retry.';
 
   @override
-  String get loadingArchive =>
-      'Downloading the archive… this happens only once.';
-
-  @override
-  String get loadFailedTitle => 'Couldn\'t load the archive';
-
-  @override
-  String get loadFailedBody =>
-      'Check your internet connection. The app downloads the archive once; after that it works offline.';
+  String get loadingArchive => 'Loading the latest remedies…';
 
   @override
   String get notFound => 'This item isn\'t in the archive.';
@@ -107,7 +99,7 @@ class LEn extends L {
 
   @override
   String get welcomeBody =>
-      'Remedies, what they are used for, doses by age and the classic Materia Medica — in English and বাংলা. Works offline once downloaded.';
+      'Remedies, what they are used for, doses by age and the classic Materia Medica — in English and বাংলা. Always up to date.';
 
   @override
   String get welcomePoint1 => '700+ remedies from Boericke\'s Materia Medica';
@@ -144,7 +136,7 @@ class LEn extends L {
 
   @override
   String get roleStudentDesc =>
-      'Adds Materia Medica, keynotes and related remedies';
+      'Education: adds Materia Medica, keynotes and related remedies';
 
   @override
   String get rolePractitioner => 'Practitioner';
@@ -346,7 +338,7 @@ class LEn extends L {
   String get tablets => 'tablets';
 
   @override
-  String get dosesByAge => 'Doses by age →';
+  String get dosesByAge => 'Doses by age';
 
   @override
   String get safety => 'Safety';
@@ -362,6 +354,10 @@ class LEn extends L {
   @override
   String get inEnglishNote =>
       'Shown in English — the Bangla text is being prepared.';
+
+  @override
+  String get autoTranslatedNote =>
+      'Bangla text translated automatically from the English book. Check the English (Study tab) if something is unclear.';
 
   @override
   String get keynotes => 'Keynotes';
@@ -532,10 +528,6 @@ class LEn extends L {
       'Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898). For study — not medical advice.';
 
   @override
-  String get materiaOffline =>
-      'This text hasn\'t been downloaded yet. Connect once to read it — after that it stays on your phone.';
-
-  @override
   String get studyEmpty => 'No book text for this remedy yet.';
 
   @override
@@ -640,7 +632,7 @@ class LEn extends L {
 
   @override
   String get modeNote_student =>
-      'Adds Materia Medica, keynotes and related remedies.';
+      'Education: adds Materia Medica, keynotes and related remedies.';
 
   @override
   String get modeNote_practitioner =>
@@ -678,20 +670,7 @@ class LEn extends L {
   String get dataAbout => 'Data & about';
 
   @override
-  String get offlineData => 'Offline & data';
-
-  @override
-  String upToDate(String size) {
-    return 'Up to date · $size';
-  }
-
-  @override
   String get updating => 'Checking for updates…';
-
-  @override
-  String offlineSaved(String size) {
-    return 'Offline · $size saved';
-  }
 
   @override
   String get medicalDisclaimer => 'Medical disclaimer';
@@ -705,22 +684,7 @@ class LEn extends L {
   }
 
   @override
-  String lastUpdated(String when) {
-    return 'Last updated $when';
-  }
-
-  @override
-  String get checkUpdates => 'Check for updates';
-
-  @override
-  String get onThisPhone => 'On this phone';
-
-  @override
-  String get storageUsed => 'Storage used';
-
-  @override
-  String get bookTextNote =>
-      'Book text for a remedy downloads the first time you open its Study tab, then stays available offline.';
+  String get checkUpdates => 'Refresh now';
 
   @override
   String get statRemedies => 'Remedies';
@@ -905,13 +869,6 @@ class LEn extends L {
 
   @override
   String get inTheBooks => 'In the books';
-
-  @override
-  String get booksOffline =>
-      'Searching inside the books needs an internet connection.';
-
-  @override
-  String get booksFailed => 'Couldn\'t search the books right now.';
 
   @override
   String get booksExplain =>
@@ -1200,4 +1157,198 @@ class LEn extends L {
 
   @override
   String get useThisSearch => 'Edit this search';
+
+  @override
+  String get noInfoYet => 'No information yet';
+
+  @override
+  String get overviewEmptyTitle => 'No overview yet';
+
+  @override
+  String get overviewEmptyBody =>
+      'A summary hasn\'t been written for this remedy yet. The Materia Medica section has the book text.';
+
+  @override
+  String get keynotesEmptyTitle => 'No keynotes yet';
+
+  @override
+  String get keynotesEmptyBody =>
+      'Characteristic symptoms haven\'t been added for this remedy. The Materia Medica section has its full description.';
+
+  @override
+  String get relationsEmptyTitle => 'No related remedies yet';
+
+  @override
+  String get relationsEmptyBody =>
+      'No compare, complementary or antidote remedies are recorded for this remedy.';
+
+  @override
+  String get doseEmptyTitle => 'No dose guide yet';
+
+  @override
+  String get doseEmptyBody =>
+      'Doses haven\'t been set for this remedy. Please ask a registered homeopath.';
+
+  @override
+  String get sourcesEmptyTitle => 'No source recorded';
+
+  @override
+  String get sourcesEmptyBody =>
+      'We haven\'t recorded where this entry\'s text comes from yet.';
+
+  @override
+  String get studyEmptyBody =>
+      'The source books have no entry for this remedy in the archive.';
+
+  @override
+  String get openMateria => 'Open Materia Medica';
+
+  @override
+  String get learnPelletsBody =>
+      'Clear your mouth, pour a few into the cap and let them melt under the tongue.';
+
+  @override
+  String get learnBadgeSteps => 'Guide · 4 steps';
+
+  @override
+  String get learnStorageTitle => 'Storing your remedies';
+
+  @override
+  String get learnStorageBody =>
+      'Cool, dry, and away from sunlight and strong smells.';
+
+  @override
+  String get learnBadgeStorage => 'Guide · 1 min read';
+
+  @override
+  String get storageTip1 =>
+      'Keep the bottle tightly closed, in a cool, dry place.';
+
+  @override
+  String get storageTip2 =>
+      'Keep it away from direct sunlight, heat and strong smells such as camphor, menthol or perfume.';
+
+  @override
+  String get storageTip3 => 'Don\'t put unused pellets back into the bottle.';
+
+  @override
+  String get storageTip4 => 'Keep all medicines out of the reach of children.';
+
+  @override
+  String get learnDoctorTitle => 'When to see a doctor';
+
+  @override
+  String get learnDoctorBody =>
+      'Severe, sudden or lasting symptoms need medical care. Remedies don\'t replace emergency help.';
+
+  @override
+  String get learnBadgeSafety => 'Safety';
+
+  @override
+  String get learnSearchTitle => 'Search like a pro';
+
+  @override
+  String get learnSearchBody =>
+      'Type in English, Bangla or Banglish, or tap the mic. You can search inside the books too.';
+
+  @override
+  String get learnBadgeTip => 'Tip';
+
+  @override
+  String get learnMateriaTitle => 'Go deeper with Materia Medica';
+
+  @override
+  String get learnMateriaBody =>
+      'Switch to Student or Practitioner mode to read Boericke and Allen section by section.';
+
+  @override
+  String get learnBadgeStudy => 'Study';
+
+  @override
+  String learnTopicOf(String n, String total) {
+    return 'Topic $n of $total';
+  }
+
+  @override
+  String get loadingSlow => 'Still loading — your connection looks slow.';
+
+  @override
+  String get errOfflineTitle => 'No internet connection';
+
+  @override
+  String get errOfflineBody =>
+      'Connect to Wi-Fi or mobile data, then try again.';
+
+  @override
+  String get errTimeoutTitle => 'Connection is too slow';
+
+  @override
+  String get errTimeoutBody =>
+      'The server took too long to answer. Check your signal and try again.';
+
+  @override
+  String get errServerTitle => 'Server problem';
+
+  @override
+  String get errServerBody =>
+      'Something went wrong on our side. Please try again in a moment.';
+
+  @override
+  String get errUnknownTitle => 'Something went wrong';
+
+  @override
+  String get errUnknownBody => 'We couldn\'t load this. Please try again.';
+
+  @override
+  String errCode(String code) {
+    return 'Error code: $code';
+  }
+
+  @override
+  String get dataTitle => 'Data & updates';
+
+  @override
+  String dataUpToDate(String time) {
+    return 'Live from the server · loaded $time';
+  }
+
+  @override
+  String get dataUnreachable => 'Can\'t reach the server right now';
+
+  @override
+  String dataLoadedAt(String when) {
+    return 'Loaded $when';
+  }
+
+  @override
+  String get inThisArchive => 'In this archive';
+
+  @override
+  String get dataNote =>
+      'Nothing is saved on your phone. The archive loads from our server each time you open the app, so you always see the latest. A remedy\'s book text loads when you open its Study tab.';
+
+  @override
+  String get dataLive =>
+      'Loaded live from the server each time you open the app';
+
+  @override
+  String exitTitle(String name) {
+    return 'Exit $name?';
+  }
+
+  @override
+  String get exitBody => 'Do you want to close the app?';
+
+  @override
+  String get exitConfirm => 'Exit';
+
+  @override
+  String get checkingConnection => 'Checking…';
+
+  @override
+  String get needsInternet =>
+      'Homiopedia works online only, so it needs a connection to show remedies. It continues by itself when you are back online.';
+
+  @override
+  String get exitStay => 'Stay';
 }

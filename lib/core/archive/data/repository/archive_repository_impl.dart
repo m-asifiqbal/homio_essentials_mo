@@ -1,39 +1,31 @@
 /// ============================================================
-/// ARCHIVE REPOSITORY (impl) — cache first, refresh when the server changed
+/// ARCHIVE REPOSITORY (impl) — download from the server, keep in memory
 /// ============================================================
 library;
 
-import 'package:homio_essentials/core/archive/data/datasource/archive_local_datasource.dart';
+import 'package:dio/dio.dart';
+
 import 'package:homio_essentials/core/archive/data/datasource/archive_remote_datasource.dart';
 import 'package:homio_essentials/core/archive/domain/entities/archive.dart';
 import 'package:homio_essentials/core/archive/domain/repository/archive_repository.dart';
-import 'package:homio_essentials/core/utils/app_logger.dart';
 
 class ArchiveRepositoryImpl implements ArchiveRepository {
-  ArchiveRepositoryImpl({required this.remote, required this.local});
+  ArchiveRepositoryImpl({required this.remote});
   final ArchiveRemoteDataSource remote;
-  final ArchiveLocalDataSource local;
 
   @override
-  Future<Archive?> loadCached() async {
-    try {
-      final json = await local.readArchive();
-      return json == null ? null : Archive.fromJson(json);
-    } catch (e, st) {
-      AppLogger.e('cached archive unreadable — will re-download', error: e, stackTrace: st);
-      return null;
+  Future<Archive> load({CancelToken? cancel}) async {
+    final download = await remote.fetchAll(cancel: cancel);
+    return Archive.build(download.tables, download.signature, DateTime.now());
+  }
+
+  @override
+  Future<Archive?> refresh(Archive current, {bool force = false, CancelToken? cancel}) async {
+    if (!force) {
+      final signature = await remote.fetchSignature(cancel: cancel);
+      // An unreadable manifest ('' signature on the first load) never counts as "unchanged".
+      if (signature.isNotEmpty && signature == current.signature) return null;
     }
+    return load(cancel: cancel);
   }
-
-  @override
-  Future<Archive?> sync({Archive? current, bool force = false}) async {
-    final signature = await remote.fetchSignature();
-    if (!force && current != null && current.signature == signature) return null;
-    final archive = Archive.build(await remote.fetchAllTables(), signature, DateTime.now());
-    await local.writeArchive(archive.toJson());
-    return archive;
-  }
-
-  @override
-  Future<int> cacheSizeBytes() => local.sizeBytes();
 }

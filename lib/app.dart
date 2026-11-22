@@ -16,6 +16,7 @@ import 'package:homio_essentials/core/theme/app_text_scaler.dart';
 import 'package:homio_essentials/core/theme/app_theme.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/shared/providers/settings_provider.dart';
+import 'package:homio_essentials/shared/widgets/connection_gate.dart';
 
 class HomioApp extends ConsumerStatefulWidget {
   const HomioApp({super.key});
@@ -47,14 +48,15 @@ class _HomioAppState extends ConsumerState<HomioApp> {
       supportedLocales: L.supportedLocales,
       localizationsDelegates: const [L.delegate, GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate, GlobalCupertinoLocalizations.delegate],
       themeMode: s.themeMode,
-      theme: buildTheme(HomaColors.of(dark: false, accent: s.accent)),
-      darkTheme: buildTheme(HomaColors.of(dark: true, accent: s.accent)),
+      theme: buildTheme(HomaColors.of(dark: false, accent: s.accent), bangla: s.bn),
+      darkTheme: buildTheme(HomaColors.of(dark: true, accent: s.accent), bangla: s.bn),
       builder: (context, child) {
         // Text size composes with the OS scaler (FocusFlow's approach) so Android's non-linear scaling
         // survives. Bangla script reads better a touch larger.
         final mq = MediaQuery.of(context);
         final scale = s.textScale * (s.bn ? 1.04 : 1.0);
-        return MediaQuery(data: mq.copyWith(textScaler: AppTextScaler.compose(mq.textScaler, scale)), child: child!);
+        // The gate is outermost: while the phone is offline it covers every page and dialog (online-only app).
+        return ConnectionGate(child: MediaQuery(data: mq.copyWith(textScaler: AppTextScaler.compose(mq.textScaler, scale)), child: child!));
       },
     );
   }

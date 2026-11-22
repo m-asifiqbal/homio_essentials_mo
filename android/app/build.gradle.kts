@@ -17,7 +17,7 @@ val dartDefines: Map<String, String> = (project.findProperty("dart-defines") as 
     ?.toMap() ?: emptyMap()
 
 android {
-    namespace = "com.homio.essentials"
+    namespace = "com.iqballabs.homiopedia"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -27,7 +27,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.homio.essentials"
+        applicationId = "com.iqballabs.homiopedia"
         minSdk = maxOf(flutter.minSdkVersion, 23) // google_mobile_ads needs 23+
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

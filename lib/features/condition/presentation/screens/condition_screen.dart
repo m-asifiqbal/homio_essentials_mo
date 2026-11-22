@@ -12,6 +12,7 @@ import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/router/app_routes.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/widgets.dart';
+import 'package:homio_essentials/shared/widgets/archive_gate.dart';
 import 'package:homio_essentials/features/condition/presentation/providers/condition_providers.dart';
 
 class ConditionScreen extends ConsumerWidget {
@@ -71,7 +72,7 @@ class ConditionScreen extends ConsumerWidget {
             const HmAdBanner(),
           ]),
         AsyncValue(hasValue: true) => EmptyState(icon: Icons.search_off_rounded, title: l.notFound),
-        AsyncError() => EmptyState(icon: Icons.cloud_off_rounded, title: l.loadFailedTitle, body: l.loadFailedBody),
+        AsyncError(:final error) => ArchiveError(error: error),
         _ => const SkeletonList(),
       },
     );

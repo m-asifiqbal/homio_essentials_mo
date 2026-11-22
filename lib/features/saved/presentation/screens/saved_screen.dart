@@ -11,6 +11,7 @@ import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/router/app_routes.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/widgets.dart';
+import 'package:homio_essentials/shared/widgets/archive_gate.dart';
 import 'package:homio_essentials/features/saved/presentation/providers/saved_providers.dart';
 import 'package:homio_essentials/shared/providers/library_provider.dart';
 import 'package:homio_essentials/shared/widgets/remedy_row.dart';
@@ -36,7 +37,7 @@ class SavedScreen extends ConsumerWidget {
               ]),
             ),
           ),
-          body: ListView(padding: EdgeInsets.only(top: 14, bottom: context.barClearance), children: [
+          body: HmScrollTopHost(itemExtent: 70, builder: (context, scroll) => ListView(controller: scroll, padding: EdgeInsets.only(top: 14, bottom: context.barClearance), children: [
           ...switch (ref.watch(savedListsProvider)) {
             AsyncValue(:final value?) => [
                 if (value.saved.isEmpty)
@@ -77,10 +78,10 @@ class SavedScreen extends ConsumerWidget {
                     Gutter(child: Padding(padding: const EdgeInsets.only(bottom: 8), child: RemedyRow(r, dense: true, onTap: () => context.push(AppRoutes.remedy(r.slug))))),
                 ],
               ],
-            AsyncError() => [EmptyState(icon: Icons.cloud_off_rounded, title: l.loadFailedTitle, body: l.loadFailedBody)],
+            AsyncError(:final error) => [ArchiveError(error: error)],
             _ => const [SkeletonList(count: 4)],
           },
-          ]),
+          ])),
         ),
       ),
     );

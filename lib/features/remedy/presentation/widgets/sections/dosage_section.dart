@@ -9,6 +9,7 @@ import 'package:homio_essentials/core/archive/domain/entities/models.dart';
 import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/widgets.dart';
+import 'package:homio_essentials/features/remedy/domain/entities/materia_entry.dart';
 import 'package:homio_essentials/features/remedy/presentation/providers/remedy_providers.dart';
 
 class DosageSection extends ConsumerWidget {
@@ -27,12 +28,15 @@ class DosageSection extends ConsumerWidget {
     final pot = sel.potency ?? (pots.contains('30C') ? '30C' : pots.firstOrNull);
     final rule = d.rules.where((x) => x.potency == pot && x.ageGroup == sel.ageGroup).firstOrNull;
     final high = pot == '1M' || pot == '200C';
-    final boerickeDose = r.curated ? null : ref.watch(materiaProvider(r.id)).value?.where((m) => m.book == 'boericke' && m.section == 'Dose').firstOrNull;
+    final doseNotes = r.curated ? const <MateriaEntry>[] : (ref.watch(materiaProvider(r.id)).value ?? const <MateriaEntry>[]).where((m) => m.book == 'boericke' && m.section == 'Dose');
+    // Bangla translation of Boericke's note when reading in Bangla, else his English
+    final boerickeDose = (context.bn ? doseNotes.where((m) => !m.isEnglish).firstOrNull : null) ?? doseNotes.where((m) => m.isEnglish).firstOrNull;
     String ageLabel(String code) => d.ageGroups.where((g) => g.code == code).firstOrNull?.label.of(bangla) ?? code;
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Text(l.doseGuideSub, style: TextStyle(color: c.ink2, fontSize: 12.5, height: 1.45)),
       if (!r.curated) ...[const SizedBox(height: 12), Callout(CalloutKind.warn, child: Text(l.notCuratedDose))],
+      if (d.rules.isEmpty) ...[const SizedBox(height: 12), SectionEmpty(icon: Icons.medication_outlined, title: l.doseEmptyTitle, body: l.doseEmptyBody)],
       if (pots.isNotEmpty) ...[
         const SizedBox(height: 16),
         Cap(l.stepPotency),
@@ -66,7 +70,7 @@ class DosageSection extends ConsumerWidget {
                 child: Text.rich(
                   key: ValueKey('${rule.potency}${rule.ageGroup}'),
                   TextSpan(children: [
-                    TextSpan(text: numL(context, rule.amount), style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w700, letterSpacing: -0.6)),
+                    TextSpan(text: numL(context, rule.amount), style: TextStyle(fontSize: 34, fontWeight: FontWeight.w700, letterSpacing: bangla ? 0 : -0.6)),
                     TextSpan(text: '  ${rule.isTablet ? l.tablets : l.pellets}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ]),
                   style: const TextStyle(color: Colors.white),
@@ -100,6 +104,7 @@ class DosageSection extends ConsumerWidget {
         SelectableText(boerickeDose.body, style: const TextStyle(fontSize: 13.5, height: 1.6)),
         const SizedBox(height: 6),
         Text(l.sourceBoericke, style: TextStyle(fontSize: 11.5, color: c.ink3)),
+        if (!boerickeDose.isEnglish) Padding(padding: const EdgeInsets.only(top: 2), child: Text(l.autoTranslatedNote, style: TextStyle(fontSize: 11.5, color: c.ink3))),
       ],
       const SizedBox(height: 18),
       Cap(l.howToTake),

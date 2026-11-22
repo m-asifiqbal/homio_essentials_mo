@@ -30,7 +30,7 @@ class RemedyHero extends StatelessWidget {
     final white96 = Colors.white.withValues(alpha: .96);
     final stats = <(String, String)>[
       if (r.potencies.isNotEmpty) (l.potency, r.potencies.length > 1 ? '${r.potencies.first} – ${r.potencies.last}' : r.potencies.first),
-      if (r.forms.isNotEmpty) (l.forms, r.forms.take(2).map((f) => f.replaceAll('_', ' ')).join(', ')),
+      if (r.forms.isNotEmpty) (l.forms, r.forms.take(2).map((f) => formLabel(f, context.bn)).join(', ')),
       if (r.curated) (l.route, r.externalUse ? l.routeOralSkin : l.routeOral),
       if (brandCount > 0) (l.tabBrands, priceFrom != null ? l.priceFrom(numL(context, priceFrom!.toStringAsFixed(0))) : numL(context, brandCount)),
     ];
@@ -80,34 +80,4 @@ class RemedyHero extends StatelessWidget {
       ]),
     );
   }
-}
-
-/// Frosted 44 dp icon button for the hero's app bar. The icon cross-fades with a pop (bookmark on / off).
-class GlassButton extends StatelessWidget {
-  const GlassButton({super.key, required this.icon, required this.onTap, required this.tooltip});
-  final IconData icon;
-  final VoidCallback onTap;
-  final String tooltip;
-
-  @override
-  Widget build(BuildContext context) => Tooltip(
-        message: tooltip,
-        child: HmPressable(
-          onTap: onTap,
-          scale: .92,
-          child: Container(
-            width: 42, height: 42,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: .16),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.white.withValues(alpha: .22)),
-            ),
-            child: AnimatedSwitcher(
-              duration: context.motion(HmMotion.fast),
-              transitionBuilder: (child, a) => ScaleTransition(scale: CurvedAnimation(parent: a, curve: Curves.easeOutBack), child: FadeTransition(opacity: a, child: child)),
-              child: Icon(icon, key: ValueKey(icon), color: Colors.white, size: 22, semanticLabel: tooltip),
-            ),
-          ),
-        ),
-      );
 }

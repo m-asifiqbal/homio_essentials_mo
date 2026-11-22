@@ -1,4 +1,4 @@
-/// Thin amber banner when the last update check failed but cached data is shown.
+/// Thin amber banner when the last server check failed: what is already loaded stays usable, tap to retry.
 library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,26 +13,30 @@ class OfflineBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final offline = ref.watch(syncStateProvider) == SyncState.offline;
+    final state = ref.watch(syncStateProvider);
+    final offline = state == SyncState.offline;
     final c = context.hm;
     return AnimatedSize(
-      duration: const Duration(milliseconds: 220),
+      duration: context.motion(HmMotion.normal),
       child: !offline
           ? const SizedBox(width: double.infinity)
-          : Material(
-              color: c.am,
-              child: InkWell(
-                onTap: () => ref.read(archiveProvider.notifier).refresh(),
-                child: SafeArea(
-                  bottom: false,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Row(children: [
-                      Icon(Icons.cloud_off_rounded, size: 16, color: c.amInk),
-                      const SizedBox(width: 8),
-                      Expanded(child: Text(context.l.offlineBanner, style: TextStyle(fontSize: 12.5, color: c.amInk, fontWeight: FontWeight.w600))),
-                      Icon(Icons.refresh_rounded, size: 18, color: c.amInk),
-                    ]),
+          : Semantics(
+              liveRegion: true,
+              child: Material(
+                color: c.am,
+                child: InkWell(
+                  onTap: () => ref.read(archiveProvider.notifier).refresh(force: true),
+                  child: SafeArea(
+                    bottom: false,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Row(children: [
+                        Icon(Icons.wifi_off_rounded, size: 16, color: c.amInk),
+                        const SizedBox(width: 8),
+                        Expanded(child: Text(context.l.offlineBanner, style: TextStyle(fontSize: 12.5, color: c.amInk, fontWeight: FontWeight.w600))),
+                        Icon(Icons.refresh_rounded, size: 18, color: c.amInk),
+                      ]),
+                    ),
                   ),
                 ),
               ),

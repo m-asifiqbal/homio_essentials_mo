@@ -12,6 +12,7 @@ import 'package:homio_essentials/core/router/app_routes.dart';
 import 'package:homio_essentials/core/theme/app_theme.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/widgets.dart';
+import 'package:homio_essentials/shared/widgets/archive_gate.dart';
 
 class RemedyOfDayCard extends StatelessWidget {
   const RemedyOfDayCard({super.key, required this.r});
@@ -86,7 +87,7 @@ class FirstAidRow extends StatelessWidget {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 LetterTile(r.initial, kingdom: r.kingdom, size: 36),
                 const Spacer(),
-                latinText(r.latin, size: 17, color: c.ink, weight: FontWeight.w600, maxLines: 1),
+                latinText(r.latin, size: 15, color: c.ink, weight: FontWeight.w600, maxLines: 1),
                 Text(bangla && r.bnName() != null ? r.bnName()! : (use ?? ''), maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: c.ink2)),
               ]),
             ),
@@ -183,33 +184,6 @@ class AgeRow extends StatelessWidget {
   }
 }
 
-class LearnCard extends StatelessWidget {
-  const LearnCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l;
-    final c = context.hm;
-    return HmCard(
-      color: c.pe, border: c.pe, radius: 28, padding: const EdgeInsets.fromLTRB(20, 22, 20, 22),
-      onTap: () => context.push(AppRoutes.guide),
-      child: Row(children: [
-        Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            HmBadge(l.guideBadge, bg: Colors.white.withValues(alpha: .6), ink: c.peInk),
-            const SizedBox(height: 10),
-            Text(l.potencyGuideTitle, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, height: 1.25, color: c.peInk)),
-            const SizedBox(height: 6),
-            Text(l.potencyGuideBody, style: TextStyle(fontSize: 13, color: c.peInk)),
-          ]),
-        ),
-        const SizedBox(width: 12),
-        Icon(Icons.bubble_chart_outlined, size: 56, color: c.peInk.withValues(alpha: .5)),
-      ]),
-    );
-  }
-}
-
 /// First-download placeholder shaped like the Home page.
 class HomeSkeleton extends StatelessWidget {
   const HomeSkeleton({super.key});
@@ -227,8 +201,8 @@ class HomeSkeleton extends StatelessWidget {
           const HmSkeleton(height: 170, radius: 28),
           const SizedBox(height: 28),
           Row(children: const [Expanded(child: HmSkeleton(height: 96, radius: 20)), SizedBox(width: 12), Expanded(child: HmSkeleton(height: 96, radius: 20)), SizedBox(width: 12), Expanded(child: HmSkeleton(height: 96, radius: 20))]),
-          const SizedBox(height: 18),
-          Center(child: Text(context.l.loadingArchive, textAlign: TextAlign.center, style: TextStyle(color: context.hm.ink2))),
+          const SizedBox(height: 8),
+          const Center(child: ArchiveLoadHint()),
         ]),
       );
 }

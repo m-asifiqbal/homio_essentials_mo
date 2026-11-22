@@ -82,9 +82,11 @@ class SearchController extends Notifier<SearchUiState> {
 
   @override
   SearchUiState build() {
+    // Resolve the voice service NOW: a provider cannot be read from inside its own onDispose callback.
+    final voice = ref.read(voiceInputProvider);
     ref.onDispose(() {
       _timer?.cancel();
-      ref.read(voiceInputProvider).cancel();
+      voice.cancel();
     });
     return const SearchUiState();
   }

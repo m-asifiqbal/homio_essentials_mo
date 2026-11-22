@@ -23,6 +23,7 @@ class RelationsSection extends StatelessWidget {
     final c = context.hm;
     final l = context.l;
     final bangla = context.bn;
+    if (related.isEmpty) return SectionEmpty(icon: Icons.hub_outlined, title: l.relationsEmptyTitle, body: l.relationsEmptyBody);
     final groups = <String, List<RelatedRemedy>>{};
     for (final x in related) {
       (groups[x.type] ??= []).add(x);

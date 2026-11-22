@@ -1,5 +1,5 @@
 /// ============================================================
-/// INFO SCREENS — Offline & data, Medical disclaimer, Sources, Potency guide
+/// INFO SCREENS — Data & updates, Medical disclaimer, Sources, Potency guide
 /// ============================================================
 library;
 
@@ -15,28 +15,28 @@ import 'package:homio_essentials/core/widgets/widgets.dart';
 import 'package:homio_essentials/shared/providers/archive_provider.dart';
 import 'package:homio_essentials/shared/widgets/archive_gate.dart';
 
-class OfflineScreen extends ConsumerWidget {
-  const OfflineScreen({super.key});
+class DataScreen extends ConsumerWidget {
+  const DataScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.hm;
     final l = context.l;
     final sync = ref.watch(syncStateProvider);
-    final size = ref.watch(cacheSizeProvider).value;
+    final unreachable = sync == SyncState.offline;
     return Scaffold(
-      appBar: AppBar(title: Text(l.offlineData)),
+      appBar: AppBar(title: Text(l.dataTitle)),
       body: ArchiveGate(builder: (context, a) {
         final when = DateFormat.yMMMd(context.bn ? 'bn' : 'en').add_jm().format(a.syncedAt);
         final rels = a.relationsByRemedy.values.fold<int>(0, (n, x) => n + x.length);
         return ListView(padding: const EdgeInsets.all(20), children: [
           HmCard(
             child: Row(children: [
-              Icon(sync == SyncState.offline ? Icons.cloud_off_rounded : Icons.cloud_done_outlined, color: sync == SyncState.offline ? c.amInk : c.okInk, size: 28),
+              Icon(unreachable ? Icons.wifi_off_rounded : Icons.cloud_done_outlined, color: unreachable ? c.amInk : c.okInk, size: 28),
               const SizedBox(width: 14),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(sync == SyncState.syncing ? l.updating : l.lastUpdated(when), style: const TextStyle(fontWeight: FontWeight.w700)),
-                Text('${l.storageUsed}: ${size == null ? '…' : sizeL(context, size)}', style: TextStyle(fontSize: 13, color: c.ink2)),
+                Text(sync == SyncState.syncing ? l.updating : unreachable ? l.dataUnreachable : l.dataLoadedAt(when), style: const TextStyle(fontWeight: FontWeight.w700)),
+                Text(l.dataLive, style: TextStyle(fontSize: 13, color: c.ink2)),
               ])),
             ]),
           ),
@@ -47,7 +47,7 @@ class OfflineScreen extends ConsumerWidget {
             label: Text(l.checkUpdates),
           ),
           const SizedBox(height: 24),
-          Cap(l.onThisPhone),
+          Cap(l.inThisArchive),
           const SizedBox(height: 10),
           GridView.count(
             crossAxisCount: 2, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), mainAxisSpacing: 10, crossAxisSpacing: 10, childAspectRatio: 1.9,
@@ -60,7 +60,7 @@ class OfflineScreen extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
-          Callout(CalloutKind.note, child: Text(l.bookTextNote)),
+          Callout(CalloutKind.note, child: Text(l.dataNote)),
         ]);
       }),
     );

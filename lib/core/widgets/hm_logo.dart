@@ -1,5 +1,5 @@
 /// ============================================================
-/// HM LOGO — the Homio Essentials mark (also used to render the app icon)
+/// HM LOGO — the Homiopedia mark (also used to render the app icon)
 /// ============================================================
 ///
 /// Teal squircle, a white leaf with a teal midrib and a peach globule —
@@ -18,7 +18,7 @@ class HmLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
         image: true,
-        label: 'Homio Essentials',
+        label: 'Homiopedia',
         child: CustomPaint(size: Size.square(size), painter: const HomioMarkPainter()),
       );
 }

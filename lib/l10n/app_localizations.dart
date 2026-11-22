@@ -100,7 +100,7 @@ abstract class L {
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:
-  /// **'Homio Essentials'**
+  /// **'Homiopedia'**
   String get appName;
 
   /// No description provided for @tabHome.
@@ -208,26 +208,14 @@ abstract class L {
   /// No description provided for @offlineBanner.
   ///
   /// In en, this message translates to:
-  /// **'You\'re offline — showing the archive saved on this phone.'**
+  /// **'Can\'t reach the server — showing what\'s already loaded. Tap to retry.'**
   String get offlineBanner;
 
   /// No description provided for @loadingArchive.
   ///
   /// In en, this message translates to:
-  /// **'Downloading the archive… this happens only once.'**
+  /// **'Loading the latest remedies…'**
   String get loadingArchive;
-
-  /// No description provided for @loadFailedTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t load the archive'**
-  String get loadFailedTitle;
-
-  /// No description provided for @loadFailedBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Check your internet connection. The app downloads the archive once; after that it works offline.'**
-  String get loadFailedBody;
 
   /// No description provided for @notFound.
   ///
@@ -286,7 +274,7 @@ abstract class L {
   /// No description provided for @welcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Remedies, what they are used for, doses by age and the classic Materia Medica — in English and বাংলা. Works offline once downloaded.'**
+  /// **'Remedies, what they are used for, doses by age and the classic Materia Medica — in English and বাংলা. Always up to date.'**
   String get welcomeBody;
 
   /// No description provided for @welcomePoint1.
@@ -352,7 +340,7 @@ abstract class L {
   /// No description provided for @roleStudentDesc.
   ///
   /// In en, this message translates to:
-  /// **'Adds Materia Medica, keynotes and related remedies'**
+  /// **'Education: adds Materia Medica, keynotes and related remedies'**
   String get roleStudentDesc;
 
   /// No description provided for @rolePractitioner.
@@ -730,7 +718,7 @@ abstract class L {
   /// No description provided for @dosesByAge.
   ///
   /// In en, this message translates to:
-  /// **'Doses by age →'**
+  /// **'Doses by age'**
   String get dosesByAge;
 
   /// No description provided for @safety.
@@ -756,6 +744,12 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Shown in English — the Bangla text is being prepared.'**
   String get inEnglishNote;
+
+  /// No description provided for @autoTranslatedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Bangla text translated automatically from the English book. Check the English (Study tab) if something is unclear.'**
+  String get autoTranslatedNote;
 
   /// No description provided for @keynotes.
   ///
@@ -1057,12 +1051,6 @@ abstract class L {
   /// **'Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898). For study — not medical advice.'**
   String get studyFooter;
 
-  /// No description provided for @materiaOffline.
-  ///
-  /// In en, this message translates to:
-  /// **'This text hasn\'t been downloaded yet. Connect once to read it — after that it stays on your phone.'**
-  String get materiaOffline;
-
   /// No description provided for @studyEmpty.
   ///
   /// In en, this message translates to:
@@ -1270,7 +1258,7 @@ abstract class L {
   /// No description provided for @modeNote_student.
   ///
   /// In en, this message translates to:
-  /// **'Adds Materia Medica, keynotes and related remedies.'**
+  /// **'Education: adds Materia Medica, keynotes and related remedies.'**
   String get modeNote_student;
 
   /// No description provided for @modeNote_practitioner.
@@ -1339,29 +1327,11 @@ abstract class L {
   /// **'Data & about'**
   String get dataAbout;
 
-  /// No description provided for @offlineData.
-  ///
-  /// In en, this message translates to:
-  /// **'Offline & data'**
-  String get offlineData;
-
-  /// No description provided for @upToDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Up to date · {size}'**
-  String upToDate(String size);
-
   /// No description provided for @updating.
   ///
   /// In en, this message translates to:
   /// **'Checking for updates…'**
   String get updating;
-
-  /// No description provided for @offlineSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Offline · {size} saved'**
-  String offlineSaved(String size);
 
   /// No description provided for @medicalDisclaimer.
   ///
@@ -1381,35 +1351,11 @@ abstract class L {
   /// **'Version {v} · data {d}'**
   String versionLine(String v, String d);
 
-  /// No description provided for @lastUpdated.
-  ///
-  /// In en, this message translates to:
-  /// **'Last updated {when}'**
-  String lastUpdated(String when);
-
   /// No description provided for @checkUpdates.
   ///
   /// In en, this message translates to:
-  /// **'Check for updates'**
+  /// **'Refresh now'**
   String get checkUpdates;
-
-  /// No description provided for @onThisPhone.
-  ///
-  /// In en, this message translates to:
-  /// **'On this phone'**
-  String get onThisPhone;
-
-  /// No description provided for @storageUsed.
-  ///
-  /// In en, this message translates to:
-  /// **'Storage used'**
-  String get storageUsed;
-
-  /// No description provided for @bookTextNote.
-  ///
-  /// In en, this message translates to:
-  /// **'Book text for a remedy downloads the first time you open its Study tab, then stays available offline.'**
-  String get bookTextNote;
 
   /// No description provided for @statRemedies.
   ///
@@ -1758,18 +1704,6 @@ abstract class L {
   /// In en, this message translates to:
   /// **'In the books'**
   String get inTheBooks;
-
-  /// No description provided for @booksOffline.
-  ///
-  /// In en, this message translates to:
-  /// **'Searching inside the books needs an internet connection.'**
-  String get booksOffline;
-
-  /// No description provided for @booksFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t search the books right now.'**
-  String get booksFailed;
 
   /// No description provided for @booksExplain.
   ///
@@ -2280,6 +2214,336 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Edit this search'**
   String get useThisSearch;
+
+  /// No description provided for @noInfoYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No information yet'**
+  String get noInfoYet;
+
+  /// No description provided for @overviewEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No overview yet'**
+  String get overviewEmptyTitle;
+
+  /// No description provided for @overviewEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A summary hasn\'t been written for this remedy yet. The Materia Medica section has the book text.'**
+  String get overviewEmptyBody;
+
+  /// No description provided for @keynotesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No keynotes yet'**
+  String get keynotesEmptyTitle;
+
+  /// No description provided for @keynotesEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Characteristic symptoms haven\'t been added for this remedy. The Materia Medica section has its full description.'**
+  String get keynotesEmptyBody;
+
+  /// No description provided for @relationsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No related remedies yet'**
+  String get relationsEmptyTitle;
+
+  /// No description provided for @relationsEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No compare, complementary or antidote remedies are recorded for this remedy.'**
+  String get relationsEmptyBody;
+
+  /// No description provided for @doseEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No dose guide yet'**
+  String get doseEmptyTitle;
+
+  /// No description provided for @doseEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Doses haven\'t been set for this remedy. Please ask a registered homeopath.'**
+  String get doseEmptyBody;
+
+  /// No description provided for @sourcesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No source recorded'**
+  String get sourcesEmptyTitle;
+
+  /// No description provided for @sourcesEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We haven\'t recorded where this entry\'s text comes from yet.'**
+  String get sourcesEmptyBody;
+
+  /// No description provided for @studyEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The source books have no entry for this remedy in the archive.'**
+  String get studyEmptyBody;
+
+  /// No description provided for @openMateria.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Materia Medica'**
+  String get openMateria;
+
+  /// No description provided for @learnPelletsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear your mouth, pour a few into the cap and let them melt under the tongue.'**
+  String get learnPelletsBody;
+
+  /// No description provided for @learnBadgeSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Guide · 4 steps'**
+  String get learnBadgeSteps;
+
+  /// No description provided for @learnStorageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Storing your remedies'**
+  String get learnStorageTitle;
+
+  /// No description provided for @learnStorageBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Cool, dry, and away from sunlight and strong smells.'**
+  String get learnStorageBody;
+
+  /// No description provided for @learnBadgeStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Guide · 1 min read'**
+  String get learnBadgeStorage;
+
+  /// No description provided for @storageTip1.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the bottle tightly closed, in a cool, dry place.'**
+  String get storageTip1;
+
+  /// No description provided for @storageTip2.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it away from direct sunlight, heat and strong smells such as camphor, menthol or perfume.'**
+  String get storageTip2;
+
+  /// No description provided for @storageTip3.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t put unused pellets back into the bottle.'**
+  String get storageTip3;
+
+  /// No description provided for @storageTip4.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep all medicines out of the reach of children.'**
+  String get storageTip4;
+
+  /// No description provided for @learnDoctorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'When to see a doctor'**
+  String get learnDoctorTitle;
+
+  /// No description provided for @learnDoctorBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Severe, sudden or lasting symptoms need medical care. Remedies don\'t replace emergency help.'**
+  String get learnDoctorBody;
+
+  /// No description provided for @learnBadgeSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety'**
+  String get learnBadgeSafety;
+
+  /// No description provided for @learnSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search like a pro'**
+  String get learnSearchTitle;
+
+  /// No description provided for @learnSearchBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Type in English, Bangla or Banglish, or tap the mic. You can search inside the books too.'**
+  String get learnSearchBody;
+
+  /// No description provided for @learnBadgeTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip'**
+  String get learnBadgeTip;
+
+  /// No description provided for @learnMateriaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Go deeper with Materia Medica'**
+  String get learnMateriaTitle;
+
+  /// No description provided for @learnMateriaBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Student or Practitioner mode to read Boericke and Allen section by section.'**
+  String get learnMateriaBody;
+
+  /// No description provided for @learnBadgeStudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Study'**
+  String get learnBadgeStudy;
+
+  /// No description provided for @learnTopicOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic {n} of {total}'**
+  String learnTopicOf(String n, String total);
+
+  /// No description provided for @loadingSlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Still loading — your connection looks slow.'**
+  String get loadingSlow;
+
+  /// No description provided for @errOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get errOfflineTitle;
+
+  /// No description provided for @errOfflineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to Wi-Fi or mobile data, then try again.'**
+  String get errOfflineBody;
+
+  /// No description provided for @errTimeoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection is too slow'**
+  String get errTimeoutTitle;
+
+  /// No description provided for @errTimeoutBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The server took too long to answer. Check your signal and try again.'**
+  String get errTimeoutBody;
+
+  /// No description provided for @errServerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Server problem'**
+  String get errServerTitle;
+
+  /// No description provided for @errServerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong on our side. Please try again in a moment.'**
+  String get errServerBody;
+
+  /// No description provided for @errUnknownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errUnknownTitle;
+
+  /// No description provided for @errUnknownBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load this. Please try again.'**
+  String get errUnknownBody;
+
+  /// No description provided for @errCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Error code: {code}'**
+  String errCode(String code);
+
+  /// No description provided for @dataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data & updates'**
+  String get dataTitle;
+
+  /// No description provided for @dataUpToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Live from the server · loaded {time}'**
+  String dataUpToDate(String time);
+
+  /// No description provided for @dataUnreachable.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t reach the server right now'**
+  String get dataUnreachable;
+
+  /// No description provided for @dataLoadedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Loaded {when}'**
+  String dataLoadedAt(String when);
+
+  /// No description provided for @inThisArchive.
+  ///
+  /// In en, this message translates to:
+  /// **'In this archive'**
+  String get inThisArchive;
+
+  /// No description provided for @dataNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is saved on your phone. The archive loads from our server each time you open the app, so you always see the latest. A remedy\'s book text loads when you open its Study tab.'**
+  String get dataNote;
+
+  /// No description provided for @dataLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Loaded live from the server each time you open the app'**
+  String get dataLive;
+
+  /// No description provided for @exitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit {name}?'**
+  String exitTitle(String name);
+
+  /// No description provided for @exitBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to close the app?'**
+  String get exitBody;
+
+  /// No description provided for @exitConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get exitConfirm;
+
+  /// No description provided for @checkingConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking…'**
+  String get checkingConnection;
+
+  /// No description provided for @needsInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'Homiopedia works online only, so it needs a connection to show remedies. It continues by itself when you are back online.'**
+  String get needsInternet;
+
+  /// No description provided for @exitStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get exitStay;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

@@ -90,7 +90,7 @@ class _AzRemedyListState extends ConsumerState<AzRemedyList> {
                           ),
                       },
                     ),
-                    HmScrollTopPill(controller: _scroll, threshold: 700),
+                    HmScrollTopPill(controller: _scroll, itemExtent: rowExtent),
                     PositionedDirectional(
                       end: 2, top: 0, bottom: context.barClearance,
                       child: _AzIndex(

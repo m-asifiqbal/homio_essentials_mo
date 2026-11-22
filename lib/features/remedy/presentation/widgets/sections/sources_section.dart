@@ -12,6 +12,7 @@ import 'package:homio_essentials/core/constants/app_info.dart';
 import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/utils/launcher.dart';
+import 'package:homio_essentials/core/widgets/widgets.dart';
 import 'package:homio_essentials/features/requests/presentation/widgets/report_sheet.dart';
 import 'package:homio_essentials/shared/providers/archive_provider.dart';
 
@@ -25,6 +26,10 @@ class SourcesSection extends ConsumerWidget {
     final l = context.l;
     final synced = ref.watch(archiveProvider.select((a) => a.value?.syncedAt));
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      if (r.sourceRefs.isEmpty && !r.curated) ...[
+        SectionEmpty(icon: Icons.verified_outlined, title: l.sourcesEmptyTitle, body: l.sourcesEmptyBody),
+        const SizedBox(height: 8),
+      ],
       for (final src in r.sourceRefs)
         Padding(
           padding: const EdgeInsets.only(bottom: 10),

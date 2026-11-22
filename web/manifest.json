@@ -1,11 +1,11 @@
 {
-    "name": "Homio Essentials",
-    "short_name": "Homio",
+    "name": "Homiopedia",
+    "short_name": "Homiopedia",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0B5557",
     "theme_color": "#0F6466",
-    "description": "Homio Essentials — the homeopathic medicine archive (English · বাংলা)",
+    "description": "Homiopedia — the homeopathic medicine archive (English · বাংলা)",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -1,9 +1,7 @@
-Copyright (c) 2015 Indian Type Foundry (info@indiantypefoundry.com)
+Copyright 2022 The Noto Project Authors (https://github.com/notofonts/bengali)
 
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
-http://scripts.sil.org/OFL
-
+Noto Sans Bengali is licensed under the SIL Open Font License, Version 1.1.
+This licence is also available with a FAQ at: https://openfontlicense.org
 
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007

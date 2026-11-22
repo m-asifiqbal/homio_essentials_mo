@@ -38,7 +38,9 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   @override
   void didUpdateWidget(covariant ExploreScreen old) {
     super.didUpdateWidget(old);
-    if (old.initialSegment != widget.initialSegment) _applyDeepLink();
+    // Not directly: changing a provider while the tree is rebuilding throws ("Tried to modify a provider while
+    // the widget tree was building") — a red screen in debug when "Symptoms" / "Companies" is tapped on Home.
+    if (old.initialSegment != widget.initialSegment) WidgetsBinding.instance.addPostFrameCallback((_) => _applyDeepLink());
   }
 
   void _applyDeepLink() {

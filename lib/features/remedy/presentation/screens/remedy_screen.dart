@@ -25,6 +25,7 @@ import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/app_theme.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/widgets.dart';
+import 'package:homio_essentials/shared/widgets/archive_gate.dart';
 import 'package:homio_essentials/features/promotions/presentation/widgets/promo_slider.dart';
 import 'package:homio_essentials/features/remedy/presentation/notifiers/remedy_actions.dart';
 import 'package:homio_essentials/features/remedy/presentation/providers/remedy_providers.dart';
@@ -92,11 +93,25 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
   /// Height of everything pinned above the content: status bar + app bar + index.
   double get _pinned => MediaQuery.paddingOf(context).top + kToolbarHeight + RemedyIndexBar.height;
 
+  bool _spyScheduled = false;
+
   void _onScroll() {
     if (!_scroll.hasClients) return;
     final shown = _scroll.offset > 150;
     if (_titleShown.value != shown) _titleShown.value = shown;
-    if (_ids.isEmpty) return;
+    // The listener fires BEFORE the page has laid out for the new offset, so section positions measured here are
+    // one frame stale — wrong after any big jump (scrollbar drag, last step of a fling). Measure after the frame.
+    if (_spyScheduled) return;
+    _spyScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _spyScheduled = false;
+      if (mounted) _spy();
+    });
+  }
+
+  /// Scroll-spy: highlights the chip of the section being read. Moves only the chip row, never the page.
+  void _spy() {
+    if (!_scroll.hasClients || _ids.isEmpty) return;
     if (_manual != null) {
       if (_animating || (_scroll.offset - _manualOffset).abs() < 12) return;
       _manual = null; // scrolled away from the landing spot (touch, wheel or keyboard): follow the page again
@@ -129,24 +144,48 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
     _syncAllOpen();
   }
 
-  /// Opens a section and scrolls it just under the pinned bars.
-  void _go(String id) {
-    if (!_ids.contains(id)) return;
-    _manual = id;
+  /// Bumped by every jump, so a newer tap cancels an older one still waiting on its layout / correction.
+  int _jumpToken = 0;
+
+  bool _stillCurrent(int token) => mounted && token == _jumpToken && _scroll.hasClients;
+
+  /// Opens a section and scrolls it just under the pinned bars (index chip, "Doses by age", `?tab=` deep link).
+  Future<void> _go(String id) async {
+    if (!_ids.contains(id) || !mounted) return;
+    final token = ++_jumpToken;
+    final wasClosed = !_open.contains(id);
+    _manual = id; // the scroll-spy stays quiet until the user scrolls away from the landing spot
     _active.value = id;
-    setState(() => _open.add(id));
-    _syncAllOpen();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final box = _keys[id]?.currentContext?.findRenderObject();
-      if (box is! RenderBox || !_scroll.hasClients) return;
-      // getOffsetToReveal already accounts for the pinned app bar + index overlapping the viewport's
-      // leading edge, so the card lands right under them; only a small breathing gap is added.
-      final reveal = RenderAbstractViewport.of(box).getOffsetToReveal(box, 0).offset;
-      final target = (reveal - 10).clamp(0.0, _scroll.position.maxScrollExtent);
-      _manualOffset = target;
-      _animating = true;
-      _scroll.animateTo(target, duration: context.motion(const Duration(milliseconds: 380)), curve: Curves.easeOutCubic).whenComplete(() => _animating = false);
-    });
+    _animating = true;
+    if (wasClosed) {
+      setState(() => _open.add(id));
+      _syncAllOpen();
+    }
+    try {
+      await WidgetsBinding.instance.endOfFrame; // let the opened section lay out before measuring
+      if (!_stillCurrent(token)) return;
+      await _scrollTo(id, const Duration(milliseconds: 420));
+      if (wasClosed && _stillCurrent(token)) {
+        // The section was still expanding (240 ms) while we scrolled, so the page kept growing AFTER the
+        // measurement (the end of the page moved): one short correction lands it exactly.
+        await Future<void>.delayed(const Duration(milliseconds: 260));
+        if (_stillCurrent(token)) await _scrollTo(id, const Duration(milliseconds: 180));
+      }
+    } finally {
+      if (token == _jumpToken) _animating = false;
+    }
+  }
+
+  Future<void> _scrollTo(String id, Duration duration) async {
+    final box = _keys[id]?.currentContext?.findRenderObject();
+    if (box is! RenderBox || !box.attached) return;
+    // getOffsetToReveal already accounts for the pinned app bar + index overlapping the viewport's leading
+    // edge, so the card lands right under them; only a small breathing gap is added.
+    final reveal = RenderAbstractViewport.of(box).getOffsetToReveal(box, 0).offset;
+    final target = (reveal - 10).clamp(_scroll.position.minScrollExtent, _scroll.position.maxScrollExtent);
+    _manualOffset = target;
+    if ((target - _scroll.offset).abs() < 1.5) return;
+    await _scroll.animateTo(target, duration: context.motion(duration), curve: Curves.easeOutCubic);
   }
 
   List<RemedySectionSpec> _specs(RemedyDetail d) {
@@ -161,37 +200,35 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
         summary: [r.common(bangla), l.kingdom(r.kingdom)].whereType<String>().join(' · '),
         builder: (_) => OverviewSection(d: d, goSection: _go),
       ),
-      if (d.uses.isNotEmpty)
-        RemedySectionSpec(
-          id: 'uses', title: l.secUses, icon: Icons.fact_check_outlined, tone: (c.dg, c.dgInk), count: d.uses.length,
-          summary: d.uses.take(3).map((u) => d.conditionsById[u.conditionId]?.name(bangla) ?? u.title(bangla)).whereType<String>().join(' · '),
-          builder: (_) => UsesSection(d: d, goSection: _go),
-        ),
+      // Every section is always listed; one without information shows an empty state (icon + message) in its body.
       RemedySectionSpec(
-        id: 'dosage', title: l.secDosage, icon: Icons.medication_outlined, tone: (c.ptBg, c.ptInk),
+        id: 'uses', title: l.secUses, icon: Icons.fact_check_outlined, tone: (c.dg, c.dgInk), count: d.uses.isEmpty ? null : d.uses.length, empty: d.uses.isEmpty,
+        summary: d.uses.take(3).map((u) => d.conditionsById[u.conditionId]?.name(bangla) ?? u.title(bangla)).whereType<String>().join(' · '),
+        builder: (_) => UsesSection(d: d, goSection: _go),
+      ),
+      RemedySectionSpec(
+        id: 'dosage', title: l.secDosage, icon: Icons.medication_outlined, tone: (c.ptBg, c.ptInk), empty: d.rules.isEmpty,
         summary: pots.isEmpty ? l.doseGuideSub : pots.join(' · '),
         builder: (_) => DosageSection(d: d),
       ),
-      if (r.keynotes.isNotEmpty)
-        RemedySectionSpec(
-          id: 'keynotes', title: l.keynotes, icon: Icons.key_rounded, tone: (c.bcBg, c.bcInk), count: r.keynotes.length,
-          summary: r.keynotes.first,
-          builder: (_) => KeynotesSection(notes: r.keynotes),
-        ),
+      RemedySectionSpec(
+        id: 'keynotes', title: l.keynotes, icon: Icons.key_rounded, tone: (c.bcBg, c.bcInk),
+        count: r.keynotes(bangla).isEmpty ? null : r.keynotes(bangla).length, empty: r.keynotes(bangla).isEmpty,
+        summary: r.keynotes(bangla).isEmpty ? null : r.keynotes(bangla).first,
+        builder: (_) => KeynotesSection(notes: r.keynotes(bangla), autoTranslated: r.autoBangla(bangla, 'keynotes'), goSection: _go),
+      ),
       RemedySectionSpec(
         id: 'safety', title: l.secSafety, icon: Icons.health_and_safety_outlined, tone: (c.am, c.amInk), count: d.safety.isEmpty ? null : d.safety.length,
         summary: l.secSafetySummary,
         builder: (_) => SafetySection(d: d),
       ),
-      if (d.related.isNotEmpty)
-        RemedySectionSpec(
-          id: 'relations', title: l.secRelations, icon: Icons.hub_outlined, tone: (c.noBg, c.noInk), count: d.related.length,
-          summary: d.related.take(3).map((x) => x.remedy.latin).join(' · '),
-          builder: (_) => RelationsSection(related: d.related),
-        ),
       RemedySectionSpec(
-        id: 'brands', title: l.secBrands, icon: Icons.sell_outlined, tone: (c.miBg, c.miInk), count: d.products.isEmpty ? null : d.products.length,
-        summary: d.products.isEmpty ? l.brandsEmptyTitle : null,
+        id: 'relations', title: l.secRelations, icon: Icons.hub_outlined, tone: (c.noBg, c.noInk), count: d.related.isEmpty ? null : d.related.length, empty: d.related.isEmpty,
+        summary: d.related.take(3).map((x) => x.remedy.latin).join(' · '),
+        builder: (_) => RelationsSection(related: d.related),
+      ),
+      RemedySectionSpec(
+        id: 'brands', title: l.secBrands, icon: Icons.sell_outlined, tone: (c.miBg, c.miInk), count: d.products.isEmpty ? null : d.products.length, empty: d.products.isEmpty,
         builder: (_) => BrandsSection(d: d),
       ),
       RemedySectionSpec(
@@ -212,13 +249,26 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
     _ids = [for (final s in specs) s.id];
     if (_seeded) return;
     _seeded = true;
-    _open.addAll(['overview', 'uses', 'dosage'].where(_ids.contains));
+    // Start open: the first three sections, unless they have nothing to show.
+    final empty = {for (final s in specs) if (s.empty) s.id};
+    _open.addAll(['overview', 'uses', 'dosage'].where((id) => _ids.contains(id) && !empty.contains(id)));
     final target = _tabToSection[widget.tab];
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _syncAllOpen();
       if (target != null && target != 'overview') _go(target);
     });
   }
+
+  /// Loading / error body with a back arrow (this page has no app bar of its own until the archive is here).
+  Widget _withBack(BuildContext context, Widget body) => SafeArea(
+        child: Column(children: [
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: Padding(padding: const EdgeInsets.all(4), child: IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back_rounded), tooltip: context.l.back)),
+          ),
+          Expanded(child: body),
+        ]),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -235,8 +285,8 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
               Expanded(child: EmptyState(icon: Icons.search_off_rounded, title: l.notFound)),
             ]),
           ),
-        AsyncError() => Center(child: EmptyState(icon: Icons.cloud_off_rounded, title: l.loadFailedTitle, body: l.loadFailedBody)),
-        _ => Center(child: CircularProgressIndicator(color: c.p)),
+        AsyncError(:final error) => _withBack(context, ArchiveError(error: error)),
+        _ => _withBack(context, const _PageSkeleton()),
       },
       bottomNavigationBar: SafeArea(
         child: Container(
@@ -306,12 +356,23 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
                   child: Text(r.latin, maxLines: 1, overflow: TextOverflow.ellipsis, style: latinStyle(size: 19, color: Colors.white)),
                 ),
               ),
-              leading: Padding(padding: const EdgeInsets.all(6), child: GlassButton(icon: Icons.arrow_back_rounded, tooltip: l.back, onTap: () => context.pop())),
+              // A native Material toolbar: plain 24 dp icons in 48 dp touch targets, no rounded backgrounds. The
+              // 56 dp leading slot centres the back arrow, so its glyph sits 16 dp from the screen edge (the
+              // Material spec); the trailing icons keep the standard 12 dp margin.
+              leadingWidth: 56,
+              leading: IconButton(tooltip: l.back, onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back_rounded)),
               actions: [
-                GlassButton(icon: Icons.ios_share_rounded, tooltip: l.share, onTap: () => RemedyActions.share(context, r)),
-                const SizedBox(width: 8),
-                GlassButton(icon: saved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded, tooltip: l.save, onTap: () => RemedyActions.toggleSave(context, ref, widget.slug)),
-                const SizedBox(width: 12),
+                IconButton(tooltip: l.share, onPressed: () => RemedyActions.share(context, r), icon: const Icon(Icons.ios_share_rounded)),
+                IconButton(
+                  tooltip: l.save,
+                  onPressed: () => RemedyActions.toggleSave(context, ref, widget.slug),
+                  // The icon still pops when it flips between saved / not saved.
+                  icon: AnimatedSwitcher(
+                    duration: context.motion(HmMotion.fast),
+                    transitionBuilder: (child, a) => ScaleTransition(scale: CurvedAnimation(parent: a, curve: Curves.easeOutBack), child: FadeTransition(opacity: a, child: child)),
+                    child: Icon(saved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded, key: ValueKey(saved)),
+                  ),
+                ),
               ],
             ),
             SliverToBoxAdapter(child: RemedyHero(r: r, brandCount: d.products.length, priceFrom: priceFrom)),
@@ -324,7 +385,8 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(Hm.gutter, 14, Hm.gutter, 28),
+                // Section cards sit 3 dp closer to the screen edges than the page gutter (16 → 13).
+                padding: const EdgeInsets.fromLTRB(RemedySectionCard.sideInset, 14, RemedySectionCard.sideInset, 28),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                   for (final s in specs) ...[
                     card(s),
@@ -342,7 +404,36 @@ class _RemedyScreenState extends ConsumerState<RemedyScreen> {
         ),
         ),
       ),
-      HmScrollTopPill(controller: _scroll, threshold: 900, top: _pinned + 8),
+      HmScrollTopPill(controller: _scroll, itemExtent: 72), // ~15 section-sized blocks down; sits 6 dp above the action bar
     ]);
   }
+}
+
+/// The remedy page while the archive loads: the same shapes as the real page (title, hero, index chips, cards).
+class _PageSkeleton extends StatelessWidget {
+  const _PageSkeleton();
+
+  @override
+  Widget build(BuildContext context) => ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(Hm.gutter, 4, Hm.gutter, 0),
+        children: [
+          const HmSkeleton(height: 26, width: 230),
+          const SizedBox(height: 10),
+          const HmSkeleton(height: 14, width: 150),
+          const SizedBox(height: 18),
+          const HmSkeleton(height: 150, radius: 28),
+          const SizedBox(height: 18),
+          const Row(children: [
+            HmSkeleton(height: 36, width: 96, radius: 99),
+            SizedBox(width: 8),
+            HmSkeleton(height: 36, width: 110, radius: 99),
+            SizedBox(width: 8),
+            HmSkeleton(height: 36, width: 84, radius: 99),
+          ]),
+          const SizedBox(height: 18),
+          for (var i = 0; i < 3; i++) const Padding(padding: EdgeInsets.only(bottom: 12), child: HmSkeleton(height: 118, radius: 24)),
+          const Center(child: ArchiveLoadHint()),
+        ],
+      );
 }

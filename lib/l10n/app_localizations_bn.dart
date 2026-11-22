@@ -10,7 +10,7 @@ class LBn extends L {
   LBn([String locale = 'bn']) : super(locale);
 
   @override
-  String get appName => 'হোমিও এসেনশিয়ালস';
+  String get appName => 'হোমিওপিডিয়া';
 
   @override
   String get tabHome => 'হোম';
@@ -65,17 +65,10 @@ class LBn extends L {
 
   @override
   String get offlineBanner =>
-      'আপনি অফলাইনে আছেন — ফোনে সংরক্ষিত আর্কাইভ দেখানো হচ্ছে।';
+      'সার্ভারের সাথে যোগাযোগ করা যাচ্ছে না — যা লোড হয়েছে তা-ই দেখানো হচ্ছে। আবার চেষ্টা করতে ট্যাপ করুন।';
 
   @override
-  String get loadingArchive => 'আর্কাইভ ডাউনলোড হচ্ছে… এটি শুধু একবারই হয়।';
-
-  @override
-  String get loadFailedTitle => 'আর্কাইভ লোড করা যায়নি';
-
-  @override
-  String get loadFailedBody =>
-      'ইন্টারনেট সংযোগ পরীক্ষা করুন। অ্যাপটি একবার আর্কাইভ ডাউনলোড করে; এরপর অফলাইনেও চলে।';
+  String get loadingArchive => 'সর্বশেষ ওষুধের তালিকা লোড হচ্ছে…';
 
   @override
   String get notFound => 'এটি আর্কাইভে নেই।';
@@ -106,7 +99,7 @@ class LBn extends L {
 
   @override
   String get welcomeBody =>
-      'ওষুধ, কী কাজে লাগে, বয়স অনুযায়ী মাত্রা আর ক্লাসিক মেটেরিয়া মেডিকা — বাংলা ও ইংরেজিতে। একবার ডাউনলোডের পর অফলাইনেও চলে।';
+      'ওষুধ, কী কাজে লাগে, বয়স অনুযায়ী মাত্রা আর ক্লাসিক মেটেরিয়া মেডিকা — বাংলা ও ইংরেজিতে। সবসময় হালনাগাদ।';
 
   @override
   String get welcomePoint1 => 'বোরিকের মেটেরিয়া মেডিকা থেকে ৭০০+ ওষুধ';
@@ -142,7 +135,7 @@ class LBn extends L {
 
   @override
   String get roleStudentDesc =>
-      'সঙ্গে মেটেরিয়া মেডিকা, কি-নোট ও সম্পর্কিত ওষুধ';
+      'শিক্ষা: সঙ্গে মেটেরিয়া মেডিকা, কি-নোট ও সম্পর্কিত ওষুধ';
 
   @override
   String get rolePractitioner => 'চিকিৎসক';
@@ -342,7 +335,7 @@ class LBn extends L {
   String get tablets => 'ট্যাবলেট';
 
   @override
-  String get dosesByAge => 'বয়স অনুযায়ী মাত্রা →';
+  String get dosesByAge => 'বয়স অনুযায়ী মাত্রা';
 
   @override
   String get safety => 'সতর্কতা';
@@ -357,6 +350,10 @@ class LBn extends L {
 
   @override
   String get inEnglishNote => 'ইংরেজিতে দেখানো হচ্ছে — বাংলা লেখা তৈরি হচ্ছে।';
+
+  @override
+  String get autoTranslatedNote =>
+      'বাংলা লেখাটি ইংরেজি বই থেকে স্বয়ংক্রিয়ভাবে অনুবাদ করা। কোনো অংশ অস্পষ্ট হলে ইংরেজি মূল লেখা (স্টাডি ট্যাব) দেখুন।';
 
   @override
   String get keynotes => 'কি-নোট';
@@ -526,10 +523,6 @@ class LBn extends L {
       'পাবলিক-ডোমেইন লেখা: ডব্লিউ. বোরিক, Pocket Manual of Homoeopathic Materia Medica (১৯২৭); এইচ. সি. অ্যালেন, Keynotes (১৮৯৮)। অধ্যয়নের জন্য — চিকিৎসা পরামর্শ নয়।';
 
   @override
-  String get materiaOffline =>
-      'এই লেখা এখনো ডাউনলোড হয়নি। একবার ইন্টারনেটে যুক্ত হয়ে পড়ুন — এরপর ফোনেই থাকবে।';
-
-  @override
   String get studyEmpty => 'এই ওষুধের গ্রন্থ-লেখা এখনো নেই।';
 
   @override
@@ -633,7 +626,7 @@ class LBn extends L {
 
   @override
   String get modeNote_student =>
-      'সঙ্গে মেটেরিয়া মেডিকা, কি-নোট ও সম্পর্কিত ওষুধ।';
+      'শিক্ষা: সঙ্গে মেটেরিয়া মেডিকা, কি-নোট ও সম্পর্কিত ওষুধ।';
 
   @override
   String get modeNote_practitioner => 'সব কিছু, উৎস-গ্রন্থ ও পূর্ণ লেখাসহ।';
@@ -670,20 +663,7 @@ class LBn extends L {
   String get dataAbout => 'ডেটা ও পরিচিতি';
 
   @override
-  String get offlineData => 'অফলাইন ও ডেটা';
-
-  @override
-  String upToDate(String size) {
-    return 'হালনাগাদ · $size';
-  }
-
-  @override
   String get updating => 'আপডেট দেখা হচ্ছে…';
-
-  @override
-  String offlineSaved(String size) {
-    return 'অফলাইন · $size সংরক্ষিত';
-  }
 
   @override
   String get medicalDisclaimer => 'চিকিৎসা-সংক্রান্ত সতর্কতা';
@@ -697,22 +677,7 @@ class LBn extends L {
   }
 
   @override
-  String lastUpdated(String when) {
-    return 'শেষ হালনাগাদ $when';
-  }
-
-  @override
-  String get checkUpdates => 'আপডেট দেখুন';
-
-  @override
-  String get onThisPhone => 'এই ফোনে';
-
-  @override
-  String get storageUsed => 'ব্যবহৃত জায়গা';
-
-  @override
-  String get bookTextNote =>
-      'কোনো ওষুধের গ্রন্থ-লেখা প্রথমবার ‘অধ্যয়ন’ ট্যাব খুললে ডাউনলোড হয়, এরপর অফলাইনেও পাওয়া যায়।';
+  String get checkUpdates => 'এখনই রিফ্রেশ করুন';
 
   @override
   String get statRemedies => 'ওষুধ';
@@ -896,12 +861,6 @@ class LBn extends L {
 
   @override
   String get inTheBooks => 'বইয়ে';
-
-  @override
-  String get booksOffline => 'বইয়ের ভেতরে খুঁজতে ইন্টারনেট সংযোগ লাগবে।';
-
-  @override
-  String get booksFailed => 'এখন বইয়ে খোঁজা যাচ্ছে না।';
 
   @override
   String get booksExplain =>
@@ -1187,4 +1146,197 @@ class LBn extends L {
 
   @override
   String get useThisSearch => 'এই সার্চ বদলান';
+
+  @override
+  String get noInfoYet => 'এখনও কোনো তথ্য নেই';
+
+  @override
+  String get overviewEmptyTitle => 'সারসংক্ষেপ এখনও নেই';
+
+  @override
+  String get overviewEmptyBody =>
+      'এই ওষুধের সারসংক্ষেপ এখনও লেখা হয়নি। বইয়ের লেখা ম্যাটেরিয়া মেডিকা অংশে আছে।';
+
+  @override
+  String get keynotesEmptyTitle => 'এখনও কীনোট নেই';
+
+  @override
+  String get keynotesEmptyBody =>
+      'এই ওষুধের বৈশিষ্ট্যসূচক লক্ষণ এখনও যোগ হয়নি। পূর্ণ বিবরণ ম্যাটেরিয়া মেডিকা অংশে আছে।';
+
+  @override
+  String get relationsEmptyTitle => 'সম্পর্কিত ওষুধ এখনও নেই';
+
+  @override
+  String get relationsEmptyBody =>
+      'এই ওষুধের জন্য তুলনীয়, পরিপূরক বা প্রতিষেধক ওষুধ এখনও নথিভুক্ত নেই।';
+
+  @override
+  String get doseEmptyTitle => 'মাত্রার নির্দেশিকা এখনও নেই';
+
+  @override
+  String get doseEmptyBody =>
+      'এই ওষুধের মাত্রা এখনও ঠিক করা হয়নি। নিবন্ধিত হোমিওপ্যাথের পরামর্শ নিন।';
+
+  @override
+  String get sourcesEmptyTitle => 'কোনো সূত্র নথিভুক্ত নেই';
+
+  @override
+  String get sourcesEmptyBody =>
+      'এই লেখা কোথা থেকে নেওয়া তা এখনও নথিভুক্ত হয়নি।';
+
+  @override
+  String get studyEmptyBody =>
+      'আর্কাইভে এই ওষুধের জন্য বইগুলোতে কোনো লেখা নেই।';
+
+  @override
+  String get openMateria => 'ম্যাটেরিয়া মেডিকা খুলুন';
+
+  @override
+  String get learnPelletsBody =>
+      'মুখ পরিষ্কার করুন, ঢাকনায় কয়েকটি বড়ি ঢেলে জিভের নিচে গলতে দিন।';
+
+  @override
+  String get learnBadgeSteps => 'নির্দেশিকা · ৪ ধাপ';
+
+  @override
+  String get learnStorageTitle => 'ওষুধ সংরক্ষণ';
+
+  @override
+  String get learnStorageBody =>
+      'ঠান্ডা, শুকনো জায়গায়, রোদ ও তীব্র গন্ধ থেকে দূরে।';
+
+  @override
+  String get learnBadgeStorage => 'নির্দেশিকা · ১ মিনিট';
+
+  @override
+  String get storageTip1 =>
+      'শিশির মুখ শক্ত করে বন্ধ করে ঠান্ডা ও শুকনো জায়গায় রাখুন।';
+
+  @override
+  String get storageTip2 =>
+      'সরাসরি রোদ, তাপ এবং কর্পূর, মেন্থল বা সুগন্ধির মতো তীব্র গন্ধ থেকে দূরে রাখুন।';
+
+  @override
+  String get storageTip3 => 'ব্যবহার না হওয়া বড়ি আবার শিশিতে ফেরত দেবেন না।';
+
+  @override
+  String get storageTip4 => 'সব ওষুধ শিশুদের নাগালের বাইরে রাখুন।';
+
+  @override
+  String get learnDoctorTitle => 'কখন ডাক্তার দেখাবেন';
+
+  @override
+  String get learnDoctorBody =>
+      'তীব্র, হঠাৎ বা দীর্ঘস্থায়ী উপসর্গে চিকিৎসা নিন। ওষুধ জরুরি সাহায্যের বিকল্প নয়।';
+
+  @override
+  String get learnBadgeSafety => 'নিরাপত্তা';
+
+  @override
+  String get learnSearchTitle => 'দক্ষভাবে খুঁজুন';
+
+  @override
+  String get learnSearchBody =>
+      'ইংরেজি, বাংলা বা বাংলিশে লিখুন, অথবা মাইক চাপুন। বইয়ের ভেতরেও খুঁজতে পারবেন।';
+
+  @override
+  String get learnBadgeTip => 'পরামর্শ';
+
+  @override
+  String get learnMateriaTitle => 'ম্যাটেরিয়া মেডিকায় আরও গভীরে';
+
+  @override
+  String get learnMateriaBody =>
+      'বোয়েরিক ও অ্যালেনের লেখা অংশ ধরে পড়তে স্টুডেন্ট বা প্র্যাকটিশনার মোডে যান।';
+
+  @override
+  String get learnBadgeStudy => 'অধ্যয়ন';
+
+  @override
+  String learnTopicOf(String n, String total) {
+    return 'বিষয় $n / $total';
+  }
+
+  @override
+  String get loadingSlow => 'এখনও লোড হচ্ছে — আপনার সংযোগ ধীর মনে হচ্ছে।';
+
+  @override
+  String get errOfflineTitle => 'ইন্টারনেট সংযোগ নেই';
+
+  @override
+  String get errOfflineBody =>
+      'ওয়াই-ফাই বা মোবাইল ডেটা চালু করে আবার চেষ্টা করুন।';
+
+  @override
+  String get errTimeoutTitle => 'সংযোগ খুব ধীর';
+
+  @override
+  String get errTimeoutBody =>
+      'সার্ভার সাড়া দিতে অনেক সময় নিচ্ছে। সিগন্যাল দেখে আবার চেষ্টা করুন।';
+
+  @override
+  String get errServerTitle => 'সার্ভারে সমস্যা';
+
+  @override
+  String get errServerBody =>
+      'আমাদের দিকে একটি সমস্যা হয়েছে। একটু পরে আবার চেষ্টা করুন।';
+
+  @override
+  String get errUnknownTitle => 'কিছু একটা সমস্যা হয়েছে';
+
+  @override
+  String get errUnknownBody => 'এটি লোড করা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String errCode(String code) {
+    return 'ত্রুটি কোড: $code';
+  }
+
+  @override
+  String get dataTitle => 'ডেটা ও আপডেট';
+
+  @override
+  String dataUpToDate(String time) {
+    return 'সার্ভার থেকে সরাসরি · লোড হয়েছে $time';
+  }
+
+  @override
+  String get dataUnreachable => 'এখন সার্ভারের সাথে যোগাযোগ করা যাচ্ছে না';
+
+  @override
+  String dataLoadedAt(String when) {
+    return 'লোড হয়েছে $when';
+  }
+
+  @override
+  String get inThisArchive => 'এই আর্কাইভে';
+
+  @override
+  String get dataNote =>
+      'আপনার ফোনে কিছুই সংরক্ষিত হয় না। অ্যাপ খুললেই আর্কাইভ আমাদের সার্ভার থেকে লোড হয়, তাই সবসময় সর্বশেষ তথ্য দেখেন। কোনো ওষুধের গ্রন্থ-লেখা ‘অধ্যয়ন’ ট্যাব খুললে লোড হয়।';
+
+  @override
+  String get dataLive => 'অ্যাপ খুললেই সার্ভার থেকে সরাসরি লোড হয়';
+
+  @override
+  String exitTitle(String name) {
+    return '$name থেকে বের হবেন?';
+  }
+
+  @override
+  String get exitBody => 'আপনি কি অ্যাপটি বন্ধ করতে চান?';
+
+  @override
+  String get exitConfirm => 'বের হন';
+
+  @override
+  String get checkingConnection => 'যাচাই করা হচ্ছে…';
+
+  @override
+  String get needsInternet =>
+      'হোমিওপিডিয়া শুধু অনলাইনে চলে, তাই ওষুধ দেখাতে ইন্টারনেট লাগে। সংযোগ ফিরলে নিজে থেকেই চালু হবে।';
+
+  @override
+  String get exitStay => 'থাকুন';
 }

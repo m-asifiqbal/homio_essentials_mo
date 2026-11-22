@@ -19,7 +19,8 @@ class SymptomList extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.hm;
     final bangla = context.bn;
-    return ListView.separated(
+    return HmScrollTopHost(itemExtent: 72, builder: (context, scroll) => ListView.separated(
+      controller: scroll,
       padding: EdgeInsets.fromLTRB(Hm.gutter, 4, Hm.gutter, context.barClearance),
       itemCount: archive.conditions.length,
       separatorBuilder: (_, _) => const SizedBox(height: 8),
@@ -42,7 +43,7 @@ class SymptomList extends StatelessWidget {
           ]),
         );
       },
-    );
+    ));
   }
 }
 

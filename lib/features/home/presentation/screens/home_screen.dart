@@ -19,8 +19,10 @@ import 'package:homio_essentials/core/theme/tokens.dart';
 import 'package:homio_essentials/core/widgets/widgets.dart';
 import 'package:homio_essentials/features/home/presentation/providers/home_providers.dart';
 import 'package:homio_essentials/features/home/presentation/widgets/home_sections.dart';
+import 'package:homio_essentials/features/home/presentation/widgets/learn_slider.dart';
 import 'package:homio_essentials/features/promotions/presentation/widgets/promo_slider.dart';
 import 'package:homio_essentials/shared/providers/archive_provider.dart';
+import 'package:homio_essentials/shared/widgets/archive_gate.dart';
 import 'package:homio_essentials/shared/widgets/lang_pill.dart';
 import 'package:homio_essentials/shared/widgets/remedy_row.dart';
 
@@ -44,7 +46,7 @@ class HomeScreen extends ConsumerWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(AppInfo.localizedName(context.bn), maxLines: 1, overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(letterSpacing: -0.2)),
+                      style: Theme.of(context).textTheme.titleLarge),
                 ),
                 const SizedBox(width: 8),
                 const LangPill(),
@@ -66,11 +68,8 @@ class HomeScreen extends ConsumerWidget {
               slivers: [
                 ...switch (state) {
                   AsyncValue(:final value?) => _content(context, value),
-                  AsyncError() => [
-                      SliverToBoxAdapter(
-                        child: EmptyState(icon: Icons.cloud_off_rounded, title: l.loadFailedTitle, body: l.loadFailedBody, action: l.retry,
-                            onAction: () => ref.invalidate(archiveProvider)),
-                      ),
+                  AsyncError(:final error) => [
+                      SliverFillRemaining(hasScrollBody: false, child: ArchiveError(error: error)),
                     ],
                   _ => const [SliverToBoxAdapter(child: HomeSkeleton())],
                 },
@@ -121,7 +120,7 @@ class HomeScreen extends ConsumerWidget {
             Gutter(child: Padding(padding: const EdgeInsets.only(bottom: 10), child: RemedyRow(r, onTap: () => context.push(AppRoutes.remedy(r.slug))))),
         ],
         SectionHeader(l.learnBasics, top: 26),
-        const Gutter(child: LearnCard()),
+        const LearnSlider(),
       ]),
     ];
   }

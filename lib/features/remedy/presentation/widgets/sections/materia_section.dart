@@ -28,6 +28,11 @@ class MateriaSection extends ConsumerStatefulWidget {
 class _MateriaSectionState extends ConsumerState<MateriaSection> {
   String? _book;
 
+  /// Which book sub-sections the person opened or closed (key → open). Kept here, NOT in PageStorage: a
+  /// PageStorageKey above a SelectableText shares one storage slot between the ExpansionTile's open flag (a bool)
+  /// and the text's own scroll offset (a double), and the first tap crashed the body into a grey error box.
+  final _open = <String, bool>{};
+
   @override
   Widget build(BuildContext context) {
     final c = context.hm;
@@ -35,8 +40,10 @@ class _MateriaSectionState extends ConsumerState<MateriaSection> {
     final role = ref.watch(settingsProvider.select((s) => s.role));
     final r = widget.d.remedy;
     return switch (ref.watch(materiaProvider(r.id))) {
-      AsyncValue(:final value?) => () {
-          if (value.isEmpty) return Padding(padding: const EdgeInsets.symmetric(vertical: 8), child: Text(l.studyEmpty, style: TextStyle(color: c.ink2)));
+      AsyncValue(value: final all?) => () {
+          // the Study tab shows the original English book text; Bangla rows (dose notes) are used on the dosage page
+          final value = all.where((e) => e.isEnglish).toList();
+          if (value.isEmpty) return SectionEmpty(icon: Icons.menu_book_outlined, title: l.studyEmpty, body: l.studyEmptyBody);
           final books = value.map((e) => e.book).toSet().toList()..sort((x, y) => x == 'boericke' ? -1 : y == 'boericke' ? 1 : x.compareTo(y));
           final book = _book != null && books.contains(_book) ? _book! : books.first;
           final entries = value.where((e) => e.book == book).toList();
@@ -60,17 +67,22 @@ class _MateriaSectionState extends ConsumerState<MateriaSection> {
             if (worse != null || better != null) ...[
               const SizedBox(height: 12),
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                if (worse != null) Expanded(child: _Modality(title: '‹ ${worse.section}', body: worse.body, bg: c.dg, ink: c.dgInk)),
+                if (worse != null) Expanded(child: _Modality(title: '‹ ${sectionLabel(worse.section, context.bn)}', body: worse.body, bg: c.dg, ink: c.dgInk)),
                 if (worse != null && better != null) const SizedBox(width: 10),
-                if (better != null) Expanded(child: _Modality(title: '› ${better.section}', body: better.body, bg: c.ptBg, ink: c.ptInk)),
+                if (better != null) Expanded(child: _Modality(title: '› ${sectionLabel(better.section, context.bn)}', body: better.body, bg: c.ptBg, ink: c.ptInk)),
               ]),
             ],
             const SizedBox(height: 14),
             for (final (i, e) in rest.indexed)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                // own storage key: ExpansionTile keeps its open state in PageStorage
-                child: _BookSection(key: PageStorageKey('${e.book}:${e.sort}:${e.section}'), e: e, initiallyOpen: i < 1, d: widget.d),
+                child: _BookSection(
+                  key: ValueKey('${e.book}:${e.sort}:${e.section}'),
+                  e: e,
+                  initiallyOpen: _open['${e.book}:${e.sort}:${e.section}'] ?? i < 1,
+                  onToggle: (open) => _open['${e.book}:${e.sort}:${e.section}'] = open,
+                  d: widget.d,
+                ),
               ),
             const SizedBox(height: 4),
             Text(l.studyFooter, style: TextStyle(fontSize: 11.5, color: c.ink3, height: 1.55)),
@@ -81,11 +93,7 @@ class _MateriaSectionState extends ConsumerState<MateriaSection> {
               ),
           ]);
         }(),
-      AsyncError() => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Callout(CalloutKind.warn, icon: Icons.cloud_off_rounded, child: Text(l.materiaOffline)),
-          const SizedBox(height: 12),
-          OutlinedButton(onPressed: () => ref.invalidate(materiaProvider(r.id)), child: Text(l.retry)),
-        ]),
+      AsyncError(:final error) => HmErrorState(error: error, compact: true, onRetry: () => ref.invalidate(materiaProvider(r.id))),
       _ => Column(children: [for (var i = 0; i < 4; i++) const Padding(padding: EdgeInsets.only(bottom: 10), child: HmSkeleton(height: 48, radius: 16))]),
     };
   }
@@ -134,9 +142,10 @@ class _Modality extends StatelessWidget {
 }
 
 class _BookSection extends StatelessWidget {
-  const _BookSection({super.key, required this.e, required this.initiallyOpen, required this.d});
+  const _BookSection({super.key, required this.e, required this.initiallyOpen, required this.onToggle, required this.d});
   final MateriaEntry e;
   final bool initiallyOpen;
+  final ValueChanged<bool> onToggle;
   final RemedyDetail d;
 
   @override
@@ -144,18 +153,23 @@ class _BookSection extends StatelessWidget {
     final c = context.hm;
     final l = context.l;
     final isRel = e.section == 'Relationship' || e.section == 'Relations';
-    return Container(
-      decoration: BoxDecoration(color: c.bg, borderRadius: BorderRadius.circular(16), border: Border.all(color: c.ln)),
+    // A Material (not a coloured DecoratedBox) around the ExpansionTile: ListTile paints its ink on the nearest
+    // Material, and Flutter's debug assertion "ListTile background color or ink splashes may be invisible"
+    // turned every book section into a red screen.
+    return Material(
+      color: c.bg,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: BorderSide(color: c.ln)),
       clipBehavior: Clip.antiAlias,
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           initiallyExpanded: initiallyOpen,
+          onExpansionChanged: onToggle,
           tilePadding: const EdgeInsets.symmetric(horizontal: 14),
           childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
           iconColor: c.p, collapsedIconColor: c.ink3,
-          title: Text(e.section, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+          title: Text(sectionLabel(e.section, context.bn), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
           children: [
             SelectableText(e.body, style: TextStyle(fontSize: 13.5, height: 1.62, color: c.ink)),
             if (isRel && d.related.isNotEmpty) ...[

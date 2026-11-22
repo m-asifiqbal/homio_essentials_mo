@@ -24,9 +24,14 @@ class OverviewSection extends StatelessWidget {
     final typical = d.typicalDose;
     final summary = r.summary(bangla);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      if (summary == null && d.uses.isEmpty && typical == null) ...[
+        SectionEmpty(icon: Icons.info_outline_rounded, title: l.overviewEmptyTitle, body: l.overviewEmptyBody, action: l.openMateria, onAction: () => goSection('materia')),
+        const SizedBox(height: 12),
+      ],
       if (summary != null) ...[
         SelectableText(summary, style: TextStyle(fontSize: 14.5, height: 1.65, color: c.ink)),
         if (r.summaryIsFallback(bangla)) Padding(padding: const EdgeInsets.only(top: 6), child: Text(l.inEnglishNote, style: TextStyle(fontSize: 11.5, color: c.ink3))),
+        if (!r.summaryIsFallback(bangla) && r.autoBangla(bangla, 'summary')) Padding(padding: const EdgeInsets.only(top: 6), child: Text(l.autoTranslatedNote, style: TextStyle(fontSize: 11.5, color: c.ink3))),
         const SizedBox(height: 16),
       ],
       if (d.uses.isNotEmpty) ...[
@@ -49,11 +54,13 @@ class OverviewSection extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           onTap: () => goSection('dosage'),
           child: Row(children: [
+            // Grows with its content (large text sizes, taller Bangla script) instead of a fixed 58 x 58 box.
             Container(
-              width: 58, height: 58,
+              constraints: const BoxConstraints(minWidth: 58, minHeight: 58),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
               decoration: BoxDecoration(color: c.sf, borderRadius: BorderRadius.circular(16)),
-              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text(numL(context, typical.amount), style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700, color: c.pd, height: 1)),
+              child: Column(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(numL(context, typical.amount), style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700, color: c.pd, height: 1.1)),
                 Text(typical.isTablet ? l.tablets : l.pellets, style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, color: c.pd)),
               ]),
             ),
@@ -63,7 +70,12 @@ class OverviewSection extends StatelessWidget {
                 Cap(l.typicalAdultDose),
                 const SizedBox(height: 2),
                 Text('${typical.potency} · ${typical.frequency.of(bangla) ?? ''}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                Text(l.dosesByAge, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: c.p)),
+                // A real icon, not the "→" character (neither bundled font has that glyph).
+                Row(mainAxisSize: MainAxisSize.min, children: [
+                  Flexible(child: Text(l.dosesByAge, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: c.p))),
+                  const SizedBox(width: 4),
+                  Icon(Icons.arrow_forward_rounded, size: 14, color: c.p),
+                ]),
               ]),
             ),
           ]),
@@ -78,8 +90,8 @@ class OverviewSection extends StatelessWidget {
         (l.factAbbr, r.abbr),
         (l.factKingdom, r.kingdom == null ? null : l.kingdom(r.kingdom)),
         (l.factFamily, r.family),
-        (l.factGroups, r.groups.isEmpty ? null : r.groups.map((g) => g.replaceAll('_', ' ')).join(', ')),
-        (l.forms, r.forms.isEmpty ? null : r.forms.map((f) => f.replaceAll('_', ' ')).join(', ')),
+        (l.factGroups, r.groups.isEmpty ? null : r.groups.map((g) => groupLabel(g, bangla)).join(', ')),
+        (l.forms, r.forms.isEmpty ? null : r.forms.map((f) => formLabel(f, bangla)).join(', ')),
         (l.potency, r.potencies.isEmpty ? null : r.potencies.join(', ')),
         (l.route, r.curated ? (r.externalUse ? l.routeOralSkin : l.routeOral) : null),
       ]),

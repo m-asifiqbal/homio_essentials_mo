@@ -1,11 +1,12 @@
 import 'package:homio_essentials/core/archive/domain/entities/models.dart';
 
-/// The whole browsable archive, held in memory (≈1 MB) and cached on the device.
+/// The whole browsable archive, held in memory only (≈1 MB of rows). It is downloaded at every launch and
+/// never written to the phone; the raw rows are dropped once the lookup tables below are built.
 /// Long book text (materia medica) is fetched per remedy by [MateriaRepository].
 class Archive {
-  Archive._(this.tables, this.signature, this.syncedAt);
+  Archive._(this.signature, this.syncedAt);
 
-  final Map<String, List<Json>> tables;
+  /// Server change signature this copy was built from (empty when the manifest was unreadable).
   final String signature;
   final DateTime syncedAt;
 
@@ -35,7 +36,7 @@ class Archive {
   }
 
   factory Archive.build(Map<String, List<Json>> t, String signature, DateTime syncedAt) {
-    final a = Archive._(t, signature, syncedAt);
+    final a = Archive._(signature, syncedAt);
     List<Json> rows(String name) => t[name] ?? const [];
 
     a.remedies = rows('remedies').map(Remedy.from).toList()..sort((x, y) => x.latin.toLowerCase().compareTo(y.latin.toLowerCase()));
@@ -80,12 +81,11 @@ class Archive {
     return a;
   }
 
+  /// Test/fixture helper: `{signature, synced_at, tables}` as written by tool/fetch_test_fixture.mjs.
   factory Archive.fromJson(Json j) {
     final tables = (j['tables'] as Map).map((k, v) => MapEntry(k as String, (v as List).map((e) => Map<String, dynamic>.from(e as Map)).toList()));
     return Archive.build(tables, j['signature'] ?? '', DateTime.tryParse(j['synced_at'] ?? '') ?? DateTime(2000));
   }
-
-  Json toJson() => {'signature': signature, 'synced_at': syncedAt.toIso8601String(), 'tables': tables};
 
   // ---- queries used by view models ----
   List<Remedy> related(Remedy r, {Set<String>? types}) {

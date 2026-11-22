@@ -1,16 +1,18 @@
 /// ============================================================
-/// HM SCROLL-TO-TOP PILL — appears after a long scroll, jumps back to the top
+/// HM BACK-TO-TOP PILL — bottom of the list, 6 dp above the bar, after 15 items
 /// ============================================================
 ///
-/// From mgi_recruitment's `ScrollToTopPill`: a small floating pill that fades in
-/// once the list is ≥ [threshold] dp down and the user starts heading back UP.
-/// Tapping animates back to the top.
+/// From mgi_recruitment's `ScrollToTopPill`, placed where thumbs are: floating at the BOTTOM of the
+/// scroll area, [bottom] (6 dp) above whatever sits under it (tab bar / action bar). It appears once the
+/// user has scrolled past [afterItems] (15) items — `afterItems × itemExtent` dp — and is not currently
+/// scrolling down; it hides again when they scroll down or reach the top. Tapping animates to the top.
 ///
-/// Wrap the list in a Stack and put this on top; give it the list's controller.
+/// Use [HmScrollTopHost] around a list (it owns the controller), or put an [HmScrollTopPill] inside your
+/// own Stack when you already have a controller.
 /// ============================================================
 library;
 
-import 'package:flutter/rendering.dart';
+import 'package:flutter/rendering.dart' show ScrollDirection;
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -18,10 +20,19 @@ import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 
 class HmScrollTopPill extends StatefulWidget {
-  const HmScrollTopPill({super.key, required this.controller, this.threshold = 600, this.top = 10});
+  const HmScrollTopPill({super.key, required this.controller, required this.itemExtent, this.afterItems = 15, this.bottom = 6});
   final ScrollController controller;
-  final double threshold;
-  final double top;
+
+  /// Typical height of one list item in dp.
+  final double itemExtent;
+
+  /// How many items must have been scrolled through before the pill shows.
+  final int afterItems;
+
+  /// Gap between the pill and the bottom edge of the scroll area (the bar below it).
+  final double bottom;
+
+  double get threshold => itemExtent * afterItems;
 
   @override
   State<HmScrollTopPill> createState() => _HmScrollTopPillState();
@@ -55,32 +66,22 @@ class _HmScrollTopPillState extends State<HmScrollTopPill> {
     final c = widget.controller;
     if (!c.hasClients) return;
     final p = c.position;
-    // Shown once the user heads back UP from far down; hidden when they head down again or reach the top.
-    // A jump / animateTo reports "idle", which keeps the current state — so an index jump or a letter jump
-    // never makes the pill pop up on top of the content it just landed on.
-    final bool next;
-    if (p.pixels <= widget.threshold) {
-      next = false;
-    } else {
-      next = switch (p.userScrollDirection) {
-        ScrollDirection.forward => true,
-        ScrollDirection.reverse => false,
-        ScrollDirection.idle => _show,
-      };
-    }
+    // Past the threshold: shown while moving up or resting, hidden while the user is actively scrolling down
+    // (it would sit on top of the content they are reading). A jump / animateTo reports "idle".
+    final next = p.pixels > widget.threshold && p.userScrollDirection != ScrollDirection.reverse;
     if (next != _show) setState(() => _show = next);
   }
 
   void _top() {
     HapticFeedback.selectionClick();
-    widget.controller.animateTo(0, duration: context.motion(const Duration(milliseconds: 420)), curve: Curves.easeOutCubic);
+    widget.controller.animateTo(0, duration: context.motion(const Duration(milliseconds: 450)), curve: Curves.easeOutCubic);
   }
 
   @override
   Widget build(BuildContext context) {
     final c = context.hm;
     return Positioned(
-      top: widget.top,
+      bottom: widget.bottom,
       left: 0,
       right: 0,
       child: IgnorePointer(
@@ -88,26 +89,31 @@ class _HmScrollTopPillState extends State<HmScrollTopPill> {
         child: AnimatedSlide(
           duration: context.motion(HmMotion.normal),
           curve: HmMotion.curve,
-          offset: _show ? Offset.zero : const Offset(0, -1.6),
+          offset: _show ? Offset.zero : const Offset(0, 1.8), // rises from just below its resting place
           child: AnimatedOpacity(
             duration: context.motion(HmMotion.fast),
             opacity: _show ? 1 : 0,
             child: Center(
-              child: Material(
-                color: c.p,
-                elevation: 3,
-                shadowColor: Colors.black45,
-                shape: const StadiumBorder(),
-                child: InkWell(
-                  customBorder: const StadiumBorder(),
-                  onTap: _top,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-                    child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(Icons.arrow_upward_rounded, size: 16, color: c.onp),
-                      const SizedBox(width: 6),
-                      Text(context.l.backToTop, style: TextStyle(color: c.onp, fontSize: 12.5, fontWeight: FontWeight.w600)),
-                    ]),
+              child: Semantics(
+                button: true,
+                label: context.l.backToTop,
+                excludeSemantics: true,
+                child: Material(
+                  color: c.p,
+                  elevation: 3,
+                  shadowColor: Colors.black45,
+                  shape: const StadiumBorder(),
+                  child: InkWell(
+                    customBorder: const StadiumBorder(),
+                    onTap: _top,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+                      child: Row(mainAxisSize: MainAxisSize.min, children: [
+                        Icon(Icons.arrow_upward_rounded, size: 16, color: c.onp),
+                        const SizedBox(width: 6),
+                        Text(context.l.backToTop, style: TextStyle(color: c.onp, fontSize: 12.5, fontWeight: FontWeight.w600)),
+                      ]),
+                    ),
                   ),
                 ),
               ),
@@ -117,4 +123,31 @@ class _HmScrollTopPillState extends State<HmScrollTopPill> {
       ),
     );
   }
+}
+
+/// Owns a [ScrollController], hands it to [builder] (give it to the list), and floats the pill over the result.
+class HmScrollTopHost extends StatefulWidget {
+  const HmScrollTopHost({super.key, required this.builder, required this.itemExtent, this.afterItems = 15});
+  final Widget Function(BuildContext context, ScrollController controller) builder;
+  final double itemExtent;
+  final int afterItems;
+
+  @override
+  State<HmScrollTopHost> createState() => _HmScrollTopHostState();
+}
+
+class _HmScrollTopHostState extends State<HmScrollTopHost> {
+  final _controller = ScrollController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Stack(children: [
+        widget.builder(context, _controller),
+        HmScrollTopPill(controller: _controller, itemExtent: widget.itemExtent, afterItems: widget.afterItems),
+      ]);
 }

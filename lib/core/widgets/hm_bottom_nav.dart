@@ -20,6 +20,7 @@ library;
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'package:homio_essentials/core/l10n/i18n.dart';
 import 'package:homio_essentials/core/theme/tokens.dart';
 
 @immutable
@@ -155,7 +156,7 @@ class _NavTabState extends State<_NavTab> with SingleTickerProviderStateMixin {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 11.5, height: 1.2, letterSpacing: 0.1, fontWeight: selected ? FontWeight.w700 : FontWeight.w500, color: color),
+              style: TextStyle(fontSize: 11.5, height: 1.2, letterSpacing: context.bn ? 0 : 0.1, fontWeight: selected ? FontWeight.w700 : FontWeight.w500, color: color),
             ),
           ]),
         ),

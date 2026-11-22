@@ -13,6 +13,7 @@
 library;
 
 import 'package:flutter/foundation.dart' show ValueListenable;
+import 'package:flutter/rendering.dart' show ScrollDirection;
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -92,66 +93,81 @@ class _Chips extends StatefulWidget {
 
 class _ChipsState extends State<_Chips> {
   final _keys = <String, GlobalKey>{};
+  final _scroll = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    widget.active.addListener(_reveal);
+    widget.active.addListener(_centreActive);
   }
 
   @override
   void dispose() {
-    widget.active.removeListener(_reveal);
+    widget.active.removeListener(_centreActive);
+    _scroll.dispose();
     super.dispose();
   }
 
-  /// Keeps the active chip in view as the page scrolls.
-  void _reveal() {
-    final ctx = _keys[widget.active.value]?.currentContext;
-    if (ctx == null) return;
-    Scrollable.ensureVisible(ctx, alignment: .35, duration: context.motion(HmMotion.normal), curve: HmMotion.curve);
+  /// Slides the chip row so the active chip is centred — and ONLY the chip row.
+  ///
+  /// This used to call `Scrollable.ensureVisible`, which walks up EVERY scrollable ancestor of the chip. The
+  /// index bar lives inside the page's own CustomScrollView, so each chip tap / scroll-spy change also tried to
+  /// scroll the page, fighting the page's own jump animation: that was the glitch after pressing a capsule.
+  void _centreActive() {
+    if (!_scroll.hasClients) return;
+    // The user is dragging the chips themselves: don't fight their finger.
+    if (_scroll.position.userScrollDirection != ScrollDirection.idle) return;
+    final chip = _keys[widget.active.value]?.currentContext?.findRenderObject();
+    final row = context.findRenderObject();
+    if (chip is! RenderBox || row is! RenderBox || !chip.attached || !row.attached) return;
+    final left = chip.localToGlobal(Offset.zero, ancestor: row).dx;
+    final target = (_scroll.offset + left + chip.size.width / 2 - row.size.width / 2).clamp(0.0, _scroll.position.maxScrollExtent);
+    if ((target - _scroll.offset).abs() < 1) return;
+    _scroll.animateTo(target, duration: context.motion(HmMotion.normal), curve: HmMotion.curve);
   }
 
   @override
   Widget build(BuildContext context) {
     final c = widget.c;
+    // A plain Row in a SingleChildScrollView (9 short chips): every chip is always built, so it can always be
+    // measured — a lazy ListView leaves far-away chips without a RenderBox.
     return ValueListenableBuilder<String>(
       valueListenable: widget.active,
-      builder: (context, active, _) => ListView.separated(
+      builder: (context, active, _) => SingleChildScrollView(
+        controller: _scroll,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: Hm.gutter, vertical: 7),
-        itemCount: widget.specs.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 6),
-        itemBuilder: (context, i) {
-          final s = widget.specs[i];
-          final on = s.id == active;
-          return Semantics(
-            button: true,
-            selected: on,
-            label: s.title,
-            excludeSemantics: true,
-            child: GestureDetector(
-              key: _keys.putIfAbsent(s.id, GlobalKey.new),
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                HapticFeedback.selectionClick();
-                widget.onJump(s.id);
-              },
-              child: AnimatedContainer(
-                duration: context.motion(HmMotion.fast),
-                curve: HmMotion.curve,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 13),
-                decoration: BoxDecoration(
-                  color: on ? c.p : c.sf,
-                  borderRadius: BorderRadius.circular(99),
-                  border: Border.all(color: on ? c.p : c.ln),
+        child: Row(children: [
+          for (final (i, s) in widget.specs.indexed) ...[
+            if (i > 0) const SizedBox(width: 6),
+            Semantics(
+              button: true,
+              selected: s.id == active,
+              label: s.title,
+              excludeSemantics: true,
+              child: GestureDetector(
+                key: _keys.putIfAbsent(s.id, GlobalKey.new),
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  widget.onJump(s.id);
+                },
+                child: AnimatedContainer(
+                  duration: context.motion(HmMotion.fast),
+                  curve: HmMotion.curve,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 13),
+                  decoration: BoxDecoration(
+                    color: s.id == active ? c.p : c.sf,
+                    borderRadius: BorderRadius.circular(99),
+                    border: Border.all(color: s.id == active ? c.p : c.ln),
+                  ),
+                  child: Text(s.title, style: TextStyle(fontSize: 12.5, fontWeight: s.id == active ? FontWeight.w700 : FontWeight.w600, color: s.id == active ? c.onp : c.ink2)),
                 ),
-                child: Text(s.title, style: TextStyle(fontSize: 12.5, fontWeight: on ? FontWeight.w700 : FontWeight.w600, color: on ? c.onp : c.ink2)),
               ),
             ),
-          );
-        },
+          ],
+        ]),
       ),
     );
   }

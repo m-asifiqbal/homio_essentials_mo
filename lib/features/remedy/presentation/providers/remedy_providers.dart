@@ -3,7 +3,7 @@
 /// ============================================================
 ///
 ///   remedyDetailProvider(slug)  everything the five tabs show, from the archive
-///   materiaProvider(remedyId)   source-book sections (network, cached offline)
+///   materiaProvider(remedyId)   source-book sections (always from the server; the repository remembers recent ones in memory)
 ///   dosageControllerProvider(slug) selected potency + age group
 /// ============================================================
 library;
@@ -73,10 +73,8 @@ final remedyDetailProvider = Provider.autoDispose.family<AsyncValue<RemedyDetail
   });
 });
 
-final materiaProvider = FutureProvider.autoDispose.family<List<MateriaEntry>, String>((ref, remedyId) {
-  ref.keepAlive(); // book text doesn't change during a session
-  return ref.watch(materiaRepositoryProvider).forRemedy(remedyId);
-});
+final materiaProvider = FutureProvider.autoDispose.family<List<MateriaEntry>, String>(
+    (ref, remedyId) => ref.watch(materiaRepositoryProvider).forRemedy(remedyId));
 
 @immutable
 class DosageUiState {

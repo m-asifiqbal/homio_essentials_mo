@@ -16,7 +16,7 @@ abstract final class AppRoutes {
   static const conditionPattern = '/condition/:slug';
   static const request = '/request';
   static const myRequests = '/my-requests';
-  static const offline = '/offline';
+  static const data = '/data';
   static const disclaimer = '/disclaimer';
   static const sources = '/sources';
   static const guide = '/guide';
