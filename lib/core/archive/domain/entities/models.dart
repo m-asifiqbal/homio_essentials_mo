@@ -72,12 +72,15 @@ class Remedy {
 }
 
 class ConditionText {
-  const ConditionText({required this.name, this.description, this.redFlags, this.keys = const []});
-  factory ConditionText.from(Json j) =>
-      ConditionText(name: j['name'] ?? '', description: j['description'], redFlags: j['red_flags'], keys: strs(j['search_keys']));
+  const ConditionText({required this.name, this.description, this.redFlags, this.keys = const [], this.machine = false});
+  factory ConditionText.from(Json j) => ConditionText(
+      name: j['name'] ?? '', description: j['description'], redFlags: j['red_flags'], keys: strs(j['search_keys']), machine: j['machine_translated'] == true);
   final String name;
   final String? description, redFlags;
   final List<String> keys;
+
+  /// The Bangla was translated automatically and has not been checked by an editor yet.
+  final bool machine;
 }
 
 class Condition {
@@ -89,6 +92,9 @@ class Condition {
   String name(bool bangla) => (bangla ? bn?.name : null) ?? en?.name ?? slug;
   String? redFlags(bool bangla) => (bangla ? bn?.redFlags : null) ?? en?.redFlags;
   String? description(bool bangla) => (bangla ? bn?.description : null) ?? en?.description;
+
+  /// Bangla is showing AND it is machine-translated (the page says so).
+  bool autoBangla(bool bangla) => bangla && (bn?.machine ?? false);
 }
 
 class UseText {

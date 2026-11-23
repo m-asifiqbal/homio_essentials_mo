@@ -360,6 +360,9 @@ class LEn extends L {
       'Bangla text translated automatically from the English book. Check the English (Study tab) if something is unclear.';
 
   @override
+  String get bookOriginalNote => 'Original English text of the book.';
+
+  @override
   String get keynotes => 'Keynotes';
 
   @override
@@ -525,7 +528,7 @@ class LEn extends L {
 
   @override
   String get studyFooter =>
-      'Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898). For study — not medical advice.';
+      'Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898); J. H. Clarke, A Dictionary of Practical Materia Medica (1900–02). For study — not medical advice.';
 
   @override
   String get studyEmpty => 'No book text for this remedy yet.';
@@ -1351,4 +1354,27 @@ class LEn extends L {
 
   @override
   String get exitStay => 'Stay';
+
+  @override
+  String quotedFrom(String books) {
+    return 'Each remedy line is quoted word for word from $books — public-domain classical texts, not a medical recommendation.';
+  }
+
+  @override
+  String get bookFullBoericke =>
+      'W. Boericke, Pocket Manual of Homoeopathic Materia Medica';
+
+  @override
+  String get bookFullAllen => 'H. C. Allen, Keynotes and Characteristics';
+
+  @override
+  String get autoTranslatedPage =>
+      'The Bangla on this page was translated automatically and has not been checked yet.';
+
+  @override
+  String get book_clarke => 'Clarke\'s Dictionary';
+
+  @override
+  String get bookFullClarke =>
+      'J. H. Clarke, A Dictionary of Practical Materia Medica';
 }

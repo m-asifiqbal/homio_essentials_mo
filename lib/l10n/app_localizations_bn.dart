@@ -356,6 +356,9 @@ class LBn extends L {
       'বাংলা লেখাটি ইংরেজি বই থেকে স্বয়ংক্রিয়ভাবে অনুবাদ করা। কোনো অংশ অস্পষ্ট হলে ইংরেজি মূল লেখা (স্টাডি ট্যাব) দেখুন।';
 
   @override
+  String get bookOriginalNote => 'বইয়ের মূল ইংরেজি লেখা।';
+
+  @override
   String get keynotes => 'কি-নোট';
 
   @override
@@ -520,7 +523,7 @@ class LBn extends L {
 
   @override
   String get studyFooter =>
-      'পাবলিক-ডোমেইন লেখা: ডব্লিউ. বোরিক, Pocket Manual of Homoeopathic Materia Medica (১৯২৭); এইচ. সি. অ্যালেন, Keynotes (১৮৯৮)। অধ্যয়নের জন্য — চিকিৎসা পরামর্শ নয়।';
+      'পাবলিক-ডোমেইন লেখা: ডব্লিউ. বোরিক, Pocket Manual of Homoeopathic Materia Medica (১৯২৭); এইচ. সি. অ্যালেন, Keynotes (১৮৯৮); জে. এইচ. ক্লার্ক, A Dictionary of Practical Materia Medica (১৯০০–০২)। অধ্যয়নের জন্য — চিকিৎসা পরামর্শ নয়।';
 
   @override
   String get studyEmpty => 'এই ওষুধের গ্রন্থ-লেখা এখনো নেই।';
@@ -1339,4 +1342,28 @@ class LBn extends L {
 
   @override
   String get exitStay => 'থাকুন';
+
+  @override
+  String quotedFrom(String books) {
+    return 'প্রতিটি ওষুধের লাইন $books থেকে হুবহু উদ্ধৃত — পাবলিক ডোমেইনের ধ্রুপদী গ্রন্থ, চিকিৎসা সুপারিশ নয়।';
+  }
+
+  @override
+  String get bookFullBoericke =>
+      'ডব্লিউ. বোরিকে, পকেট ম্যানুয়াল অব হোমিওপ্যাথিক মেটেরিয়া মেডিকা';
+
+  @override
+  String get bookFullAllen =>
+      'এইচ. সি. অ্যালেন, কি-নোটস অ্যান্ড ক্যারেক্টারিস্টিকস';
+
+  @override
+  String get autoTranslatedPage =>
+      'এই পাতার বাংলা স্বয়ংক্রিয়ভাবে অনুবাদ করা হয়েছে এবং এখনো যাচাই করা হয়নি।';
+
+  @override
+  String get book_clarke => 'ক্লার্কের অভিধান';
+
+  @override
+  String get bookFullClarke =>
+      'জে. এইচ. ক্লার্ক, এ ডিকশনারি অব প্র্যাকটিক্যাল মেটেরিয়া মেডিকা';
 }

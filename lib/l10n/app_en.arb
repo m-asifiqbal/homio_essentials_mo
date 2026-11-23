@@ -140,6 +140,7 @@
   "about": "About",
   "inEnglishNote": "Shown in English — the Bangla text is being prepared.",
   "autoTranslatedNote": "Bangla text translated automatically from the English book. Check the English (Study tab) if something is unclear.",
+  "bookOriginalNote": "Original English text of the book.",
   "keynotes": "Keynotes",
   "keynotesSource": "From H. C. Allen, Keynotes and Characteristics (1898)",
   "relatedRemedies": "Related remedies",
@@ -196,7 +197,7 @@
   "studyLockedTitle": "Full Materia Medica is for students and practitioners",
   "studyLockedBody": "Switch your detail level to Student or Practitioner to read the complete text from Boericke and Allen.",
   "switchToStudent": "Switch to Student",
-  "studyFooter": "Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898). For study — not medical advice.",
+  "studyFooter": "Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898); J. H. Clarke, A Dictionary of Practical Materia Medica (1900–02). For study — not medical advice.",
   "studyEmpty": "No book text for this remedy yet.",
   "viewSource": "View source",
   "seeDoctorIf": "See a doctor if",
@@ -573,5 +574,18 @@
       }
     }
   },
-  "exitStay": "Stay"
+  "exitStay": "Stay",
+  "quotedFrom": "Each remedy line is quoted word for word from {books} — public-domain classical texts, not a medical recommendation.",
+  "@quotedFrom": {
+    "placeholders": {
+      "books": {
+        "type": "String"
+      }
+    }
+  },
+  "bookFullBoericke": "W. Boericke, Pocket Manual of Homoeopathic Materia Medica",
+  "bookFullAllen": "H. C. Allen, Keynotes and Characteristics",
+  "autoTranslatedPage": "The Bangla on this page was translated automatically and has not been checked yet.",
+  "book_clarke": "Clarke's Dictionary",
+  "bookFullClarke": "J. H. Clarke, A Dictionary of Practical Materia Medica"
 }

@@ -29,10 +29,10 @@ Map<String, List<Map<String, dynamic>>> syntheticTables({bool withDefaultDoseRul
       ],
       'condition_translations': [
         {'condition_id': 'c1', 'locale': 'en', 'name': 'Injury & bruising'},
-        {'condition_id': 'c1', 'locale': 'bn', 'name': 'আঘাত ও থেঁতলানো'},
+        {'condition_id': 'c1', 'locale': 'bn', 'name': 'আঘাত ও থেঁতলানো', 'machine_translated': true},
       ],
       'remedy_uses': [
-        {'id': 'u1', 'remedy_id': 'r1', 'condition_id': 'c1', 'route': 'internal', 'typical_potencies': ['30C'], 'tags': <String>[], 'sort_order': 1},
+        {'id': 'u1', 'remedy_id': 'r1', 'condition_id': 'c1', 'route': 'internal', 'typical_potencies': ['30C'], 'tags': ['source:boericke'], 'sort_order': 1},
       ],
       'remedy_use_translations': [
         {'use_id': 'u1', 'locale': 'en', 'title': 'Injury', 'description': 'Sore, bruised feeling after falls and blows.', 'key_difference': 'Says nothing is wrong.'},

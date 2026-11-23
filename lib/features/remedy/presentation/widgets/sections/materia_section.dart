@@ -28,6 +28,9 @@ class MateriaSection extends ConsumerStatefulWidget {
 class _MateriaSectionState extends ConsumerState<MateriaSection> {
   String? _book;
 
+  /// Reading in Bangla, the reader can switch the book text back to the original English.
+  bool _original = false;
+
   /// Which book sub-sections the person opened or closed (key → open). Kept here, NOT in PageStorage: a
   /// PageStorageKey above a SelectableText shares one storage slot between the ExpansionTile's open flag (a bool)
   /// and the text's own scroll offset (a double), and the first tap crashed the body into a grey error box.
@@ -41,12 +44,18 @@ class _MateriaSectionState extends ConsumerState<MateriaSection> {
     final r = widget.d.remedy;
     return switch (ref.watch(materiaProvider(r.id))) {
       AsyncValue(value: final all?) => () {
-          // the Study tab shows the original English book text; Bangla rows (dose notes) are used on the dosage page
-          final value = all.where((e) => e.isEnglish).toList();
-          if (value.isEmpty) return SectionEmpty(icon: Icons.menu_book_outlined, title: l.studyEmpty, body: l.studyEmptyBody);
-          final books = value.map((e) => e.book).toSet().toList()..sort((x, y) => x == 'boericke' ? -1 : y == 'boericke' ? 1 : x.compareTo(y));
+          // The English book text gives the structure; in Bangla each section is swapped for its translation
+          // (locale bn) when there is one, so a half-translated book still reads in order.
+          final english = all.where((e) => e.isEnglish).toList();
+          if (english.isEmpty) return SectionEmpty(icon: Icons.menu_book_outlined, title: l.studyEmpty, body: l.studyEmptyBody);
+          final books = english.map((e) => e.book).toSet().toList()..sort((x, y) => x == 'boericke' ? -1 : y == 'boericke' ? 1 : x.compareTo(y));
           final book = _book != null && books.contains(_book) ? _book! : books.first;
-          final entries = value.where((e) => e.book == book).toList();
+          final bnBySection = {for (final e in all.where((e) => !e.isEnglish && e.book == book)) '${e.section}#${e.sort}': e};
+          final hasBangla = context.bn && english.any((e) => e.book == book && e.section != 'Dose' && bnBySection.containsKey('${e.section}#${e.sort}'));
+          final showBangla = hasBangla && !_original;
+          final entries = [
+            for (final e in english.where((e) => e.book == book)) (showBangla ? bnBySection['${e.section}#${e.sort}'] : null) ?? e,
+          ];
           if (role == Role.general) return _locked(context, entries);
           final worse = entries.where((e) => e.section == 'Worse').firstOrNull;
           final better = entries.where((e) => e.section == 'Better').firstOrNull;
@@ -62,6 +71,21 @@ class _MateriaSectionState extends ConsumerState<MateriaSection> {
               Cap(l.sourceBook),
               const SizedBox(height: 8),
               Wrap(spacing: 8, runSpacing: 8, children: [for (final b in books) HmChip(l.book(b), small: true, selected: b == book, onTap: () => setState(() => _book = b))]),
+            ],
+            if (hasBangla) ...[
+              const SizedBox(height: 12),
+              Row(children: [
+                Expanded(child: Text(showBangla ? l.autoTranslatedNote : l.bookOriginalNote, style: TextStyle(fontSize: 11.5, color: c.ink3, height: 1.45))),
+                const SizedBox(width: 10),
+                SizedBox(
+                  width: 168,
+                  child: Segmented<bool>(
+                    value: _original,
+                    onChanged: (v) => setState(() => _original = v),
+                    options: const [(false, 'বাংলা'), (true, 'English')],
+                  ),
+                ),
+              ]),
             ],
             if (allenKey != null) ...[const SizedBox(height: 14), SelectableText(allenKey.body, style: const TextStyle(fontSize: 14, height: 1.65))],
             if (worse != null || better != null) ...[

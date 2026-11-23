@@ -751,6 +751,12 @@ abstract class L {
   /// **'Bangla text translated automatically from the English book. Check the English (Study tab) if something is unclear.'**
   String get autoTranslatedNote;
 
+  /// No description provided for @bookOriginalNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Original English text of the book.'**
+  String get bookOriginalNote;
+
   /// No description provided for @keynotes.
   ///
   /// In en, this message translates to:
@@ -1048,7 +1054,7 @@ abstract class L {
   /// No description provided for @studyFooter.
   ///
   /// In en, this message translates to:
-  /// **'Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898). For study — not medical advice.'**
+  /// **'Public-domain text: W. Boericke, Pocket Manual of Homoeopathic Materia Medica (1927); H. C. Allen, Keynotes (1898); J. H. Clarke, A Dictionary of Practical Materia Medica (1900–02). For study — not medical advice.'**
   String get studyFooter;
 
   /// No description provided for @studyEmpty.
@@ -2544,6 +2550,42 @@ abstract class L {
   /// In en, this message translates to:
   /// **'Stay'**
   String get exitStay;
+
+  /// No description provided for @quotedFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Each remedy line is quoted word for word from {books} — public-domain classical texts, not a medical recommendation.'**
+  String quotedFrom(String books);
+
+  /// No description provided for @bookFullBoericke.
+  ///
+  /// In en, this message translates to:
+  /// **'W. Boericke, Pocket Manual of Homoeopathic Materia Medica'**
+  String get bookFullBoericke;
+
+  /// No description provided for @bookFullAllen.
+  ///
+  /// In en, this message translates to:
+  /// **'H. C. Allen, Keynotes and Characteristics'**
+  String get bookFullAllen;
+
+  /// No description provided for @autoTranslatedPage.
+  ///
+  /// In en, this message translates to:
+  /// **'The Bangla on this page was translated automatically and has not been checked yet.'**
+  String get autoTranslatedPage;
+
+  /// No description provided for @book_clarke.
+  ///
+  /// In en, this message translates to:
+  /// **'Clarke\'s Dictionary'**
+  String get book_clarke;
+
+  /// No description provided for @bookFullClarke.
+  ///
+  /// In en, this message translates to:
+  /// **'J. H. Clarke, A Dictionary of Practical Materia Medica'**
+  String get bookFullClarke;
 }
 
 class _LDelegate extends LocalizationsDelegate<L> {

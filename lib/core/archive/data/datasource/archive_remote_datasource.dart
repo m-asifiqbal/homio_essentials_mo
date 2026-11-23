@@ -42,7 +42,7 @@ class ArchiveRemoteDataSource {
     'remedies': ('id,slug,latin_name,abbreviation,kingdom,family,groups,potencies,forms,external_use,search_keys,source_refs', ['id.asc']),
     'remedy_translations': ('remedy_id,locale,display_name,common_name,summary,origin,preparation,keynotes,machine_fields', ['remedy_id.asc', 'locale.asc']),
     'conditions': ('id,slug,body_system,icon,sort_order', ['id.asc']),
-    'condition_translations': ('condition_id,locale,name,description,red_flags,search_keys', ['condition_id.asc', 'locale.asc']),
+    'condition_translations': ('condition_id,locale,name,description,red_flags,search_keys,machine_translated', ['condition_id.asc', 'locale.asc']),
     'remedy_uses': ('id,remedy_id,condition_id,route,typical_potencies,tags,sort_order', ['id.asc']),
     'remedy_use_translations': ('use_id,locale,title,description,key_difference', ['use_id.asc', 'locale.asc']),
     'age_groups': ('code,min_years,max_years,sort_order,label', ['code.asc']),

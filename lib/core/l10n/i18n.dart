@@ -70,7 +70,8 @@ extension LabelLookups on L {
         _ => rel_compare,
       };
 
-  String book(String b) => switch (b) { 'allen' => book_allen, _ => book_boericke };
+  String book(String b) => switch (b) { 'allen' => book_allen, 'clarke' => book_clarke, _ => book_boericke };
+  String bookSource(String b) => switch (b) { 'allen' => bookFullAllen, 'clarke' => bookFullClarke, _ => bookFullBoericke };
 
   String status(String s) => switch (s) {
         'needs_info' => status_needs_info,
